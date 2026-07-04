@@ -20,7 +20,8 @@ import java.util.List;
 public class AbyssalTornadoEntity extends Entity {
     private static final EntityDataAccessor<Float> WIND_X = SynchedEntityData.defineId(AbyssalTornadoEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> WIND_Z = SynchedEntityData.defineId(AbyssalTornadoEntity.class, EntityDataSerializers.FLOAT);
-    private static final int MAX_LIFE = 20 * 35;
+    private static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(AbyssalTornadoEntity.class, EntityDataSerializers.INT);
+    private static final int DEFAULT_LIFETIME = 20 * 35;
     private static final double MOVE_SPEED = 0.045D;
     private static final double PULL_RADIUS = 5.75D;
     private static final double LIFT_STRENGTH = 0.18D;
@@ -36,10 +37,16 @@ public class AbyssalTornadoEntity extends Entity {
         setWind(wind);
     }
 
+    public AbyssalTornadoEntity(ServerLevel level, double x, double y, double z, Vec3 wind, int lifetimeTicks) {
+        this(level, x, y, z, wind);
+        setLifetime(lifetimeTicks);
+    }
+
     @Override
     protected void defineSynchedData() {
         this.entityData.define(WIND_X, 0.0F);
         this.entityData.define(WIND_Z, 1.0F);
+        this.entityData.define(LIFETIME, DEFAULT_LIFETIME);
     }
 
     public Vec3 getWind() {
@@ -49,14 +56,14 @@ public class AbyssalTornadoEntity extends Entity {
     public float getVisualHeight(float partialTick) {
         float age = this.tickCount + partialTick;
         float fadeIn = Mth.clamp(age / 30.0F, 0.0F, 1.0F);
-        float fadeOut = Mth.clamp((MAX_LIFE - age) / 40.0F, 0.0F, 1.0F);
+        float fadeOut = Mth.clamp((getLifetime() - age) / 40.0F, 0.0F, 1.0F);
         return 9.0F * Math.min(fadeIn, fadeOut);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.tickCount > MAX_LIFE) {
+        if (this.tickCount > getLifetime()) {
             discard();
             return;
         }
@@ -111,15 +118,27 @@ public class AbyssalTornadoEntity extends Entity {
         this.entityData.set(WIND_Z, (float) normalized.z);
     }
 
+    private int getLifetime() {
+        return this.entityData.get(LIFETIME);
+    }
+
+    private void setLifetime(int lifetimeTicks) {
+        this.entityData.set(LIFETIME, Math.max(20, lifetimeTicks));
+    }
+
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         this.tickCount = tag.getInt("Age");
         setWind(new Vec3(tag.getFloat("WindX"), 0.0D, tag.getFloat("WindZ")));
+        if (tag.contains("Lifetime")) {
+            setLifetime(tag.getInt("Lifetime"));
+        }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         tag.putInt("Age", this.tickCount);
+        tag.putInt("Lifetime", getLifetime());
         tag.putFloat("WindX", this.entityData.get(WIND_X));
         tag.putFloat("WindZ", this.entityData.get(WIND_Z));
     }

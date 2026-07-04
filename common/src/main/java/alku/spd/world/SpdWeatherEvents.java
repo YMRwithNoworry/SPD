@@ -3,6 +3,7 @@ package alku.spd.world;
 import alku.spd.entity.AbyssalTornadoEntity;
 import alku.spd.registry.SpdEntities;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
@@ -38,7 +39,10 @@ public final class SpdWeatherEvents {
                                 .then(Commands.literal("abyssal_gloom")
                                         .executes(command -> toggle(command.getSource().getLevel()))
                                         .then(Commands.argument("active", BoolArgumentType.bool())
-                                                .executes(command -> set(command.getSource().getLevel(), BoolArgumentType.getBool(command, "active"))))))));
+                                                .executes(command -> set(command.getSource().getLevel(), BoolArgumentType.getBool(command, "active"))))
+                                        .then(Commands.literal("tornado")
+                                                .then(Commands.argument("duration_seconds", IntegerArgumentType.integer(1, 600))
+                                                        .executes(command -> spawnTornadoAtPlayer(command.getSource().getPlayerOrException(), IntegerArgumentType.getInteger(command, "duration_seconds")))))))));
 
         TickEvent.SERVER_LEVEL_POST.register(SpdWeatherEvents::tickLevel);
         PlayerEvent.PLAYER_JOIN.register(SpdWeatherNetworking::syncPlayer);
@@ -57,6 +61,16 @@ public final class SpdWeatherEvents {
         AbyssalGloomWeather.setActive(level, active);
         level.getServer().getPlayerList().broadcastSystemMessage(Component.literal(AbyssalGloomWeather.NAME + "天气已" + (active ? "开启" : "关闭") + "。"), false);
         return active ? 1 : 0;
+    }
+
+    private static int spawnTornadoAtPlayer(ServerPlayer player, int durationSeconds) {
+        ServerLevel level = player.serverLevel();
+        AbyssalGloomWeather.State state = AbyssalGloomWeather.getOrCreate(level);
+        Vec3 wind = new Vec3(state.windX(), 0.0D, state.windZ());
+        AbyssalTornadoEntity tornado = new AbyssalTornadoEntity(level, player.getX(), player.getY(), player.getZ(), wind, durationSeconds * 20);
+        level.addFreshEntity(tornado);
+        player.displayClientMessage(Component.literal("已生成渊默龙卷风，持续 " + durationSeconds + " 秒。"), false);
+        return 1;
     }
 
     private static void tickLevel(ServerLevel level) {
