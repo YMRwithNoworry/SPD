@@ -14,10 +14,13 @@ import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 
 public class AbyssalTornadoRenderer extends EntityRenderer<AbyssalTornadoEntity> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/particle/smoke_0.png");
-    private static final int FUNNEL_RINGS = 18;
-    private static final int FUNNEL_SIDES = 28;
-    private static final int PUFFS = 112;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/misc/white.png");
+    private static final int FUNNEL_RINGS = 26;
+    private static final int FUNNEL_SIDES = 42;
+    private static final int CLOUD_PUFFS = 520;
+    private static final int SPIRAL_PARTICLES = 360;
+    private static final int GROUND_DUST = 180;
+    private static final int INNER_FLASHES = 90;
 
     public AbyssalTornadoRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -33,7 +36,10 @@ public class AbyssalTornadoRenderer extends EntityRenderer<AbyssalTornadoEntity>
         VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE));
         float time = entity.tickCount + partialTick;
         renderFunnel(buffer, poseStack, height, time);
+        renderSpiralParticles(buffer, poseStack, height, time);
         renderCloudPuffs(buffer, poseStack, height, time);
+        renderGroundDust(buffer, poseStack, time);
+        renderInnerFlashes(buffer, poseStack, height, time);
         super.render(entity, yaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
@@ -63,19 +69,69 @@ public class AbyssalTornadoRenderer extends EntityRenderer<AbyssalTornadoEntity>
     }
 
     private void renderCloudPuffs(VertexConsumer buffer, PoseStack poseStack, float height, float time) {
-        for (int puff = 0; puff < PUFFS; puff++) {
+        for (int puff = 0; puff < CLOUD_PUFFS; puff++) {
             float seed = puff * 37.17F + 11.0F;
             float t = 0.03F + hash(seed) * 0.95F;
-            float radius = radiusAt(t) * (0.62F + hash(seed + 3.1F) * 0.72F);
-            float angle = hash(seed + 7.3F) * Mth.TWO_PI + time * (0.035F + (1.0F - t) * 0.055F) + t * 8.5F;
+            float stormSpread = t > 0.72F ? 1.0F + (t - 0.72F) * 4.6F : 1.0F;
+            float radius = radiusAt(t) * (0.45F + hash(seed + 3.1F) * 1.18F) * stormSpread;
+            float angle = hash(seed + 7.3F) * Mth.TWO_PI + time * (0.055F + (1.0F - t) * 0.105F) + t * 11.5F;
             float x = centerOffsetX(t, time) + Mth.cos(angle) * radius;
             float z = centerOffsetZ(t, time) + Mth.sin(angle) * radius;
-            float y = height * t + Mth.sin(time * 0.025F + seed) * (0.18F + t * 0.35F);
-            float size = (0.85F + hash(seed + 13.4F) * 1.45F) * (0.75F + t * 1.25F);
-            float alpha = (0.055F + hash(seed + 21.8F) * 0.085F) * cloudAlpha(t);
-            int gray = 36 + (int) (hash(seed + 31.9F) * 36.0F);
-            int red = gray + 18 + (int) (t * 22.0F);
-            renderBillboard(buffer, poseStack, x, y, z, size * 1.25F, size, red, gray, gray + 8, alpha);
+            float y = height * t + Mth.sin(time * 0.035F + seed) * (0.28F + t * 0.58F);
+            float size = (0.95F + hash(seed + 13.4F) * 2.25F) * (0.85F + t * 1.75F);
+            float alpha = (0.085F + hash(seed + 21.8F) * 0.16F) * cloudAlpha(t);
+            int gray = 23 + (int) (hash(seed + 31.9F) * 58.0F);
+            int red = gray + 22 + (int) (t * 34.0F);
+            renderBillboard(buffer, poseStack, x, y, z, size * 1.55F, size * 1.1F, red, gray, gray + 10, alpha, hash(seed + 41.0F) * Mth.TWO_PI + time * 0.02F);
+        }
+    }
+
+    private void renderSpiralParticles(VertexConsumer buffer, PoseStack poseStack, float height, float time) {
+        for (int i = 0; i < SPIRAL_PARTICLES; i++) {
+            float seed = i * 19.73F + 5.0F;
+            float t = hash(seed + time * 0.018F);
+            float radius = radiusAt(t) * (0.72F + hash(seed + 2.0F) * 0.34F);
+            float angle = t * 15.0F + time * (0.15F + (1.0F - t) * 0.18F) + seed;
+            float x = centerOffsetX(t, time) + Mth.cos(angle) * radius;
+            float z = centerOffsetZ(t, time) + Mth.sin(angle) * radius;
+            float y = height * t;
+            float size = 0.22F + hash(seed + 9.0F) * 0.46F + t * 0.22F;
+            float alpha = (0.2F + hash(seed + 15.0F) * 0.26F) * cloudAlpha(t);
+            renderBillboard(buffer, poseStack, x, y, z, size, size, 128, 25, 34, alpha, angle);
+        }
+    }
+
+    private void renderGroundDust(VertexConsumer buffer, PoseStack poseStack, float time) {
+        for (int i = 0; i < GROUND_DUST; i++) {
+            float seed = i * 23.41F + 17.0F;
+            float ring = hash(seed + time * 0.026F);
+            float radius = 2.4F + ring * 8.8F;
+            float angle = hash(seed + 2.0F) * Mth.TWO_PI + time * (0.19F + ring * 0.08F);
+            float x = Mth.cos(angle) * radius;
+            float z = Mth.sin(angle) * radius;
+            float y = 0.05F + hash(seed + 5.0F) * 1.35F;
+            float size = 0.55F + hash(seed + 8.0F) * 1.45F;
+            float alpha = 0.1F + hash(seed + 12.0F) * 0.19F;
+            renderBillboard(buffer, poseStack, x, y, z, size * 1.8F, size * 0.72F, 82, 35, 34, alpha, angle);
+        }
+    }
+
+    private void renderInnerFlashes(VertexConsumer buffer, PoseStack poseStack, float height, float time) {
+        for (int i = 0; i < INNER_FLASHES; i++) {
+            float seed = i * 43.77F + 29.0F;
+            float pulse = hash(seed + Mth.floor(time * 0.22F));
+            if (pulse < 0.42F) {
+                continue;
+            }
+            float t = 0.12F + hash(seed + 3.0F) * 0.78F;
+            float radius = radiusAt(t) * (0.08F + hash(seed + 7.0F) * 0.34F);
+            float angle = seed + time * 0.21F + t * 12.0F;
+            float x = centerOffsetX(t, time) + Mth.cos(angle) * radius;
+            float z = centerOffsetZ(t, time) + Mth.sin(angle) * radius;
+            float y = height * t;
+            float size = 0.28F + hash(seed + 11.0F) * 0.7F;
+            float alpha = (pulse - 0.42F) * 0.45F * cloudAlpha(t);
+            renderBillboard(buffer, poseStack, x, y, z, size * 0.75F, size * 2.4F, 190, 32, 42, alpha, angle);
         }
     }
 
@@ -86,11 +142,11 @@ public class AbyssalTornadoRenderer extends EntityRenderer<AbyssalTornadoEntity>
 
     private static float radiusAt(float t) {
         float upperSpread = Mth.clamp((t - 0.68F) / 0.32F, 0.0F, 1.0F);
-        return 0.58F + (float) Math.pow(t, 1.45F) * 4.4F + upperSpread * upperSpread * 2.8F;
+        return 0.45F + (float) Math.pow(t, 1.35F) * 5.2F + upperSpread * upperSpread * 5.4F;
     }
 
     private static float alphaAt(float t) {
-        return (0.08F + (1.0F - t) * 0.12F) * cloudAlpha(t);
+        return (0.12F + (1.0F - t) * 0.17F) * cloudAlpha(t);
     }
 
     private static float cloudAlpha(float t) {
@@ -129,10 +185,11 @@ public class AbyssalTornadoRenderer extends EntityRenderer<AbyssalTornadoEntity>
     }
 
     private void renderBillboard(VertexConsumer buffer, PoseStack poseStack, float x, float y, float z, float width, float height,
-                                 int red, int green, int blue, float alpha) {
+                                 int red, int green, int blue, float alpha, float roll) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        poseStack.mulPose(com.mojang.math.Axis.ZP.rotation(roll));
         Matrix4f matrix = poseStack.last().pose();
         float halfWidth = width * 0.5F;
         float halfHeight = height * 0.5F;
