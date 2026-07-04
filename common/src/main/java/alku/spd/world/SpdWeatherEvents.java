@@ -82,7 +82,6 @@ public final class SpdWeatherEvents {
         }
 
         for (ServerPlayer player : level.players()) {
-            player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, true, false, true));
             if (isExposedToAbyssalDust(player)) {
                 if (state.ticks() % 40 == 0) {
                     player.addEffect(new MobEffectInstance(MobEffects.WITHER, 80, 0, true, true, true));
