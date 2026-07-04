@@ -47,3 +47,10 @@ mandatory = true
 versionRange = "[1.0.50,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.spd]]
+modId = "photon"
+mandatory = true
+versionRange = "[1.1.17,)"
+ordering = "AFTER"
+side = "BOTH"

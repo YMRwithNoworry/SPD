@@ -30,6 +30,7 @@
     "architectury": ">=9.2.14",
     "fabric-api": "*",
     "geckolib": ">=4.4.9",
-    "ldlib": ">=1.0.50"
+    "ldlib": ">=1.0.50",
+    "photon": ">=1.1.17"
   }
 }

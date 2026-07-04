@@ -1,5 +1,7 @@
 package alku.spd.world;
 
+import alku.spd.entity.AbyssalTornadoEntity;
+import alku.spd.registry.SpdEntities;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
@@ -9,15 +11,21 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public final class SpdWeatherEvents {
     private static final double WIND_STRENGTH = 0.055D;
+    private static final int TORNADO_CHECK_INTERVAL = 20 * 8;
+    private static final int MAX_TORNADOES_PER_LEVEL = 3;
 
     private SpdWeatherEvents() {
     }
@@ -82,6 +90,45 @@ public final class SpdWeatherEvents {
                 }
             }
         }
+
+        if (state.ticks() % TORNADO_CHECK_INTERVAL == 0) {
+            trySpawnTornado(level, state);
+        }
+    }
+
+    private static void trySpawnTornado(ServerLevel level, AbyssalGloomWeather.State state) {
+        if (level.dimension() != Level.OVERWORLD || level.players().isEmpty()) {
+            return;
+        }
+        ServerPlayer anchor = level.players().get(level.random.nextInt(level.players().size()));
+        AABB nearbyLoadedArea = anchor.getBoundingBox().inflate(160.0D, 96.0D, 160.0D);
+        if (level.getEntities(SpdEntities.ABYSSAL_TORNADO.get(), nearbyLoadedArea, Entity::isAlive).size() >= MAX_TORNADOES_PER_LEVEL) {
+            return;
+        }
+        if (level.random.nextFloat() > 0.32F) {
+            return;
+        }
+
+        double distance = Mth.nextDouble(level.random, 36.0D, 88.0D);
+        double angle = level.random.nextDouble() * Mth.TWO_PI;
+        int x = Mth.floor(anchor.getX() + Mth.cos((float) angle) * distance);
+        int z = Mth.floor(anchor.getZ() + Mth.sin((float) angle) * distance);
+        int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+        if (!level.hasChunkAt(new net.minecraft.core.BlockPos(x, y, z))) {
+            return;
+        }
+        net.minecraft.core.BlockPos ground = new net.minecraft.core.BlockPos(x, y - 1, z);
+        net.minecraft.core.BlockPos spawnPos = ground.above();
+        if (!level.canSeeSky(spawnPos)
+                || level.getBlockState(ground).isAir()
+                || level.getFluidState(spawnPos).is(FluidTags.WATER)
+                || level.getFluidState(spawnPos).is(FluidTags.LAVA)) {
+            return;
+        }
+
+        Vec3 wind = new Vec3(state.windX(), 0.0D, state.windZ());
+        AbyssalTornadoEntity tornado = new AbyssalTornadoEntity(level, spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D, wind);
+        level.addFreshEntity(tornado);
     }
 
     private static boolean isExposedToAbyssalDust(ServerPlayer player) {

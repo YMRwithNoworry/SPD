@@ -3,6 +3,7 @@ package alku.spd.registry;
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalLightWaveEntity;
 import alku.spd.entity.AbyssalLizardEntity;
+import alku.spd.entity.AbyssalTornadoEntity;
 import alku.spd.entity.MoldZombieEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -31,6 +32,13 @@ public final class SpdEntities {
                     .clientTrackingRange(8)
                     .updateInterval(2)
                     .build("abyssal_light_wave"));
+
+    public static final RegistrySupplier<EntityType<AbyssalTornadoEntity>> ABYSSAL_TORNADO = ENTITIES.register("abyssal_tornado", () ->
+            EntityType.Builder.<AbyssalTornadoEntity>of(AbyssalTornadoEntity::new, MobCategory.MISC)
+                    .sized(5.75F, 9.0F)
+                    .clientTrackingRange(12)
+                    .updateInterval(2)
+                    .build("abyssal_tornado"));
 
     private SpdEntities() {
     }
