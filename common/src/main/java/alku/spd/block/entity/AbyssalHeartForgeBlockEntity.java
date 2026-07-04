@@ -9,6 +9,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,6 +21,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -134,13 +138,18 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
         ItemStack stack = ContainerHelper.removeItem(this.items, slot, amount);
         if (!stack.isEmpty()) {
             setChanged();
+            syncInventoryToClient();
         }
         return stack;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(this.items, slot);
+        ItemStack stack = ContainerHelper.takeItem(this.items, slot);
+        if (!stack.isEmpty()) {
+            syncInventoryToClient();
+        }
+        return stack;
     }
 
     @Override
@@ -150,6 +159,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
             stack.setCount(getMaxStackSize());
         }
         setChanged();
+        syncInventoryToClient();
     }
 
     @Override
@@ -172,6 +182,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
     public void clearContent() {
         this.items.clear();
         setChanged();
+        syncInventoryToClient();
     }
 
     @Override
@@ -205,12 +216,29 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
     }
 
     @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        ContainerHelper.saveAllItems(tag, this.items);
+        tag.putInt("Progress", this.progress);
+        return tag;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    public boolean hasProcessingIngredients() {
+        return hasRecipeInputs();
     }
 
     private boolean hasRecipeInputs() {
@@ -243,6 +271,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
         if (level.random.nextFloat() < 0.01F) {
             insertOutput(new ItemStack(Items.NETHERITE_SCRAP));
         }
+        syncInventoryToClient();
     }
 
     private boolean canInsertOutput(ItemStack stack) {
@@ -278,5 +307,12 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
             }
         }
         return false;
+    }
+
+    private void syncInventoryToClient() {
+        if (this.level != null && !this.level.isClientSide) {
+            BlockState state = getBlockState();
+            this.level.sendBlockUpdated(this.worldPosition, state, state, Block.UPDATE_CLIENTS);
+        }
     }
 }
