@@ -35,6 +35,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_HEART_FORGE = ITEMS.register("abyssal_heart_forge", () ->
             new BlockItem(SpdBlocks.ABYSSAL_HEART_FORGE.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> MASCOT = ITEMS.register("mascot", () ->
+            new BlockItem(SpdBlocks.MASCOT.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> ABYSSAL_LIZARD_SPAWN_EGG = ITEMS.register("abyssal_lizard_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_LIZARD, 0x302832, 0x8D8272, new Item.Properties()));
 

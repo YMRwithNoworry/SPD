@@ -21,6 +21,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.BLAZING_CARBON_STEEL_INGOT.get());
                 output.accept(SpdItems.ABYSSAL_FUNGAL_VINES.get());
                 output.accept(SpdItems.ABYSSAL_HEART_FORGE.get());
+                output.accept(SpdItems.MASCOT.get());
                 output.accept(SpdItems.ABYSSAL_LIZARD_SPAWN_EGG.get());
                 output.accept(SpdItems.MOLD_ZOMBIE_SPAWN_EGG.get());
             })

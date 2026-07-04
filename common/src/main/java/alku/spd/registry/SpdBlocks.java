@@ -3,6 +3,7 @@ package alku.spd.registry;
 import alku.spd.Spd;
 import alku.spd.block.AbyssalFungalVinesBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
+import alku.spd.block.MascotBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -38,6 +39,12 @@ public final class SpdBlocks {
                     .strength(3.5F, 6.0F)
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()));
+
+    public static final RegistrySupplier<Block> MASCOT = BLOCKS.register("mascot", () ->
+            new MascotBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
+                    .noOcclusion()
+                    .strength(1.0F)
+                    .sound(SoundType.STONE)));
 
     private SpdBlocks() {
     }

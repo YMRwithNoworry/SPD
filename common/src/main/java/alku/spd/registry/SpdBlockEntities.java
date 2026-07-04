@@ -3,6 +3,7 @@ package alku.spd.registry;
 import alku.spd.Spd;
 import alku.spd.block.entity.AbyssalFungalVinesBlockEntity;
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
+import alku.spd.block.entity.MascotBlockEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +17,9 @@ public final class SpdBlockEntities {
 
     public static final RegistrySupplier<BlockEntityType<AbyssalHeartForgeBlockEntity>> ABYSSAL_HEART_FORGE = BLOCK_ENTITIES.register("abyssal_heart_forge", () ->
             BlockEntityType.Builder.of(AbyssalHeartForgeBlockEntity::new, SpdBlocks.ABYSSAL_HEART_FORGE.get()).build(null));
+
+    public static final RegistrySupplier<BlockEntityType<MascotBlockEntity>> MASCOT = BLOCK_ENTITIES.register("mascot", () ->
+            BlockEntityType.Builder.of(MascotBlockEntity::new, SpdBlocks.MASCOT.get()).build(null));
 
     private SpdBlockEntities() {
     }

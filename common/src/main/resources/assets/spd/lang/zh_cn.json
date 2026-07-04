@@ -3,6 +3,7 @@
   "block.spd.blazing_vein_stone": "炽脉石",
   "block.spd.abyssal_fungal_vines": "渊蚀菌蔓",
   "block.spd.abyssal_heart_forge": "渊心熔铸台",
+  "block.spd.mascot": "吉祥物",
   "effect.spd.subjugation": "臣缚",
   "effect.spd.mold_curse": "霉咒",
   "entity.spd.abyssal_lizard": "渊蚀蜥",
@@ -17,5 +18,6 @@
   "item.spd.blazing_carbon_steel_ingot": "炽炭钢锭",
   "item.spd.blazing_raw_ore": "炽脉原矿",
   "item.spd.blazing_shard": "炽脉碎片",
+  "item.spd.mascot": "吉祥物",
   "item.spd.mold_zombie_spawn_egg": "霉染僵尸刷怪蛋"
 }
