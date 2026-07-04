@@ -244,7 +244,6 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
         playerInventory.setSelfPosition(24, 98);
         root.addWidget(playerInventory);
 
-        root.addWidget(new ImageWidget(24, 165, 172, 1, new ColorRectTexture(0xFF8B8B8B)));
         return new ModularUI(root, this, entityPlayer);
     }
 
