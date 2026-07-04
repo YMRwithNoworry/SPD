@@ -39,9 +39,11 @@ import java.util.List;
 
 public class AbyssalLizardEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Boolean> ROARING = SynchedEntityData.defineId(AbyssalLizardEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
-    private static final RawAnimation ROAR = RawAnimation.begin().thenPlay("roar");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("qi xi");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fei xing");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("xing zou");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("gong ji");
+    private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("si wang");
     private static final int ROAR_DURATION = 64;
     private static final int ROAR_COOLDOWN = 240;
 
@@ -141,8 +143,18 @@ public class AbyssalLizardEntity extends Monster implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 4, state -> {
+            if (this.isDeadOrDying()) {
+                state.setAndContinue(DEATH);
+                return PlayState.CONTINUE;
+            }
+
+            if (this.swinging) {
+                state.setAndContinue(ATTACK);
+                return PlayState.CONTINUE;
+            }
+
             if (this.isRoaring()) {
-                state.setAndContinue(ROAR);
+                state.setAndContinue(IDLE);
                 return PlayState.CONTINUE;
             }
 
@@ -151,7 +163,12 @@ public class AbyssalLizardEntity extends Monster implements GeoEntity {
                 return PlayState.CONTINUE;
             }
 
-            state.setAndContinue(WALK);
+            if (state.isMoving()) {
+                state.setAndContinue(WALK);
+                return PlayState.CONTINUE;
+            }
+
+            state.setAndContinue(IDLE);
             return PlayState.CONTINUE;
         }));
     }
