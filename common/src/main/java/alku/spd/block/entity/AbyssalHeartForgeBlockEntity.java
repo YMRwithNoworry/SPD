@@ -1,23 +1,31 @@
 package alku.spd.block.entity;
 
-import alku.spd.menu.AbyssalHeartForgeMenu;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdItems;
-import dev.architectury.registry.menu.ExtendedMenuProvider;
+import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
+import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
+import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
+import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
+import com.lowdragmc.lowdraglib.gui.texture.ProgressTexture;
+import com.lowdragmc.lowdraglib.gui.texture.ResourceBorderTexture;
+import com.lowdragmc.lowdraglib.gui.texture.ResourceTexture;
+import com.lowdragmc.lowdraglib.gui.widget.ImageWidget;
+import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
+import com.lowdragmc.lowdraglib.gui.widget.ProgressWidget;
+import com.lowdragmc.lowdraglib.gui.widget.SlotWidget;
+import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
+import com.lowdragmc.lowdraglib.gui.widget.custom.PlayerInventoryWidget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -29,7 +37,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Container, GeoBlockEntity, ExtendedMenuProvider {
+public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Container, GeoBlockEntity, IUIHolder.BlockEntityUI {
     public static final int SLOT_COUNT = 18;
     public static final int INPUT_SLOT = 0;
     public static final int FUEL_SLOT = 1;
@@ -53,28 +61,6 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
     private int progress;
-    private final ContainerData dataAccess = new ContainerData() {
-        @Override
-        public int get(int index) {
-            return switch (index) {
-                case 0 -> AbyssalHeartForgeBlockEntity.this.progress;
-                case 1 -> MAX_PROGRESS;
-                default -> 0;
-            };
-        }
-
-        @Override
-        public void set(int index, int value) {
-            if (index == 0) {
-                AbyssalHeartForgeBlockEntity.this.progress = value;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-    };
 
     public AbyssalHeartForgeBlockEntity(BlockPos pos, BlockState blockState) {
         super(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), pos, blockState);
@@ -200,19 +186,63 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
         this.progress = tag.getInt("Progress");
     }
 
-    @Override
     public Component getDisplayName() {
         return Component.translatable("container.spd.abyssal_heart_forge");
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return new AbyssalHeartForgeMenu(containerId, inventory, this, this.dataAccess);
-    }
+    public ModularUI createUI(Player entityPlayer) {
+        WidgetGroup root = new WidgetGroup(0, 0, 220, 188);
+        root.setBackground(new GuiTextureGroup(
+                new ColorRectTexture(0xFFC6C6C6),
+                new ResourceBorderTexture("ldlib:textures/gui/background.png", 220, 188, 4, 4)
+        ));
 
-    @Override
-    public void saveExtraData(FriendlyByteBuf buf) {
-        buf.writeBlockPos(this.worldPosition);
+        root.addWidget(new LabelWidget(10, 7, getDisplayName()).setTextColor(0x404040).setDropShadow(false));
+        root.addWidget(new LabelWidget(29, 93, Component.translatable("container.inventory")).setTextColor(0x404040).setDropShadow(false));
+
+        root.addWidget(new SlotWidget(this, INPUT_SLOT, 26, 34, true, true) {
+            @Override
+            protected Slot createSlot(Container inventory, int index) {
+                return new Slot(inventory, index, 0, 0) {
+                    @Override
+                    public boolean mayPlace(ItemStack stack) {
+                        return isShard(stack);
+                    }
+                };
+            }
+        });
+        root.addWidget(new SlotWidget(this, FUEL_SLOT, 26, 76, true, true) {
+            @Override
+            protected Slot createSlot(Container inventory, int index) {
+                return new Slot(inventory, index, 0, 0) {
+                    @Override
+                    public boolean mayPlace(ItemStack stack) {
+                        return isFuel(stack);
+                    }
+                };
+            }
+        });
+
+        int index = OUTPUT_START;
+        for (int row = 0; row < 4; row++) {
+            for (int column = 0; column < 4; column++) {
+                root.addWidget(new SlotWidget(this, index++, 122 + column * 18, 18 + row * 18, true, false));
+            }
+        }
+
+        ProgressTexture progressTexture = new ProgressTexture(
+                new ResourceTexture("ldlib:textures/gui/progress_bar_arrow.png").getSubTexture(0.0, 0.0, 1.0, 0.5),
+                new ResourceTexture("ldlib:textures/gui/progress_bar_arrow.png").getSubTexture(0.0, 0.5, 1.0, 0.5)
+        ).setFillDirection(ProgressTexture.FillDirection.LEFT_TO_RIGHT);
+        root.addWidget(new ProgressWidget(this::getCraftProgress, 63, 43, 40, 18, progressTexture));
+
+        PlayerInventoryWidget playerInventory = new PlayerInventoryWidget();
+        playerInventory.setSelfPosition(24, 98);
+        root.addWidget(playerInventory);
+
+        root.addWidget(new ImageWidget(24, 165, 172, 1, new ColorRectTexture(0xFF8B8B8B)));
+        return new ModularUI(root, this, entityPlayer);
     }
 
     @Override
@@ -241,6 +271,10 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
         return hasRecipeInputs();
     }
 
+    private double getCraftProgress() {
+        return MAX_PROGRESS <= 0 ? 0.0D : Math.min(1.0D, (double) this.progress / (double) MAX_PROGRESS);
+    }
+
     private boolean hasRecipeInputs() {
         return this.items.get(INPUT_SLOT).getCount() >= REQUIRED_SHARDS && isFuel(this.items.get(FUEL_SLOT));
     }
@@ -264,7 +298,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
             this.items.set(FUEL_SLOT, ItemStack.EMPTY);
         }
 
-        if (level.random.nextFloat() < 0.10F) {
+        if (level.random.nextFloat() < 0.30F) {
             ItemStack extra = EXTRA_OUTPUTS[level.random.nextInt(EXTRA_OUTPUTS.length)].copy();
             insertOutput(extra);
         }

@@ -40,3 +40,10 @@ mandatory = true
 versionRange = "[4.4.9,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.spd]]
+modId = "ldlib"
+mandatory = true
+versionRange = "[1.0.50,)"
+ordering = "AFTER"
+side = "BOTH"

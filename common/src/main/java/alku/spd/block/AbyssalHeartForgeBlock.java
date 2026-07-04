@@ -2,11 +2,11 @@ package alku.spd.block;
 
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
 import alku.spd.registry.SpdBlockEntities;
-import dev.architectury.registry.menu.MenuRegistry;
+import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -43,7 +43,7 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock {
         }
 
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-            MenuRegistry.openExtendedMenu(serverPlayer, forge);
+            BlockEntityUIFactory.INSTANCE.openUI(forge, serverPlayer);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

@@ -4,16 +4,13 @@ import alku.spd.Spd;
 import alku.spd.client.AbyssalGloomClient;
 import alku.spd.client.SubjugationClientOverlay;
 import alku.spd.client.SpdClientCommands;
-import alku.spd.client.gui.AbyssalHeartForgeScreen;
 import alku.spd.client.renderer.AbyssalFungalVinesRenderer;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
 import alku.spd.client.renderer.AbyssalLizardRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdEntities;
-import alku.spd.registry.SpdMenus;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -33,7 +30,6 @@ public final class SpdForgeClient {
         AbyssalGloomClient.register();
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_FUNGAL_VINES.get(), AbyssalFungalVinesRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeRenderer::new);
-        event.enqueueWork(() -> MenuRegistry.registerScreenFactory(SpdMenus.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeScreen::new));
     }
 
     @SubscribeEvent
