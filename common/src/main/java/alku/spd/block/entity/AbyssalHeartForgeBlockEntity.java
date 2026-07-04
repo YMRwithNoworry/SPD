@@ -5,9 +5,7 @@ import alku.spd.registry.SpdItems;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
 import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
-import com.lowdragmc.lowdraglib.gui.texture.GuiTextureGroup;
 import com.lowdragmc.lowdraglib.gui.texture.ProgressTexture;
-import com.lowdragmc.lowdraglib.gui.texture.ResourceBorderTexture;
 import com.lowdragmc.lowdraglib.gui.texture.ResourceTexture;
 import com.lowdragmc.lowdraglib.gui.widget.ImageWidget;
 import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
@@ -193,10 +191,15 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
     @Override
     public ModularUI createUI(Player entityPlayer) {
         WidgetGroup root = new WidgetGroup(0, 0, 220, 188);
-        root.setBackground(new GuiTextureGroup(
-                new ColorRectTexture(0xFFC6C6C6),
-                new ResourceBorderTexture("ldlib:textures/gui/background.png", 220, 188, 4, 4)
-        ));
+        root.setBackground(new ColorRectTexture(0xFFC6C6C6));
+        root.addWidget(new ImageWidget(0, 0, 220, 2, new ColorRectTexture(0xFFFFFFFF)));
+        root.addWidget(new ImageWidget(0, 0, 2, 188, new ColorRectTexture(0xFFFFFFFF)));
+        root.addWidget(new ImageWidget(2, 2, 216, 1, new ColorRectTexture(0xFFE0E0E0)));
+        root.addWidget(new ImageWidget(2, 2, 1, 184, new ColorRectTexture(0xFFE0E0E0)));
+        root.addWidget(new ImageWidget(0, 186, 220, 2, new ColorRectTexture(0xFF555555)));
+        root.addWidget(new ImageWidget(218, 0, 2, 188, new ColorRectTexture(0xFF555555)));
+        root.addWidget(new ImageWidget(2, 185, 216, 1, new ColorRectTexture(0xFF8B8B8B)));
+        root.addWidget(new ImageWidget(217, 2, 1, 184, new ColorRectTexture(0xFF8B8B8B)));
 
         root.addWidget(new LabelWidget(10, 7, getDisplayName()).setTextColor(0x404040).setDropShadow(false));
         root.addWidget(new LabelWidget(29, 93, Component.translatable("container.inventory")).setTextColor(0x404040).setDropShadow(false));
