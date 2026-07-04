@@ -51,36 +51,44 @@ public final class SubjugationClientOverlay {
             return;
         }
 
+        int width = minecraft.getWindow().getGuiScaledWidth();
+        int height = minecraft.getWindow().getGuiScaledHeight();
+        float progress = getVisualProgress(minecraft, partialTick);
+        if (progress <= 0.0F) {
+            shutdownPostEffect(minecraft);
+            return;
+        }
+        shutdownPostEffect(minecraft);
+        renderOldCameraArtifacts(graphics, minecraft, width, height, progress);
+    }
+
+    public static float getVisualProgress(Minecraft minecraft, float partialTick) {
+        if (minecraft.player == null) {
+            return 0.0F;
+        }
+
         MobEffectInstance effect = minecraft.player.getEffect(SpdEffects.SUBJUGATION.get());
         if (effect == null) {
             subjugationActive = false;
-            if (!previewEnabled) {
-                shutdownPostEffect(minecraft);
-                return;
-            }
-        } else if (!subjugationActive || minecraft.player.tickCount < subjugationStartTick) {
+            return previewEnabled ? getPreviewProgress(minecraft, partialTick) : 0.0F;
+        }
+
+        if (!subjugationActive || minecraft.player.tickCount < subjugationStartTick) {
             subjugationActive = true;
             subjugationStartTick = minecraft.player.tickCount;
         }
-
-        int width = minecraft.getWindow().getGuiScaledWidth();
-        int height = minecraft.getWindow().getGuiScaledHeight();
-        float progress = effect == null ? getPreviewProgress(minecraft, partialTick) :
-                getSubjugationProgress(minecraft, partialTick);
-        updatePostEffect(minecraft, progress);
-        renderOldCameraArtifacts(graphics, minecraft, width, height, progress);
+        return getSubjugationProgress(minecraft, partialTick);
     }
 
     private static void renderOldCameraArtifacts(GuiGraphics graphics, Minecraft minecraft, int width, int height, float progress) {
         Random random = new Random((minecraft.player.tickCount / 2L) * 918273L);
-        int specks = 8 + (int) (progress * 28.0F);
+        int specks = 4 + (int) (progress * 12.0F);
         for (int i = 0; i < specks; i++) {
             int x = random.nextInt(Math.max(1, width));
             int y = random.nextInt(Math.max(1, height));
             int size = random.nextBoolean() ? 1 : 2;
-            int alpha = (int) (progress * (18 + random.nextInt(42)));
-            int shade = random.nextBoolean() ? 0xE0E0E0 : 0x202020;
-            graphics.fill(x, y, Math.min(width, x + size), Math.min(height, y + size), (alpha << 24) | shade);
+            int alpha = (int) (progress * (8 + random.nextInt(18)));
+            graphics.fill(x, y, Math.min(width, x + size), Math.min(height, y + size), (alpha << 24) | 0xD8D8D8);
         }
     }
 
