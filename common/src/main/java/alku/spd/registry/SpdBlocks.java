@@ -34,6 +34,7 @@ public final class SpdBlocks {
 
     public static final RegistrySupplier<Block> ABYSSAL_HEART_FORGE = BLOCKS.register("abyssal_heart_forge", () ->
             new AbyssalHeartForgeBlock(BlockBehaviour.Properties.of()
+                    .noOcclusion()
                     .strength(3.5F, 6.0F)
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()));
