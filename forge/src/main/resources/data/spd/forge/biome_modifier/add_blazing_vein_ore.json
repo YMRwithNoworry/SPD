@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "spd:ore_blazing_vein_upper",
+    "spd:ore_blazing_vein_middle",
+    "spd:ore_blazing_vein_small"
+  ],
+  "step": "underground_ores"
+}

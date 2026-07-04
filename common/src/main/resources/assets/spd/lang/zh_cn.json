@@ -1,0 +1,20 @@
+{
+  "block.spd.sacred_stigma": "渊蚀石",
+  "block.spd.blazing_vein_stone": "炽脉石",
+  "block.spd.abyssal_fungal_vines": "渊蚀菌蔓",
+  "block.spd.abyssal_heart_forge": "渊心熔铸台",
+  "effect.spd.subjugation": "臣缚",
+  "effect.spd.mold_curse": "霉咒",
+  "entity.spd.abyssal_lizard": "渊蚀蜥",
+  "entity.spd.abyssal_light_wave": "渊蚀光波",
+  "entity.spd.mold_zombie": "霉染僵尸",
+  "advancements.spd.blazing_vein_first.title": "炽脉初现",
+  "advancements.spd.blazing_vein_first.description": "获得炽脉原矿",
+  "itemGroup.spd.main": "SPD",
+  "item.spd.abyssal_lizard_spawn_egg": "渊蚀蜥刷怪蛋",
+  "container.spd.abyssal_heart_forge": "渊心熔铸台",
+  "item.spd.blazing_carbon_steel_ingot": "炽炭钢锭",
+  "item.spd.blazing_raw_ore": "炽脉原矿",
+  "item.spd.blazing_shard": "炽脉碎片",
+  "item.spd.mold_zombie_spawn_egg": "霉染僵尸刷怪蛋"
+}

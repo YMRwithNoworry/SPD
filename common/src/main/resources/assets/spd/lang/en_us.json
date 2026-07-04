@@ -1,0 +1,20 @@
+{
+  "block.spd.sacred_stigma": "Abyss-Eroded Stone",
+  "block.spd.blazing_vein_stone": "Blazing Vein Stone",
+  "block.spd.abyssal_fungal_vines": "Abyssal Fungal Vines",
+  "block.spd.abyssal_heart_forge": "Abyssal Heart Forge",
+  "effect.spd.subjugation": "Subjugation",
+  "effect.spd.mold_curse": "Mold Curse",
+  "entity.spd.abyssal_lizard": "Abyssal Lizard",
+  "entity.spd.abyssal_light_wave": "Abyssal Light Wave",
+  "entity.spd.mold_zombie": "Mold Zombie",
+  "advancements.spd.blazing_vein_first.title": "Blazing Vein Revealed",
+  "advancements.spd.blazing_vein_first.description": "Obtain Blazing Raw Ore",
+  "itemGroup.spd.main": "SPD",
+  "item.spd.abyssal_lizard_spawn_egg": "Abyssal Lizard Spawn Egg",
+  "container.spd.abyssal_heart_forge": "Abyssal Heart Forge",
+  "item.spd.blazing_carbon_steel_ingot": "Blazing Carbon Steel Ingot",
+  "item.spd.blazing_raw_ore": "Blazing Raw Ore",
+  "item.spd.blazing_shard": "Blazing Shard",
+  "item.spd.mold_zombie_spawn_egg": "Mold Zombie Spawn Egg"
+}

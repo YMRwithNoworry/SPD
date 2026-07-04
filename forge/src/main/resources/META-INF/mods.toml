@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "spd"
+version = "${version}"
+displayName = "SPD"
+authors = ""
+description = '''
+
+'''
+#logoFile = ""
+
+[[dependencies.spd]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.spd]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.spd]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.spd]]
+modId = "geckolib"
+mandatory = true
+versionRange = "[4.4.9,)"
+ordering = "AFTER"
+side = "BOTH"

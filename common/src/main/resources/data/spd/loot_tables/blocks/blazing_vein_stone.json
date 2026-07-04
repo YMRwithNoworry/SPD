@@ -1,0 +1,64 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "spd:blazing_raw_ore",
+              "conditions": [
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.25
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 4.0
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spd:blazing_raw_ore",
+              "conditions": [
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.6666667
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 2.0
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "spd:blazing_raw_ore",
+              "weight": 50,
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": 1.0
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}
