@@ -5,6 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class AbyssalTornadoEntity extends Entity {
     private static final double MOVE_SPEED = 0.045D;
     private static final double PULL_RADIUS = 5.75D;
     private static final double LIFT_STRENGTH = 0.18D;
+    private static final DustParticleOptions BLOOD_DUST = new DustParticleOptions(new Vector3f(0.55F, 0.07F, 0.08F), 1.35F);
 
     public AbyssalTornadoEntity(EntityType<? extends AbyssalTornadoEntity> entityType, Level level) {
         super(entityType, level);
@@ -68,9 +72,51 @@ public class AbyssalTornadoEntity extends Entity {
             return;
         }
 
-        if (!this.level().isClientSide) {
+        if (this.level().isClientSide) {
+            spawnStormParticles();
+        } else {
             drift();
             pullNearbyEntities();
+        }
+    }
+
+    private void spawnStormParticles() {
+        float height = getVisualHeight(0.0F);
+        if (height <= 0.05F) {
+            return;
+        }
+
+        int count = 4 + this.level().random.nextInt(4);
+        for (int i = 0; i < count; i++) {
+            float t = 0.04F + this.level().random.nextFloat() * 0.92F;
+            double radius = 0.7D + Math.pow(t, 1.45D) * 5.8D;
+            double angle = this.level().random.nextDouble() * Mth.TWO_PI + this.tickCount * (0.09D + (1.0D - t) * 0.08D);
+            double x = getX() + Math.cos(angle) * radius;
+            double y = getY() + height * t + (this.level().random.nextDouble() - 0.5D) * 0.7D;
+            double z = getZ() + Math.sin(angle) * radius;
+            double tangentX = -Math.sin(angle) * (0.05D + (1.0D - t) * 0.08D);
+            double tangentZ = Math.cos(angle) * (0.05D + (1.0D - t) * 0.08D);
+            double inwardX = (getX() - x) * 0.006D;
+            double inwardZ = (getZ() - z) * 0.006D;
+            if (this.level().random.nextFloat() < 0.72F) {
+                this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, tangentX + inwardX, 0.02D + t * 0.025D, tangentZ + inwardZ);
+            } else if (this.level().random.nextFloat() < 0.55F) {
+                this.level().addParticle(ParticleTypes.SMOKE, x, y, z, tangentX, 0.025D, tangentZ);
+            } else {
+                this.level().addParticle(BLOOD_DUST, x, y, z, tangentX * 0.7D, 0.01D, tangentZ * 0.7D);
+            }
+        }
+
+        if (this.tickCount % 2 == 0) {
+            double angle = this.level().random.nextDouble() * Mth.TWO_PI;
+            double radius = 3.5D + this.level().random.nextDouble() * 3.6D;
+            this.level().addParticle(ParticleTypes.CLOUD,
+                    getX() + Math.cos(angle) * radius,
+                    getY() + height * (0.76D + this.level().random.nextDouble() * 0.22D),
+                    getZ() + Math.sin(angle) * radius,
+                    -Math.sin(angle) * 0.04D,
+                    0.01D,
+                    Math.cos(angle) * 0.04D);
         }
     }
 
