@@ -30,9 +30,10 @@ public class AbyssalHeartForgeScreen extends AbstractContainerScreen<AbyssalHear
         int left = this.leftPos;
         int top = this.topPos;
 
-        graphics.fill(left, top, left + this.imageWidth, top + this.imageHeight, 0xFFE7DDD1);
-        graphics.fill(left + 4, top + 4, left + this.imageWidth - 4, top + this.imageHeight - 4, 0xFFF4EEE6);
-        graphics.fill(left + 10, top + 17, left + 208, top + 90, 0xFFE2D4C6);
+        drawRaisedPanel(graphics, left, top, this.imageWidth, this.imageHeight);
+        drawInsetPanel(graphics, left + 8, top + 18, 200, 74);
+        drawInsetPanel(graphics, left + 27, top + 102, 166, 62);
+        drawInsetPanel(graphics, left + 27, top + 160, 166, 26);
 
         for (Slot slot : this.menu.slots) {
             drawSlot(graphics, left + slot.x - 1, top + slot.y - 1);
@@ -40,15 +41,54 @@ public class AbyssalHeartForgeScreen extends AbstractContainerScreen<AbyssalHear
 
         int arrowX = left + 63;
         int arrowY = top + 43;
-        graphics.fill(arrowX, arrowY, arrowX + 43, arrowY + 14, 0xFF5A4740);
-        graphics.fill(arrowX + 2, arrowY + 2, arrowX + 2 + this.menu.getProgressScaled(34), arrowY + 12, 0xFFE05932);
-        graphics.fill(arrowX + 37, arrowY - 3, arrowX + 48, arrowY + 17, 0xFF5A4740);
-        graphics.fill(arrowX + 39, arrowY + 1, arrowX + 44, arrowY + 13, 0xFFE05932);
+        drawProgressArrow(graphics, arrowX, arrowY, this.menu.getProgressScaled(34));
     }
 
     private static void drawSlot(GuiGraphics graphics, int x, int y) {
-        graphics.fill(x, y, x + 18, y + 18, 0xFF8E786B);
-        graphics.fill(x + 1, y + 1, x + 17, y + 17, 0xFFFEF8EE);
-        graphics.fill(x + 2, y + 2, x + 16, y + 16, 0xFFEADFD3);
+        graphics.fill(x, y, x + 18, y + 18, 0xFF373737);
+        graphics.fill(x + 1, y + 1, x + 18, y + 18, 0xFFFFFFFF);
+        graphics.fill(x + 1, y + 1, x + 17, y + 17, 0xFF8B8B8B);
+        graphics.fill(x + 2, y + 2, x + 17, y + 17, 0xFFC6C6C6);
+    }
+
+    private static void drawRaisedPanel(GuiGraphics graphics, int x, int y, int width, int height) {
+        graphics.fill(x, y, x + width, y + height, 0xFFC6C6C6);
+        graphics.fill(x, y, x + width, y + 2, 0xFFFFFFFF);
+        graphics.fill(x, y, x + 2, y + height, 0xFFFFFFFF);
+        graphics.fill(x, y + height - 2, x + width, y + height, 0xFF555555);
+        graphics.fill(x + width - 2, y, x + width, y + height, 0xFF555555);
+        graphics.fill(x + 2, y + 2, x + width - 2, y + 4, 0xFFE0E0E0);
+        graphics.fill(x + 2, y + 2, x + 4, y + height - 2, 0xFFE0E0E0);
+        graphics.fill(x + 2, y + height - 4, x + width - 2, y + height - 2, 0xFF8B8B8B);
+        graphics.fill(x + width - 4, y + 2, x + width - 2, y + height - 2, 0xFF8B8B8B);
+    }
+
+    private static void drawInsetPanel(GuiGraphics graphics, int x, int y, int width, int height) {
+        graphics.fill(x, y, x + width, y + height, 0xFF8B8B8B);
+        graphics.fill(x + 1, y + 1, x + width, y + height, 0xFFFFFFFF);
+        graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, 0xFFC6C6C6);
+        graphics.fill(x + 2, y + 2, x + width - 2, y + height - 2, 0xFF9A9A9A);
+    }
+
+    private static void drawProgressArrow(GuiGraphics graphics, int x, int y, int progress) {
+        graphics.fill(x, y + 5, x + 28, y + 13, 0xFF373737);
+        graphics.fill(x + 28, y + 2, x + 35, y + 16, 0xFF373737);
+        graphics.fill(x + 35, y + 5, x + 42, y + 13, 0xFF373737);
+
+        graphics.fill(x + 1, y + 6, x + 27, y + 12, 0xFF8B8B8B);
+        graphics.fill(x + 27, y + 3, x + 34, y + 15, 0xFF8B8B8B);
+        graphics.fill(x + 34, y + 6, x + 41, y + 12, 0xFF8B8B8B);
+
+        int filled = Math.min(progress, 34);
+        if (filled > 0) {
+            graphics.fill(x + 2, y + 7, x + 2 + Math.min(filled, 25), y + 11, 0xFFFF6A2E);
+            if (filled > 25) {
+                int arrowFill = filled - 25;
+                graphics.fill(x + 27, y + 4, x + 27 + Math.min(arrowFill, 7), y + 14, 0xFFFF6A2E);
+                if (arrowFill > 7) {
+                    graphics.fill(x + 34, y + 7, x + 34 + Math.min(arrowFill - 7, 6), y + 11, 0xFFFF6A2E);
+                }
+            }
+        }
     }
 }
