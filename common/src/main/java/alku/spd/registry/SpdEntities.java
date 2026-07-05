@@ -4,6 +4,8 @@ import alku.spd.Spd;
 import alku.spd.entity.AbyssalLightWaveEntity;
 import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalTornadoEntity;
+import alku.spd.entity.EpxCloudEntity;
+import alku.spd.entity.EpxEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.entity.NamelessSlashEntity;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -47,6 +49,20 @@ public final class SpdEntities {
                     .clientTrackingRange(8)
                     .updateInterval(1)
                     .build("nameless_slash"));
+
+    public static final RegistrySupplier<EntityType<EpxEntity>> EPX = ENTITIES.register("epx", () ->
+            EntityType.Builder.<EpxEntity>of(EpxEntity::new, MobCategory.MISC)
+                    .sized(0.45F, 0.45F)
+                    .clientTrackingRange(8)
+                    .updateInterval(2)
+                    .build("epx"));
+
+    public static final RegistrySupplier<EntityType<EpxCloudEntity>> EPX_CLOUD = ENTITIES.register("epx_cloud", () ->
+            EntityType.Builder.<EpxCloudEntity>of(EpxCloudEntity::new, MobCategory.MISC)
+                    .sized(3.5F, 1.2F)
+                    .clientTrackingRange(8)
+                    .updateInterval(4)
+                    .build("epx_cloud"));
 
     private SpdEntities() {
     }

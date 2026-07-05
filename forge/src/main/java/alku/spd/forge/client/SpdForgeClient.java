@@ -8,6 +8,7 @@ import alku.spd.client.renderer.AbyssalFungalVinesRenderer;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
 import alku.spd.client.renderer.AbyssalLizardRenderer;
 import alku.spd.client.renderer.AbyssalTornadoRenderer;
+import alku.spd.client.renderer.EpxRenderer;
 import alku.spd.client.renderer.MascotRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
 import alku.spd.registry.SpdBlockEntities;
@@ -42,6 +43,8 @@ public final class SpdForgeClient {
         event.registerEntityRenderer(SpdEntities.ABYSSAL_TORNADO.get(), AbyssalTornadoRenderer::new);
         event.registerEntityRenderer(SpdEntities.NAMELESS_SLASH.get(), NoopRenderer::new);
         event.registerEntityRenderer(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieRenderer::new);
+        event.registerEntityRenderer(SpdEntities.EPX.get(), EpxRenderer::new);
+        event.registerEntityRenderer(SpdEntities.EPX_CLOUD.get(), NoopRenderer::new);
     }
 
     @Mod.EventBusSubscriber(modid = Spd.MOD_ID, value = Dist.CLIENT)

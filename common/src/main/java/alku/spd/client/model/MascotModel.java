@@ -13,7 +13,7 @@ public class MascotModel extends GeoModel<MascotBlockEntity> {
 
     @Override
     public ResourceLocation getTextureResource(MascotBlockEntity animatable) {
-        return new ResourceLocation(Spd.MOD_ID, "textures/entity/abyssal_lizard.png");
+        return new ResourceLocation(Spd.MOD_ID, "textures/entity/mascot.png");
     }
 
     @Override

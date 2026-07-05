@@ -6,6 +6,9 @@ import alku.spd.registry.SpdEffects;
 import alku.spd.world.SpdCorrosion;
 import alku.spd.world.SpdDifficulty;
 import alku.spd.effect.SubjugationHooks;
+import alku.spd.world.EpxCarrier;
+import alku.spd.world.EpxEvents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +19,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -23,7 +27,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin implements EpxCarrier {
+    @Unique
+    private int spd$epxCount;
+    @Unique
+    private int spd$epxKills;
+    @Unique
+    private long spd$nextBufactorTick;
+
     @Inject(method = "startUsingItem", at = @At("HEAD"), cancellable = true)
     private void spd$blockStartUsingItem(InteractionHand hand, CallbackInfo ci) {
         if (SubjugationHooks.isSubjugated((LivingEntity) (Object) this)) {
@@ -79,6 +90,11 @@ public abstract class LivingEntityMixin {
         target.addEffect(new MobEffectInstance(SpdEffects.MOLD_MUTATION.get(), 20 * 30, amplifier), livingAttacker);
     }
 
+    @Inject(method = "die", at = @At("HEAD"))
+    private void spd$handleEpxDeath(DamageSource source, CallbackInfo ci) {
+        EpxEvents.onLivingDeath((LivingEntity) (Object) this, source);
+    }
+
     @ModifyVariable(method = "hurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float spd$modifyNamelessSwordDamage(float amount, DamageSource source) {
         LivingEntity target = (LivingEntity) (Object) this;
@@ -99,5 +115,52 @@ public abstract class LivingEntityMixin {
         if (!SpdCorrosion.canReceiveErosionBoost(target, effectInstance.getEffect())) {
             cir.setReturnValue(false);
         }
+    }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void spd$saveEpxData(CompoundTag tag, CallbackInfo ci) {
+        tag.putInt("SpdEpxCount", this.spd$epxCount);
+        tag.putInt("SpdEpxKills", this.spd$epxKills);
+        tag.putLong("SpdNextBufactorTick", this.spd$nextBufactorTick);
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void spd$loadEpxData(CompoundTag tag, CallbackInfo ci) {
+        this.spd$epxCount = tag.getInt("SpdEpxCount");
+        this.spd$epxKills = tag.getInt("SpdEpxKills");
+        this.spd$nextBufactorTick = tag.getLong("SpdNextBufactorTick");
+    }
+
+    @Override
+    public int spd$getEpxCount() {
+        return this.spd$epxCount;
+    }
+
+    @Override
+    public void spd$setEpxCount(int count) {
+        this.spd$epxCount = Math.max(0, count);
+        if (this.spd$epxCount == 0) {
+            this.spd$nextBufactorTick = 0L;
+        }
+    }
+
+    @Override
+    public int spd$getEpxKills() {
+        return this.spd$epxKills;
+    }
+
+    @Override
+    public void spd$setEpxKills(int kills) {
+        this.spd$epxKills = Math.max(0, kills);
+    }
+
+    @Override
+    public long spd$getNextBufactorTick() {
+        return this.spd$nextBufactorTick;
+    }
+
+    @Override
+    public void spd$setNextBufactorTick(long tick) {
+        this.spd$nextBufactorTick = Math.max(0L, tick);
     }
 }
