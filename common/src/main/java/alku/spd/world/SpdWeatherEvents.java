@@ -34,8 +34,8 @@ public final class SpdWeatherEvents {
     public static void register() {
         CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> dispatcher.register(
                 Commands.literal("spd")
-                        .requires(source -> source.hasPermission(2))
                         .then(Commands.literal("weather")
+                                .requires(source -> source.hasPermission(2))
                                 .then(Commands.literal("abyssal_gloom")
                                         .executes(command -> toggle(command.getSource().getLevel()))
                                         .then(Commands.argument("active", BoolArgumentType.bool())
