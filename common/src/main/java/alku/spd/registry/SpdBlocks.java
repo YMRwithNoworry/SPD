@@ -28,7 +28,8 @@ public final class SpdBlocks {
                     .requiresCorrectToolForDrops()));
 
     public static final RegistrySupplier<Block> ABYSSAL_BLOOD_SAND = BLOCKS.register("abyssal_blood_sand", () ->
-            new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
+            new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)
+                    .isViewBlocking((state, level, pos) -> true)));
 
     public static final RegistrySupplier<Block> ABYSSAL_FUNGAL_VINES = BLOCKS.register("abyssal_fungal_vines", () ->
             new AbyssalFungalVinesBlock(BlockBehaviour.Properties.copy(Blocks.GRASS)
