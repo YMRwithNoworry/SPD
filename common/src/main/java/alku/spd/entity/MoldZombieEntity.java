@@ -16,9 +16,11 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class MoldZombieEntity extends Zombie implements GeoEntity {
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("daizhe");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("paobu");
+    private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("追逐");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("gongji");
+    private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("siwang");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -41,13 +43,18 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 4, state -> {
+            if (this.isDeadOrDying()) {
+                state.setAndContinue(DEATH);
+                return PlayState.CONTINUE;
+            }
+
             if (this.swinging) {
                 state.setAndContinue(ATTACK);
                 return PlayState.CONTINUE;
             }
 
             if (state.isMoving()) {
-                state.setAndContinue(WALK);
+                state.setAndContinue(this.getTarget() != null && this.getTarget().isAlive() ? CHASE : WALK);
                 return PlayState.CONTINUE;
             }
 
@@ -61,3 +68,4 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         return this.cache;
     }
 }
+
