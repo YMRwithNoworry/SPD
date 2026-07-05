@@ -38,6 +38,11 @@ public final class SpdBlocks {
                     .strength(0.2F)
                     .sound(SoundType.GRASS)));
 
+    public static final RegistrySupplier<Block> VINE_PLAGUE_NODE = BLOCKS.register("vine_plague_node", () ->
+            new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)
+                    .strength(1.5F)
+                    .sound(SoundType.NETHERRACK)));
+
     public static final RegistrySupplier<Block> ABYSSAL_HEART_FORGE = BLOCKS.register("abyssal_heart_forge", () ->
             new AbyssalHeartForgeBlock(BlockBehaviour.Properties.of()
                     .noOcclusion()
