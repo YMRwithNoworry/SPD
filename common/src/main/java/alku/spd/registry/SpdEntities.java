@@ -5,6 +5,7 @@ import alku.spd.entity.AbyssalLightWaveEntity;
 import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalTornadoEntity;
 import alku.spd.entity.MoldZombieEntity;
+import alku.spd.entity.NamelessSlashEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -39,6 +40,13 @@ public final class SpdEntities {
                     .clientTrackingRange(12)
                     .updateInterval(2)
                     .build("abyssal_tornado"));
+
+    public static final RegistrySupplier<EntityType<NamelessSlashEntity>> NAMELESS_SLASH = ENTITIES.register("nameless_slash", () ->
+            EntityType.Builder.<NamelessSlashEntity>of(NamelessSlashEntity::new, MobCategory.MISC)
+                    .sized(0.8F, 0.8F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("nameless_slash"));
 
     private SpdEntities() {
     }

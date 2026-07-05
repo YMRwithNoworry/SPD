@@ -40,6 +40,7 @@ public final class SpdForgeClient {
         event.registerEntityRenderer(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_LIGHT_WAVE.get(), NoopRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_TORNADO.get(), AbyssalTornadoRenderer::new);
+        event.registerEntityRenderer(SpdEntities.NAMELESS_SLASH.get(), NoopRenderer::new);
         event.registerEntityRenderer(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieRenderer::new);
     }
 

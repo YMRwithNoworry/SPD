@@ -10,10 +10,13 @@
     "PostChainAccessor"
   ],
   "mixins": [
+    "AnvilMenuMixin",
+    "ItemCombinerMenuAccessor",
     "ItemStackMixin",
     "LivingEntityMixin",
     "MultiNoiseBiomeSourceParameterListPresetMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "RepairItemRecipeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

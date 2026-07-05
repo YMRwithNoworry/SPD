@@ -2,12 +2,14 @@ package alku.spd.registry;
 
 import alku.spd.Spd;
 import alku.spd.item.GuideBookItem;
+import alku.spd.item.NamelessSwordItem;
 import dev.architectury.core.item.ArchitecturySpawnEggItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 
 public final class SpdItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Spd.MOD_ID, Registries.ITEM);
@@ -26,6 +28,11 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> BLAZING_CARBON_STEEL_INGOT = ITEMS.register("blazing_carbon_steel_ingot", () ->
             new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
+            new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
+                    .durability(2600)
+                    .fireResistant()));
 
     public static final RegistrySupplier<Item> ABYSSAL_BLOOD_SAND = ITEMS.register("abyssal_blood_sand", () ->
             new BlockItem(SpdBlocks.ABYSSAL_BLOOD_SAND.get(), new Item.Properties()));
