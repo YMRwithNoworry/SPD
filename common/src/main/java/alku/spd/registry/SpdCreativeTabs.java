@@ -19,6 +19,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.BLAZING_RAW_ORE.get());
                 output.accept(SpdItems.BLAZING_SHARD.get());
                 output.accept(SpdItems.BLAZING_CARBON_STEEL_INGOT.get());
+                output.accept(SpdItems.ABYSSAL_BLOOD_SAND.get());
                 output.accept(SpdItems.ABYSSAL_FUNGAL_VINES.get());
                 output.accept(SpdItems.ABYSSAL_HEART_FORGE.get());
                 output.accept(SpdItems.MASCOT.get());

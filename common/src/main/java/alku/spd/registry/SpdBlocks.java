@@ -1,6 +1,7 @@
 package alku.spd.registry;
 
 import alku.spd.Spd;
+import alku.spd.block.AbyssalBloodSandBlock;
 import alku.spd.block.AbyssalFungalVinesBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
 import alku.spd.block.MascotBlock;
@@ -25,6 +26,9 @@ public final class SpdBlocks {
             new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)
                     .lightLevel(state -> 5)
                     .requiresCorrectToolForDrops()));
+
+    public static final RegistrySupplier<Block> ABYSSAL_BLOOD_SAND = BLOCKS.register("abyssal_blood_sand", () ->
+            new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
 
     public static final RegistrySupplier<Block> ABYSSAL_FUNGAL_VINES = BLOCKS.register("abyssal_fungal_vines", () ->
             new AbyssalFungalVinesBlock(BlockBehaviour.Properties.copy(Blocks.GRASS)
