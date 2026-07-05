@@ -1,7 +1,7 @@
 {
   "block.spd.sacred_stigma": "渊蚀石",
   "block.spd.blazing_vein_stone": "炽脉石",
-  "block.spd.abyssal_blood_sand": "渊蚀血沙",
+  "block.spd.abyssal_blood_sand": "渊浊血沙",
   "block.spd.abyssal_fungal_vines": "渊蚀菌蔓",
   "block.spd.abyssal_heart_forge": "渊心熔铸台",
   "block.spd.mascot": "吉祥物",
@@ -11,6 +11,7 @@
   "entity.spd.abyssal_light_wave": "渊蚀光波",
   "entity.spd.abyssal_tornado": "渊默龙卷风",
   "entity.spd.mold_zombie": "霉染僵尸",
+  "biome.spd.abyssal_blood_desert": "渊蚀血漠",
   "advancements.spd.blazing_vein_first.title": "炽脉初现",
   "advancements.spd.blazing_vein_first.description": "获得炽脉原矿",
   "itemGroup.spd.main": "SPD",

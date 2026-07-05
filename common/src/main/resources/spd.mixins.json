@@ -12,6 +12,7 @@
   "mixins": [
     "ItemStackMixin",
     "LivingEntityMixin",
+    "MultiNoiseBiomeSourceParameterListPresetMixin",
     "PlayerMixin"
   ],
   "injectors": {
