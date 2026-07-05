@@ -20,6 +20,10 @@
   "item.spd.blazing_carbon_steel_ingot": "炽炭钢锭",
   "item.spd.blazing_raw_ore": "炽脉原矿",
   "item.spd.blazing_shard": "炽脉碎片",
+  "item.spd.guide_book": "引导书",
   "item.spd.mascot": "吉祥物",
-  "item.spd.mold_zombie_spawn_egg": "霉染僵尸刷怪蛋"
+  "item.spd.mold_zombie_spawn_egg": "霉染僵尸刷怪蛋",
+  "guide.spd.book.page.1": "SPD 引导\\n\\n欢迎来到 SPD。这里记录模组内的基础资源、装置、生物与渊默天气。\\n\\n使用创造标签页可以快速找到本模组新增内容。",
+  "guide.spd.book.page.2": "资源与装置\\n\\n炽脉石会在主世界中类似铁矿生成，挖掘后获得炽脉原矿。\\n\\n炽脉碎片与煤炭可在渊心熔铸台中加工为炽炭钢锭。",
+  "guide.spd.book.page.3": "生物与天气\\n\\n渊蚀蜥会飞行、行走，并使用近战、光波和咆哮。\\n\\n渊默天气会带来狂风、粉尘和血红色龙卷风。"
 }
