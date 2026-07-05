@@ -1,15 +1,20 @@
 package alku.spd.mixin;
 
+import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.item.NamelessSwordItem;
+import alku.spd.registry.SpdEffects;
 import alku.spd.world.SpdCorrosion;
+import alku.spd.world.SpdDifficulty;
 import alku.spd.effect.SubjugationHooks;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,12 +40,43 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void spd$blockSubjugatedDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity target = (LivingEntity) (Object) this;
         Entity attacker = source.getEntity();
         Entity direct = source.getDirectEntity();
         if ((attacker instanceof LivingEntity livingAttacker && SubjugationHooks.isSubjugated(livingAttacker))
                 || (direct instanceof LivingEntity directLiving && SubjugationHooks.isSubjugated(directLiving))) {
             cir.setReturnValue(false);
+            return;
         }
+
+        Level level = target.level();
+        if (!level.isClientSide() && target.getType().getCategory() == MobCategory.MONSTER) {
+            SpdDifficulty.Difficulty difficulty = SpdDifficulty.get(level.getServer());
+            if (difficulty.damageImmunityChance() > 0.0F && target.getRandom().nextFloat() < difficulty.damageImmunityChance()) {
+                cir.setReturnValue(false);
+            }
+        }
+    }
+
+    @Inject(method = "hurt", at = @At("RETURN"))
+    private void spd$spreadMoldMutation(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) {
+            return;
+        }
+
+        LivingEntity target = (LivingEntity) (Object) this;
+        if (target.level().isClientSide() || SpdEntityTargeting.isMoldEntity(target)) {
+            return;
+        }
+
+        Entity attacker = source.getEntity();
+        if (!(attacker instanceof LivingEntity livingAttacker) || !SpdEntityTargeting.isMoldEntity(livingAttacker)) {
+            return;
+        }
+
+        SpdDifficulty.Difficulty difficulty = SpdDifficulty.get(target.level().getServer());
+        int amplifier = difficulty.randomMoldMutationAmplifier(target.getRandom());
+        target.addEffect(new MobEffectInstance(SpdEffects.MOLD_MUTATION.get(), 20 * 30, amplifier), livingAttacker);
     }
 
     @ModifyVariable(method = "hurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)

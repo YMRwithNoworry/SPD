@@ -19,6 +19,12 @@ public final class SpdEntityTargeting {
         return entity.getType().is(SpdTags.ABYSSAL_ENTITIES) || isSpdEntity(entity);
     }
 
+    public static boolean isMoldEntity(LivingEntity entity) {
+        ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
+        return id != null && Spd.MOD_ID.equals(id.getNamespace())
+                && (id.getPath().contains("mold") || id.getPath().contains("fungal"));
+    }
+
     public static boolean isNonSpdLiving(LivingEntity entity) {
         return entity.isAlive() && !isSpdEntity(entity);
     }

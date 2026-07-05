@@ -1,10 +1,9 @@
 package alku.spd.world;
 
-import alku.spd.Spd;
+import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.registry.SpdEffects;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -70,13 +69,7 @@ public final class MoldCurseEvents {
     }
 
     public static boolean canCarryMoldCurse(LivingEntity entity) {
-        return !isMoldEntity(entity);
-    }
-
-    private static boolean isMoldEntity(LivingEntity entity) {
-        String namespace = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace();
-        String path = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getPath();
-        return Spd.MOD_ID.equals(namespace) && (path.contains("mold") || path.contains("fungal"));
+        return !SpdEntityTargeting.isMoldEntity(entity);
     }
 
     private static int scheduleNext(ServerLevel level, int levelIndex) {

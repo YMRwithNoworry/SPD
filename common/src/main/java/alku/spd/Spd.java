@@ -8,6 +8,7 @@ import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdItems;
 import alku.spd.registry.SpdMenus;
 import alku.spd.world.MoldCurseEvents;
+import alku.spd.world.SpdDifficultyScaling;
 import alku.spd.world.SpdDifficultyEvents;
 import alku.spd.world.SpdWeatherEvents;
 import alku.spd.world.SpdWeatherNetworking;
@@ -25,6 +26,7 @@ public final class Spd {
         SpdCreativeTabs.register();
         SpdWeatherNetworking.register();
         SpdDifficultyEvents.register();
+        SpdDifficultyScaling.register();
         SpdWeatherEvents.register();
         MoldCurseEvents.register();
     }

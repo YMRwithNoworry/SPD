@@ -5,6 +5,7 @@ import alku.spd.effect.AbyssalBoostEffect;
 import alku.spd.effect.AbyssalPressureEffect;
 import alku.spd.effect.ErosionSuppressionEffect;
 import alku.spd.effect.MoldCurseEffect;
+import alku.spd.effect.MoldMutationEffect;
 import alku.spd.effect.SearingPulseEffect;
 import alku.spd.effect.SubjugationEffect;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -17,6 +18,7 @@ public final class SpdEffects {
 
     public static final RegistrySupplier<MobEffect> SUBJUGATION = EFFECTS.register("subjugation", SubjugationEffect::new);
     public static final RegistrySupplier<MobEffect> MOLD_CURSE = EFFECTS.register("mold_curse", MoldCurseEffect::new);
+    public static final RegistrySupplier<MobEffect> MOLD_MUTATION = EFFECTS.register("mold_mutation", MoldMutationEffect::new);
     public static final RegistrySupplier<MobEffect> SEARING_PULSE = EFFECTS.register("searing_pulse", SearingPulseEffect::new);
     public static final RegistrySupplier<MobEffect> EROSION_SUPPRESSION = EFFECTS.register("erosion_suppression", ErosionSuppressionEffect::new);
     public static final RegistrySupplier<MobEffect> ABYSSAL_PRESSURE = EFFECTS.register("abyssal_pressure", AbyssalPressureEffect::new);

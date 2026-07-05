@@ -16,21 +16,30 @@ public final class SpdDifficultyEvents {
     }
 
     public static void register() {
-        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> dispatcher.register(
-                Commands.literal("spd")
-                        .then(Commands.literal("difficulty")
-                                .executes(command -> show(command.getSource()))
-                                .then(Commands.literal("get")
-                                        .executes(command -> show(command.getSource())))
-                                .then(Commands.literal("set")
-                                        .requires(source -> source.hasPermission(2))
-                                        .then(Commands.argument("difficulty", StringArgumentType.word())
-                                                .suggests(SpdDifficultyEvents::suggestDifficulties)
-                                                .executes(command -> set(command.getSource(), StringArgumentType.getString(command, "difficulty")))))
-                                .then(Commands.argument("difficulty", StringArgumentType.word())
-                                        .requires(source -> source.hasPermission(2))
-                                        .suggests(SpdDifficultyEvents::suggestDifficulties)
-                                        .executes(command -> set(command.getSource(), StringArgumentType.getString(command, "difficulty")))))));
+        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> {
+            dispatcher.register(Commands.literal("spd")
+                    .then(Commands.literal("difficulty")
+                            .executes(command -> show(command.getSource()))
+                            .then(Commands.literal("get")
+                                    .executes(command -> show(command.getSource())))
+                            .then(Commands.literal("set")
+                                    .requires(source -> source.hasPermission(2))
+                                    .then(Commands.argument("difficulty", StringArgumentType.word())
+                                            .suggests(SpdDifficultyEvents::suggestDifficulties)
+                                            .executes(command -> set(command.getSource(), StringArgumentType.getString(command, "difficulty")))))
+                            .then(Commands.argument("difficulty", StringArgumentType.word())
+                                    .requires(source -> source.hasPermission(2))
+                                    .suggests(SpdDifficultyEvents::suggestDifficulties)
+                                    .executes(command -> set(command.getSource(), StringArgumentType.getString(command, "difficulty"))))));
+
+            dispatcher.register(Commands.literal("dif")
+                    .then(Commands.literal("world")
+                            .executes(command -> show(command.getSource()))
+                            .then(Commands.argument("difficulty", StringArgumentType.word())
+                                    .requires(source -> source.hasPermission(2))
+                                    .suggests(SpdDifficultyEvents::suggestDifficulties)
+                                    .executes(command -> set(command.getSource(), StringArgumentType.getString(command, "difficulty"))))));
+        });
     }
 
     private static int show(CommandSourceStack source) {
