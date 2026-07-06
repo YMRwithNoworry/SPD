@@ -24,8 +24,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockUIMenuType.BlockUI {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbyssalHeartForgeBlock.class);
+
     public AbyssalHeartForgeBlock(Properties properties) {
         super(properties);
     }
@@ -43,10 +47,29 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-            BlockUIMenuType.openUI(serverPlayer, pos);
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.CONSUME;
+        }
+        if (!(level.getBlockEntity(pos) instanceof AbyssalHeartForgeBlockEntity)) {
+            LOGGER.warn("Cannot open Abyssal Heart Forge UI at {} because the block entity is missing or mismatched", pos);
+            serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.missing_block_entity"), true);
+            return InteractionResult.CONSUME;
+        }
+
+        try {
+            boolean opened = BlockUIMenuType.openUI(serverPlayer, pos);
+            if (!opened) {
+                LOGGER.warn("LDLib2 refused to open Abyssal Heart Forge UI at {}", pos);
+                serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.open_failed"), true);
+            }
+        } catch (RuntimeException exception) {
+            LOGGER.error("Failed to open Abyssal Heart Forge UI at {}", pos, exception);
+            serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.open_failed"), false);
+        }
+        return InteractionResult.CONSUME;
     }
 
     @Override

@@ -28,6 +28,8 @@
   "itemGroup.spd.main": "SPD",
   "item.spd.abyssal_lizard_spawn_egg": "渊蚀蜥刷怪蛋",
   "container.spd.abyssal_heart_forge": "渊心熔铸台",
+  "message.spd.abyssal_heart_forge.missing_block_entity": "渊心熔铸台方块实体异常，无法打开界面",
+  "message.spd.abyssal_heart_forge.open_failed": "渊心熔铸台界面打开失败，请检查 LDLib2 是否正常加载",
   "item.spd.blazing_carbon_steel_ingot": "炽炭钢锭",
   "item.spd.blazing_raw_ore": "炽脉原矿",
   "item.spd.blazing_shard": "炽脉碎片",

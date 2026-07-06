@@ -28,6 +28,8 @@
   "itemGroup.spd.main": "SPD",
   "item.spd.abyssal_lizard_spawn_egg": "Abyssal Lizard Spawn Egg",
   "container.spd.abyssal_heart_forge": "Abyssal Heart Forge",
+  "message.spd.abyssal_heart_forge.missing_block_entity": "Abyssal Heart Forge block entity is invalid; cannot open the UI",
+  "message.spd.abyssal_heart_forge.open_failed": "Failed to open the Abyssal Heart Forge UI. Check that LDLib2 loaded correctly",
   "item.spd.blazing_carbon_steel_ingot": "Blazing Carbon Steel Ingot",
   "item.spd.blazing_raw_ore": "Blazing Raw Ore",
   "item.spd.blazing_shard": "Blazing Shard",
