@@ -14,25 +14,17 @@ import alku.spd.client.renderer.MascotRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdEntities;
-import alku.spd.registry.SpdMenus;
-import com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerScreen;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Mod.EventBusSubscriber(modid = Spd.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class SpdForgeClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpdForgeClient.class);
-
     private SpdForgeClient() {
     }
 
@@ -43,12 +35,6 @@ public final class SpdForgeClient {
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_FUNGAL_VINES.get(), AbyssalFungalVinesRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.MASCOT.get(), MascotRenderer::new);
-        event.enqueueWork(() -> {
-            LOGGER.info("[SPD-FORGE-GUI] Registering Forge screen factory menuKey={} menuId={}",
-                    BuiltInRegistries.MENU.getKey(SpdMenus.ABYSSAL_HEART_FORGE.get()),
-                    BuiltInRegistries.MENU.getId(SpdMenus.ABYSSAL_HEART_FORGE.get()));
-            MenuScreens.register(SpdMenus.ABYSSAL_HEART_FORGE.get(), ModularUIContainerScreen::new);
-        });
     }
 
     @SubscribeEvent

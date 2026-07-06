@@ -13,10 +13,7 @@ import alku.spd.client.renderer.MascotRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdEntities;
-import alku.spd.registry.SpdMenus;
-import com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerScreen;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -36,7 +33,6 @@ public final class SpdFabricClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_FUNGAL_VINES.get(), AbyssalFungalVinesRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.MASCOT.get(), MascotRenderer::new);
-        MenuRegistry.registerScreenFactory(SpdMenus.ABYSSAL_HEART_FORGE.get(), ModularUIContainerScreen::new);
         AbyssalGloomClient.register();
         SpdClientCommands.register();
         HudRenderCallback.EVENT.register(SubjugationClientOverlay::render);
