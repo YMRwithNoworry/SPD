@@ -101,8 +101,12 @@ public final class CrucibleStructure {
                     for (int dz = 0; dz < size; dz++) {
                         BlockPos pos = origin.offset(dx, dy, dz);
                         boolean bottom = dy == 0;
-                        boolean side = dy > 0 && (dx == 0 || dx == size - 1 || dz == 0 || dz == size - 1);
-                        boolean shell = bottom || side;
+                        boolean xWall = dy > 0 && (dx == 0 || dx == size - 1) && dz > 0 && dz < size - 1;
+                        boolean zWall = dy > 0 && (dz == 0 || dz == size - 1) && dx > 0 && dx < size - 1;
+                        boolean verticalEdge = dy > 0
+                                && (dx == 0 || dx == size - 1)
+                                && (dz == 0 || dz == size - 1);
+                        boolean shell = bottom || xWall || zWall;
                         BlockState state = level.getBlockState(pos);
 
                         if (shell) {
@@ -123,6 +127,10 @@ public final class CrucibleStructure {
                                 activeNozzles.add(pos.immutable());
                             }
                             nozzleFacing.ifPresent(direction -> nozzleCandidates.add(new NozzleCandidate(pos.immutable(), direction)));
+                        } else if (verticalEdge) {
+                            if (!state.isAir() && !state.is(SpdBlocks.CRUCIBLE_WALL.get())) {
+                                return false;
+                            }
                         } else if (!state.isAir()) {
                             return false;
                         }

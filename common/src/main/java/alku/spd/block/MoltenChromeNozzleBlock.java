@@ -88,6 +88,11 @@ public class MoltenChromeNozzleBlock extends HorizontalDirectionalBlock implemen
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return InteractionResult.CONSUME;
         }
+        CrucibleStructure.tryUpdateAround(level, pos);
+        state = level.getBlockState(pos);
+        if (!state.is(this)) {
+            return InteractionResult.CONSUME;
+        }
         if (!state.getValue(ACTIVE)) {
             serverPlayer.displayClientMessage(Component.translatable("message.spd.molten_chrome_nozzle.inactive"), true);
             return InteractionResult.CONSUME;
