@@ -1,6 +1,7 @@
 package alku.spd.mixin;
 
 import alku.spd.entity.SpdEntityTargeting;
+import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.NamelessSwordItem;
 import alku.spd.registry.SpdEffects;
 import alku.spd.world.SpdCorrosion;
@@ -102,6 +103,9 @@ public abstract class LivingEntityMixin implements EpxCarrier {
         Entity direct = source.getDirectEntity();
         if (attacker instanceof Player player && direct == player) {
             ItemStack stack = player.getMainHandItem();
+            if (BlazingVeinGreatswordItem.isBlazingVeinGreatsword(stack)) {
+                return BlazingVeinGreatswordItem.modifyMeleeDamage(player, stack, target, amount);
+            }
             if (NamelessSwordItem.isNamelessSword(stack)) {
                 return NamelessSwordItem.modifyMeleeDamage(player, stack, target, amount);
             }
