@@ -19,6 +19,11 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.BLAZING_RAW_ORE.get());
                 output.accept(SpdItems.BLAZING_SHARD.get());
                 output.accept(SpdItems.BLAZING_CARBON_STEEL_INGOT.get());
+                output.accept(SpdItems.BLAZING_EMBER_SWORD.get());
+                output.accept(SpdItems.BLAZING_EMBER_AXE.get());
+                output.accept(SpdItems.BLAZING_EMBER_HOE.get());
+                output.accept(SpdItems.BLAZING_EMBER_SHOVEL.get());
+                output.accept(SpdItems.BLAZING_EMBER_PICKAXE.get());
                 output.accept(SpdItems.BLOOD_ASH_ORE.get());
                 output.accept(SpdItems.BLOOD_ASH_RAW_ORE.get());
                 output.accept(SpdItems.BLOOD_ASH_INGOT.get());

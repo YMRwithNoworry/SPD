@@ -9,13 +9,51 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public final class SpdItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Spd.MOD_ID, Registries.ITEM);
+    private static final Tier BLAZING_EMBER_TIER = new Tier() {
+        @Override
+        public int getUses() {
+            return Tiers.IRON.getUses();
+        }
+
+        @Override
+        public float getSpeed() {
+            return Tiers.GOLD.getSpeed();
+        }
+
+        @Override
+        public float getAttackDamageBonus() {
+            return Tiers.IRON.getAttackDamageBonus();
+        }
+
+        @Override
+        public int getLevel() {
+            return Tiers.IRON.getLevel();
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return Tiers.GOLD.getEnchantmentValue();
+        }
+
+        @Override
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(BLAZING_CARBON_STEEL_INGOT.get());
+        }
+    };
 
     public static final RegistrySupplier<Item> SACRED_STIGMA = ITEMS.register("sacred_stigma", () ->
             new BlockItem(SpdBlocks.SACRED_STIGMA.get(), new Item.Properties()));
@@ -31,6 +69,21 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> BLAZING_CARBON_STEEL_INGOT = ITEMS.register("blazing_carbon_steel_ingot", () ->
             new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLAZING_EMBER_SWORD = ITEMS.register("blazing_ember_sword", () ->
+            new SwordItem(BLAZING_EMBER_TIER, 3, -2.4F, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLAZING_EMBER_AXE = ITEMS.register("blazing_ember_axe", () ->
+            new AxeItem(BLAZING_EMBER_TIER, 6.0F, -3.1F, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLAZING_EMBER_HOE = ITEMS.register("blazing_ember_hoe", () ->
+            new HoeItem(BLAZING_EMBER_TIER, -2, -1.0F, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLAZING_EMBER_SHOVEL = ITEMS.register("blazing_ember_shovel", () ->
+            new ShovelItem(BLAZING_EMBER_TIER, 1.5F, -3.0F, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLAZING_EMBER_PICKAXE = ITEMS.register("blazing_ember_pickaxe", () ->
+            new PickaxeItem(BLAZING_EMBER_TIER, 1, -2.8F, new Item.Properties()));
 
     public static final RegistrySupplier<Item> BLOOD_ASH_ORE = ITEMS.register("blood_ash_ore", () ->
             new BlockItem(SpdBlocks.BLOOD_ASH_ORE.get(), new Item.Properties()));
