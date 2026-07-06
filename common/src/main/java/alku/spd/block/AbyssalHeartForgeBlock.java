@@ -48,26 +48,38 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        LOGGER.info("[SPD-FORGE-GUI] AbyssalHeartForgeBlock.use side={} pos={} block={} hand={} player={} held={}",
+                level.isClientSide ? "client" : "server",
+                pos,
+                state.getBlock(),
+                hand,
+                player.getGameProfile().getName(),
+                player.getItemInHand(hand));
         if (level.isClientSide) {
+            LOGGER.info("[SPD-FORGE-GUI] Client-side use acknowledged at {}", pos);
             return InteractionResult.SUCCESS;
         }
         if (!(player instanceof ServerPlayer serverPlayer)) {
+            LOGGER.warn("[SPD-FORGE-GUI] Server-side use had non-server player {} at {}", player, pos);
             return InteractionResult.CONSUME;
         }
         if (!(level.getBlockEntity(pos) instanceof AbyssalHeartForgeBlockEntity)) {
-            LOGGER.warn("Cannot open Abyssal Heart Forge UI at {} because the block entity is missing or mismatched", pos);
+            LOGGER.warn("[SPD-FORGE-GUI] Cannot open Abyssal Heart Forge UI at {} because the block entity is missing or mismatched: {}", pos, level.getBlockEntity(pos));
             serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.missing_block_entity"), true);
             return InteractionResult.CONSUME;
         }
 
         try {
+            LOGGER.info("[SPD-FORGE-GUI] Calling SpdMenus.openAbyssalHeartForge for {} at {}", serverPlayer.getGameProfile().getName(), pos);
             boolean opened = SpdMenus.openAbyssalHeartForge(serverPlayer, pos);
             if (!opened) {
-                LOGGER.warn("LDLib2 refused to open Abyssal Heart Forge UI at {}", pos);
+                LOGGER.warn("[SPD-FORGE-GUI] SPD menu refused to open Abyssal Heart Forge UI at {}", pos);
                 serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.open_failed"), true);
+            } else {
+                LOGGER.info("[SPD-FORGE-GUI] SpdMenus.openAbyssalHeartForge returned true for {}", pos);
             }
         } catch (RuntimeException exception) {
-            LOGGER.error("Failed to open Abyssal Heart Forge UI at {}", pos, exception);
+            LOGGER.error("[SPD-FORGE-GUI] Failed to open Abyssal Heart Forge UI at {}", pos, exception);
             serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.open_failed"), false);
         }
         return InteractionResult.CONSUME;
