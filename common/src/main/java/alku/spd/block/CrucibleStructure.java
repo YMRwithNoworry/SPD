@@ -100,13 +100,14 @@ public final class CrucibleStructure {
                 for (int dy = 0; dy < size; dy++) {
                     for (int dz = 0; dz < size; dz++) {
                         BlockPos pos = origin.offset(dx, dy, dz);
-                        boolean bottom = dy == 0;
-                        boolean xWall = dy > 0 && (dx == 0 || dx == size - 1) && dz > 0 && dz < size - 1;
-                        boolean zWall = dy > 0 && (dz == 0 || dz == size - 1) && dx > 0 && dx < size - 1;
-                        boolean verticalEdge = dy > 0
-                                && (dx == 0 || dx == size - 1)
-                                && (dz == 0 || dz == size - 1);
-                        boolean shell = bottom || xWall || zWall;
+                        boolean xInside = dx > 0 && dx < size - 1;
+                        boolean yInside = dy > 0 && dy < size - 1;
+                        boolean zInside = dz > 0 && dz < size - 1;
+                        boolean bottomFace = dy == 0 && xInside && zInside;
+                        boolean xWall = yInside && (dx == 0 || dx == size - 1) && zInside;
+                        boolean zWall = yInside && (dz == 0 || dz == size - 1) && xInside;
+                        boolean optionalEdge = isOptionalCrucibleEdge(dx, dy, dz);
+                        boolean shell = bottomFace || xWall || zWall;
                         BlockState state = level.getBlockState(pos);
 
                         if (shell) {
@@ -127,7 +128,7 @@ public final class CrucibleStructure {
                                 activeNozzles.add(pos.immutable());
                             }
                             nozzleFacing.ifPresent(direction -> nozzleCandidates.add(new NozzleCandidate(pos.immutable(), direction)));
-                        } else if (verticalEdge) {
+                        } else if (optionalEdge) {
                             if (!state.isAir() && !state.is(SpdBlocks.CRUCIBLE_WALL.get())) {
                                 return false;
                             }
@@ -139,6 +140,13 @@ public final class CrucibleStructure {
             }
 
             return activeNozzles.size() <= 1 && nozzleBlocks.size() <= 1 && !nozzleCandidates.isEmpty();
+        }
+
+        private boolean isOptionalCrucibleEdge(int dx, int dy, int dz) {
+            boolean xBoundary = dx == 0 || dx == size - 1;
+            boolean yBoundary = dy == 0 || dy == size - 1;
+            boolean zBoundary = dz == 0 || dz == size - 1;
+            return (xBoundary ? 1 : 0) + (yBoundary ? 1 : 0) + (zBoundary ? 1 : 0) >= 2;
         }
 
         private Optional<Direction> getNozzleFacing(int dx, int dy, int dz) {
