@@ -55,38 +55,49 @@ public final class TitleCreditsPanel {
         int y = 10;
         boolean hovered = mouseX >= x && mouseX <= x + panelWidth && mouseY >= y && mouseY <= y + HEADER_HEIGHT;
 
-        drawFrame(graphics, x, y, panelWidth, panelHeight, hovered);
+        graphics.flush();
+        graphics.pose().pushPose();
+        graphics.pose().translate(0.0F, 0.0F, 400.0F);
+        try {
+            drawFrame(graphics, x, y, panelWidth, panelHeight, hovered);
 
-        graphics.drawString(font, Component.literal("致谢名单"), x + 14, y + 10, 0xFFE8C77B, false);
-        drawArrowButton(graphics, font, x + panelWidth - 27, y + 4, expanded, hovered);
+            graphics.drawString(font, Component.literal("致谢名单"), x + 14, y + 10, 0xFFE8C77B, false);
+            drawArrowButton(graphics, font, x + panelWidth - 27, y + 4, expanded, hovered);
 
-        if (panelHeight <= HEADER_HEIGHT + 6) {
-            return;
-        }
-
-        int contentTop = y + HEADER_HEIGHT + 8;
-        int contentBottom = y + panelHeight - 10;
-        int textX = x + 14;
-        int textY = contentTop;
-        int maxTextWidth = panelWidth - CONTENT_PADDING_X * 2;
-
-        graphics.enableScissor(x + 7, contentTop - 3, x + panelWidth - 7, contentBottom);
-        for (String line : credits) {
-            if (line.isBlank()) {
-                textY += 6;
-                continue;
+            if (panelHeight <= HEADER_HEIGHT + 6) {
+                return;
             }
-            List<FormattedCharSequence> wrapped = font.split(FormattedText.of(line), maxTextWidth);
-            for (FormattedCharSequence sequence : wrapped) {
-                if (textY > contentBottom) {
-                    break;
+
+            int contentTop = y + HEADER_HEIGHT + 8;
+            int contentBottom = y + panelHeight - 10;
+            int textX = x + 14;
+            int textY = contentTop;
+            int maxTextWidth = panelWidth - CONTENT_PADDING_X * 2;
+
+            graphics.enableScissor(x + 7, contentTop - 3, x + panelWidth - 7, contentBottom);
+            try {
+                for (String line : credits) {
+                    if (line.isBlank()) {
+                        textY += 6;
+                        continue;
+                    }
+                    List<FormattedCharSequence> wrapped = font.split(FormattedText.of(line), maxTextWidth);
+                    for (FormattedCharSequence sequence : wrapped) {
+                        if (textY > contentBottom) {
+                            break;
+                        }
+                        graphics.drawString(font, sequence, textX, textY, 0xFFE9D8B0, false);
+                        textY += 12;
+                    }
+                    textY += 2;
                 }
-                graphics.drawString(font, sequence, textX, textY, 0xFFE9D8B0, false);
-                textY += 12;
+            } finally {
+                graphics.disableScissor();
             }
-            textY += 2;
+        } finally {
+            graphics.pose().popPose();
+            graphics.flush();
         }
-        graphics.disableScissor();
     }
 
     public static boolean mouseClicked(double mouseX, double mouseY, int button, int screenWidth) {
