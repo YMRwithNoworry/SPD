@@ -17,11 +17,6 @@ public abstract class TitleScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
-    private void spd$tickCreditsPanel(CallbackInfo ci) {
-        TitleCreditsPanel.tick();
-    }
-
     @Inject(method = "render", at = @At("TAIL"))
     private void spd$renderCreditsPanel(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
         TitleCreditsPanel.render(graphics, this.width, this.height, mouseX, mouseY, partialTick);

@@ -22,45 +22,43 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public final class TitleCreditsPanel {
     private static final ResourceLocation CREDITS_TEXT = new ResourceLocation(Spd.MOD_ID, "texts/credits.txt");
-    private static final ResourceLocation GDP_TEXTURE = new ResourceLocation("ldlib2", "textures/gui/gdp_styles.png");
     private static final int COLLAPSED_WIDTH = 138;
     private static final int EXPANDED_WIDTH = 206;
     private static final int COLLAPSED_HEIGHT = 30;
-    private static final int EXPANDED_HEIGHT = 178;
     private static final int HEADER_HEIGHT = 30;
+    private static final int EDGE_MARGIN = 10;
+    private static final int CONTENT_PADDING_X = 14;
+    private static final long ANIMATION_DURATION_NANOS = 280_000_000L;
     private static boolean expanded;
     private static float animation;
+    private static float animationFrom;
+    private static float animationTarget;
+    private static long animationStartNanos = System.nanoTime();
     private static boolean gdpTouched;
     private static List<String> credits;
 
     private TitleCreditsPanel() {
     }
 
-    public static void tick() {
-        float target = expanded ? 1.0F : 0.0F;
-        animation = Mth.clamp(animation + (target - animation) * 0.24F, 0.0F, 1.0F);
-        if (Math.abs(animation - target) < 0.01F) {
-            animation = target;
-        }
-    }
-
     public static void render(GuiGraphics graphics, int screenWidth, int screenHeight, int mouseX, int mouseY, float partialTick) {
         touchGdpStylesheet();
         loadCredits();
+        updateAnimation();
 
         float eased = smooth(animation);
         int panelWidth = (int) Mth.lerp(eased, COLLAPSED_WIDTH, EXPANDED_WIDTH);
-        int panelHeight = (int) Mth.lerp(eased, COLLAPSED_HEIGHT, Math.min(EXPANDED_HEIGHT, screenHeight - 22));
-        int x = Math.max(8, screenWidth - panelWidth - 10);
+        Minecraft minecraft = Minecraft.getInstance();
+        Font font = minecraft.font;
+        int expandedHeight = getExpandedHeight(font, screenHeight);
+        int panelHeight = (int) Mth.lerp(eased, COLLAPSED_HEIGHT, expandedHeight);
+        int x = Math.max(8, screenWidth - panelWidth - EDGE_MARGIN);
         int y = 10;
         boolean hovered = mouseX >= x && mouseX <= x + panelWidth && mouseY >= y && mouseY <= y + HEADER_HEIGHT;
 
         drawFrame(graphics, x, y, panelWidth, panelHeight, hovered);
 
-        Minecraft minecraft = Minecraft.getInstance();
-        Font font = minecraft.font;
-        graphics.drawString(font, Component.literal("致谢名单"), x + 18, y + 10, 0xFFE8C77B, false);
-        graphics.drawString(font, expanded ? Component.literal("▲") : Component.literal("▼"), x + panelWidth - 20, y + 10, 0xFFD9A94F, false);
+        graphics.drawString(font, Component.literal("致谢名单"), x + 14, y + 10, 0xFFE8C77B, false);
+        drawArrowButton(graphics, font, x + panelWidth - 27, y + 4, expanded, hovered);
 
         if (panelHeight <= HEADER_HEIGHT + 6) {
             return;
@@ -70,7 +68,7 @@ public final class TitleCreditsPanel {
         int contentBottom = y + panelHeight - 10;
         int textX = x + 14;
         int textY = contentTop;
-        int maxTextWidth = panelWidth - 28;
+        int maxTextWidth = panelWidth - CONTENT_PADDING_X * 2;
 
         graphics.enableScissor(x + 7, contentTop - 3, x + panelWidth - 7, contentBottom);
         for (String line : credits) {
@@ -95,14 +93,18 @@ public final class TitleCreditsPanel {
         if (button != 0) {
             return false;
         }
+        updateAnimation();
         float eased = smooth(animation);
         int panelWidth = (int) Mth.lerp(eased, COLLAPSED_WIDTH, EXPANDED_WIDTH);
-        int x = Math.max(8, screenWidth - panelWidth - 10);
+        int x = Math.max(8, screenWidth - panelWidth - EDGE_MARGIN);
         int y = 10;
         if (mouseX < x || mouseX > x + panelWidth || mouseY < y || mouseY > y + HEADER_HEIGHT) {
             return false;
         }
         expanded = !expanded;
+        animationFrom = animation;
+        animationTarget = expanded ? 1.0F : 0.0F;
+        animationStartNanos = System.nanoTime();
         return true;
     }
 
@@ -114,11 +116,16 @@ public final class TitleCreditsPanel {
         graphics.fill(x + 4, y + 4, x + 7, y + height - 4, 0x99C58E45);
         graphics.fill(x + width - 7, y + 4, x + width - 4, y + height - 4, 0x99C58E45);
         graphics.renderOutline(x, y, width, height, hovered ? 0xFFE8C77B : 0xFFC08B44);
+    }
 
-        graphics.setColor(1.0F, 1.0F, 1.0F, 0.18F);
-        graphics.blit(GDP_TEXTURE, x + 4, y + 4, 0, 0, 16, 16);
-        graphics.blit(GDP_TEXTURE, x + width - 20, y + 4, 16, 0, 16, 16);
-        graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+    private static void drawArrowButton(GuiGraphics graphics, Font font, int x, int y, boolean opened, boolean hovered) {
+        int fill = hovered ? 0xFF4A2B23 : 0xFF281817;
+        int border = hovered ? 0xFFE8C77B : 0xFFC08B44;
+        graphics.fill(x, y, x + 22, y + 22, fill);
+        graphics.renderOutline(x, y, 22, 22, border);
+        String arrow = opened ? "▲" : "▼";
+        int textX = x + (22 - font.width(arrow)) / 2;
+        graphics.drawString(font, arrow, textX, y + 7, 0xFFFFD36E, false);
     }
 
     private static void loadCredits() {
@@ -149,6 +156,33 @@ public final class TitleCreditsPanel {
     }
 
     private static float smooth(float value) {
-        return value * value * (3.0F - 2.0F * value);
+        float clamped = Mth.clamp(value, 0.0F, 1.0F);
+        return clamped * clamped * clamped * (clamped * (clamped * 6.0F - 15.0F) + 10.0F);
+    }
+
+    private static void updateAnimation() {
+        if (animation == animationTarget) {
+            return;
+        }
+        float progress = Mth.clamp((float) (System.nanoTime() - animationStartNanos) / ANIMATION_DURATION_NANOS, 0.0F, 1.0F);
+        animation = Mth.lerp(smooth(progress), animationFrom, animationTarget);
+        if (progress >= 1.0F) {
+            animation = animationTarget;
+        }
+    }
+
+    private static int getExpandedHeight(Font font, int screenHeight) {
+        int contentHeight = 0;
+        int maxTextWidth = EXPANDED_WIDTH - CONTENT_PADDING_X * 2;
+        for (String line : credits) {
+            if (line.isBlank()) {
+                contentHeight += 6;
+                continue;
+            }
+            contentHeight += font.split(FormattedText.of(line), maxTextWidth).size() * 12 + 2;
+        }
+        int desired = HEADER_HEIGHT + 18 + contentHeight + 10;
+        int available = screenHeight - 20;
+        return Mth.clamp(desired, COLLAPSED_HEIGHT, available);
     }
 }
