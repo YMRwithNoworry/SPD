@@ -1,5 +1,6 @@
 {
   "credit": "Converted from GeckoLib fallback geometry for inventory rendering",
+  "parent": "minecraft:block/block",
   "gui_light": "front",
   "render_type": "cutout",
   "texture_size": [128, 128],
