@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -77,6 +78,7 @@ public abstract class LivingEntityMixin implements EpxCarrier {
         }
 
         LivingEntity target = (LivingEntity) (Object) this;
+        spd$makeNonSpdMobRetaliate(target, source);
         if (target.level().isClientSide() || SpdEntityTargeting.isMoldEntity(target)) {
             return;
         }
@@ -89,6 +91,37 @@ public abstract class LivingEntityMixin implements EpxCarrier {
         SpdDifficulty.Difficulty difficulty = SpdDifficulty.get(target.level().getServer());
         int amplifier = difficulty.randomMoldMutationAmplifier(target.getRandom());
         target.addEffect(new MobEffectInstance(SpdEffects.MOLD_MUTATION.get(), 20 * 30, amplifier), livingAttacker);
+    }
+
+    @Unique
+    private void spd$makeNonSpdMobRetaliate(LivingEntity target, DamageSource source) {
+        if (target.level().isClientSide()
+                || !(target instanceof Mob targetMob)
+                || SpdEntityTargeting.isSpdEntity(target)) {
+            return;
+        }
+
+        LivingEntity attacker = spd$getLivingAttacker(source);
+        if (attacker == null
+                || !attacker.isAlive()
+                || !SpdEntityTargeting.isSpdEntity(attacker)
+                || SubjugationHooks.isSubjugated(target)) {
+            return;
+        }
+
+        targetMob.setLastHurtByMob(attacker);
+        targetMob.setTarget(attacker);
+    }
+
+    @Unique
+    private LivingEntity spd$getLivingAttacker(DamageSource source) {
+        Entity attacker = source.getEntity();
+        if (attacker instanceof LivingEntity livingAttacker) {
+            return livingAttacker;
+        }
+
+        Entity direct = source.getDirectEntity();
+        return direct instanceof LivingEntity livingDirect ? livingDirect : null;
     }
 
     @Inject(method = "die", at = @At("HEAD"))
