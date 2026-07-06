@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import com.lowdragmc.lowdraglib2.gui.ui.style.StylesheetManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -29,6 +30,8 @@ public final class TitleCreditsPanel {
     private static final int EDGE_MARGIN = 10;
     private static final int CONTENT_PADDING_X = 14;
     private static final long ANIMATION_DURATION_NANOS = 280_000_000L;
+    private static final String STRIKETHROUGH_MARKER = "（此处用横线划掉）";
+    private static final String STRIKETHROUGH_NAME = "uu_Uly";
     private static boolean expanded;
     private static float animation;
     private static float animationFrom;
@@ -81,7 +84,7 @@ public final class TitleCreditsPanel {
                         textY += 6;
                         continue;
                     }
-                    List<FormattedCharSequence> wrapped = font.split(FormattedText.of(line), maxTextWidth);
+                    List<FormattedCharSequence> wrapped = font.split(formatCreditLine(line), maxTextWidth);
                     for (FormattedCharSequence sequence : wrapped) {
                         if (textY > contentBottom) {
                             break;
@@ -191,10 +194,27 @@ public final class TitleCreditsPanel {
                 contentHeight += 6;
                 continue;
             }
-            contentHeight += font.split(FormattedText.of(line), maxTextWidth).size() * 12 + 2;
+            contentHeight += font.split(formatCreditLine(line), maxTextWidth).size() * 12 + 2;
         }
         int desired = HEADER_HEIGHT + 18 + contentHeight + 10;
         int available = screenHeight - 20;
         return Mth.clamp(desired, COLLAPSED_HEIGHT, available);
+    }
+
+    private static FormattedText formatCreditLine(String line) {
+        if (!line.contains(STRIKETHROUGH_MARKER)) {
+            return FormattedText.of(line);
+        }
+
+        String cleaned = line.replace(STRIKETHROUGH_MARKER, "");
+        int nameStart = cleaned.indexOf(STRIKETHROUGH_NAME);
+        if (nameStart < 0) {
+            return FormattedText.of(cleaned);
+        }
+
+        int nameEnd = nameStart + STRIKETHROUGH_NAME.length();
+        return Component.literal(cleaned.substring(0, nameStart))
+                .append(Component.literal(STRIKETHROUGH_NAME).withStyle(ChatFormatting.STRIKETHROUGH))
+                .append(Component.literal(cleaned.substring(nameEnd)));
     }
 }
