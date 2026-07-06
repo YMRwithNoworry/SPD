@@ -4,6 +4,7 @@ import alku.spd.registry.SpdEffects;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -40,8 +41,8 @@ import java.util.List;
 public class AbyssalLizardEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Boolean> ROARING = SynchedEntityData.defineId(AbyssalLizardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("qi xi");
-    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fei xing");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("xing zou");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("xing zou");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("fei xing");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("gong ji");
     private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("si wang");
     private static final int ROAR_DURATION = 64;
@@ -98,6 +99,7 @@ public class AbyssalLizardEntity extends Monster implements GeoEntity {
     public void tick() {
         super.tick();
         this.setNoGravity(true);
+        this.fallDistance = 0.0F;
         if (!this.level().isClientSide) {
             if (this.roarCooldown > 0) {
                 this.roarCooldown--;
@@ -112,6 +114,11 @@ public class AbyssalLizardEntity extends Monster implements GeoEntity {
                 this.entityData.set(ROARING, false);
             }
         }
+    }
+
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
     }
 
     public boolean isRoaring() {
@@ -158,7 +165,7 @@ public class AbyssalLizardEntity extends Monster implements GeoEntity {
                 return PlayState.CONTINUE;
             }
 
-            if (!this.onGround() || Math.abs(this.getDeltaMovement().y) > 0.03D) {
+            if (!this.onGround()) {
                 state.setAndContinue(FLY);
                 return PlayState.CONTINUE;
             }
