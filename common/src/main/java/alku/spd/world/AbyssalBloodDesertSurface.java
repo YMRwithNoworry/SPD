@@ -14,19 +14,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.Set;
 
 public final class AbyssalBloodDesertSurface {
-    private static final Set<Block> REPLACEABLE_SURFACE_BLOCKS = Set.of(
+    private static final Set<Block> REPLACEABLE_SAND_BLOCKS = Set.of(
             Blocks.SAND,
-            Blocks.SANDSTONE,
-            Blocks.SMOOTH_SANDSTONE,
-            Blocks.CUT_SANDSTONE,
-            Blocks.RED_SAND,
-            Blocks.RED_SANDSTONE,
-            Blocks.SMOOTH_RED_SANDSTONE,
-            Blocks.CUT_RED_SANDSTONE,
-            Blocks.GRASS_BLOCK,
-            Blocks.DIRT,
-            Blocks.COARSE_DIRT,
-            Blocks.STONE);
+            Blocks.RED_SAND);
 
     private AbyssalBloodDesertSurface() {
     }
@@ -55,7 +45,7 @@ public final class AbyssalBloodDesertSurface {
                 for (int y = topY - 1; y >= bottomY; y--) {
                     pos.set(x, y, z);
                     BlockState state = chunk.getBlockState(pos);
-                    if (REPLACEABLE_SURFACE_BLOCKS.contains(state.getBlock())) {
+                    if (REPLACEABLE_SAND_BLOCKS.contains(state.getBlock())) {
                         chunk.setBlockState(pos, bloodSand, false);
                         changed = true;
                     }
