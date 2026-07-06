@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "spd:sacred_stigma",
-    "spd:blazing_vein_stone"
+    "spd:blazing_vein_stone",
+    "spd:crucible_wall",
+    "spd:molten_chrome_nozzle"
   ]
 }

@@ -4,7 +4,9 @@ import alku.spd.Spd;
 import alku.spd.block.AbyssalBloodSandBlock;
 import alku.spd.block.AbyssalFungalVinesBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
+import alku.spd.block.CrucibleWallBlock;
 import alku.spd.block.MascotBlock;
+import alku.spd.block.MoltenChromeNozzleBlock;
 import alku.spd.block.VinePlagueNodeBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -54,6 +56,14 @@ public final class SpdBlocks {
                     .noOcclusion()
                     .strength(3.5F, 6.0F)
                     .sound(SoundType.STONE)
+                    .requiresCorrectToolForDrops()));
+
+    public static final RegistrySupplier<Block> CRUCIBLE_WALL = BLOCKS.register("crucible_wall", () ->
+            new CrucibleWallBlock(BlockBehaviour.Properties.copy(Blocks.SMOOTH_STONE)
+                    .requiresCorrectToolForDrops()));
+
+    public static final RegistrySupplier<Block> MOLTEN_CHROME_NOZZLE = BLOCKS.register("molten_chrome_nozzle", () ->
+            new MoltenChromeNozzleBlock(BlockBehaviour.Properties.copy(Blocks.SMOOTH_STONE)
                     .requiresCorrectToolForDrops()));
 
     public static final RegistrySupplier<Block> MASCOT = BLOCKS.register("mascot", () ->

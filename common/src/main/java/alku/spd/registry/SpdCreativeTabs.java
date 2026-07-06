@@ -26,6 +26,8 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.VINE_PLAGUE_NODE.get());
                 output.accept(SpdItems.WIDESPREAD_EPIDEMIC.get());
                 output.accept(SpdItems.ABYSSAL_HEART_FORGE.get());
+                output.accept(SpdItems.CRUCIBLE_WALL.get());
+                output.accept(SpdItems.MOLTEN_CHROME_NOZZLE.get());
                 output.accept(SpdItems.MASCOT.get());
                 output.accept(SpdItems.ABYSSAL_LIZARD_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_ERODED_SILVERFISH_SPAWN_EGG.get());

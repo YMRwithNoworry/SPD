@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "spd:block/molten_chrome_nozzle",
+    "front": "spd:block/molten_chrome_nozzle",
+    "side": "spd:block/molten_chrome_nozzle"
+  }
+}

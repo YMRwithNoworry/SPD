@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "active=false,facing=north": {
+      "model": "spd:block/molten_chrome_nozzle"
+    },
+    "active=false,facing=east": {
+      "model": "spd:block/molten_chrome_nozzle",
+      "y": 90
+    },
+    "active=false,facing=south": {
+      "model": "spd:block/molten_chrome_nozzle",
+      "y": 180
+    },
+    "active=false,facing=west": {
+      "model": "spd:block/molten_chrome_nozzle",
+      "y": 270
+    },
+    "active=true,facing=north": {
+      "model": "spd:block/molten_chrome_nozzle"
+    },
+    "active=true,facing=east": {
+      "model": "spd:block/molten_chrome_nozzle",
+      "y": 90
+    },
+    "active=true,facing=south": {
+      "model": "spd:block/molten_chrome_nozzle",
+      "y": 180
+    },
+    "active=true,facing=west": {
+      "model": "spd:block/molten_chrome_nozzle",
+      "y": 270
+    }
+  }
+}

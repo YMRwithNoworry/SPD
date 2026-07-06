@@ -55,6 +55,12 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_HEART_FORGE = ITEMS.register("abyssal_heart_forge", () ->
             new BlockItem(SpdBlocks.ABYSSAL_HEART_FORGE.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> CRUCIBLE_WALL = ITEMS.register("crucible_wall", () ->
+            new BlockItem(SpdBlocks.CRUCIBLE_WALL.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> MOLTEN_CHROME_NOZZLE = ITEMS.register("molten_chrome_nozzle", () ->
+            new BlockItem(SpdBlocks.MOLTEN_CHROME_NOZZLE.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> MASCOT = ITEMS.register("mascot", () ->
             new BlockItem(SpdBlocks.MASCOT.get(), new Item.Properties()));
 
