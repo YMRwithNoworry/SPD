@@ -1,6 +1,7 @@
 package alku.spd.registry;
 
 import alku.spd.Spd;
+import alku.spd.item.BlazingVeinPiercingSpearItem;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.GuideBookItem;
 import alku.spd.item.NamelessSwordItem;
@@ -88,6 +89,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> BLAZING_VEIN_GREATSWORD = ITEMS.register("blazing_vein_greatsword", () ->
             new BlazingVeinGreatswordItem(BLAZING_EMBER_TIER, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLAZING_VEIN_PIERCING_SPEAR = ITEMS.register("blazing_vein_piercing_spear", () ->
+            new BlazingVeinPiercingSpearItem(BLAZING_EMBER_TIER, new Item.Properties()));
 
     public static final RegistrySupplier<Item> BLOOD_ASH_ORE = ITEMS.register("blood_ash_ore", () ->
             new BlockItem(SpdBlocks.BLOOD_ASH_ORE.get(), new Item.Properties()));

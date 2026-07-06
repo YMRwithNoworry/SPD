@@ -1,0 +1,134 @@
+{
+  "credit": "3D item model derived from the supplied blazing vein piercing spear geo source.",
+  "textures": {
+    "particle": "spd:item/blazing_vein_piercing_spear",
+    "texture": "spd:item/blazing_vein_piercing_spear"
+  },
+  "elements": [
+    {
+      "from": [7.35, -3.0, 7.35],
+      "to": [8.65, 12.2, 8.65],
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    },
+    {
+      "from": [7.0, -4.3, 7.0],
+      "to": [9.0, -2.5, 9.0],
+      "rotation": { "angle": 45.0, "axis": "z", "origin": [8.0, -3.4, 8.0] },
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    },
+    {
+      "from": [6.55, 11.5, 7.15],
+      "to": [9.45, 14.0, 8.85],
+      "rotation": { "angle": 45.0, "axis": "z", "origin": [8.0, 12.75, 8.0] },
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    },
+    {
+      "from": [7.05, 13.4, 7.05],
+      "to": [8.95, 20.0, 8.95],
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    },
+    {
+      "from": [6.0, 13.9, 7.95],
+      "to": [10.0, 17.4, 8.05],
+      "rotation": { "angle": 22.5, "axis": "z", "origin": [8.0, 15.6, 8.0] },
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    },
+    {
+      "from": [6.0, 13.9, 7.95],
+      "to": [10.0, 17.4, 8.05],
+      "rotation": { "angle": -22.5, "axis": "z", "origin": [8.0, 15.6, 8.0] },
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    },
+    {
+      "from": [6.5, 19.5, 7.3],
+      "to": [9.5, 22.4, 8.7],
+      "rotation": { "angle": 45.0, "axis": "z", "origin": [8.0, 20.8, 8.0] },
+      "faces": {
+        "down": { "texture": "#texture" },
+        "up": { "texture": "#texture" },
+        "north": { "texture": "#texture" },
+        "south": { "texture": "#texture" },
+        "west": { "texture": "#texture" },
+        "east": { "texture": "#texture" }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [0, -90, 55],
+      "translation": [0, 4.5, 1],
+      "scale": [1.0, 1.0, 1.0]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 90, -55],
+      "translation": [0, 4.5, 1],
+      "scale": [1.0, 1.0, 1.0]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, -90, 35],
+      "translation": [1, 4, 1.5],
+      "scale": [0.9, 0.9, 0.9]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, -35],
+      "translation": [-1, 4, 1.5],
+      "scale": [0.9, 0.9, 0.9]
+    },
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, -1.5, 0],
+      "scale": [0.62, 0.62, 0.62]
+    },
+    "ground": {
+      "translation": [0, 3, 0],
+      "scale": [0.45, 0.45, 0.45]
+    },
+    "fixed": {
+      "rotation": [0, 180, 0],
+      "translation": [0, -1, 0],
+      "scale": [0.72, 0.72, 0.72]
+    }
+  }
+}
