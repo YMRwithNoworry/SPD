@@ -1,6 +1,7 @@
 package alku.spd.block;
 
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
+import alku.spd.network.AbyssalHeartForgeNetworking;
 import alku.spd.registry.SpdBlockEntities;
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
@@ -69,13 +70,13 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
         }
 
         try {
-            LOGGER.info("[SPD-FORGE-GUI] Calling LDLib2 BlockUIMenuType.openUI for {} at {}", serverPlayer.getGameProfile().getName(), pos);
-            boolean opened = BlockUIMenuType.openUI(serverPlayer, pos);
+            LOGGER.info("[SPD-FORGE-GUI] Calling AbyssalHeartForgeNetworking.open for {} at {}", serverPlayer.getGameProfile().getName(), pos);
+            boolean opened = AbyssalHeartForgeNetworking.open(serverPlayer, pos);
             if (!opened) {
-                LOGGER.warn("[SPD-FORGE-GUI] LDLib2 BlockUIMenuType refused to open Abyssal Heart Forge UI at {}", pos);
+                LOGGER.warn("[SPD-FORGE-GUI] AbyssalHeartForgeNetworking refused to open Abyssal Heart Forge UI at {}", pos);
                 serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.open_failed"), true);
             } else {
-                LOGGER.info("[SPD-FORGE-GUI] LDLib2 BlockUIMenuType.openUI returned true for {}", pos);
+                LOGGER.info("[SPD-FORGE-GUI] AbyssalHeartForgeNetworking.open returned true for {}", pos);
             }
         } catch (RuntimeException exception) {
             LOGGER.error("[SPD-FORGE-GUI] Failed to open Abyssal Heart Forge UI at {}", pos, exception);

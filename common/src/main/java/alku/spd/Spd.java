@@ -6,6 +6,7 @@ import alku.spd.registry.SpdCreativeTabs;
 import alku.spd.registry.SpdEffects;
 import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdItems;
+import alku.spd.network.AbyssalHeartForgeNetworking;
 import alku.spd.world.EpxEvents;
 import alku.spd.world.MoldCurseEvents;
 import alku.spd.world.SpdDifficultyScaling;
@@ -23,6 +24,7 @@ public final class Spd {
         SpdEntities.register();
         SpdItems.register();
         SpdCreativeTabs.register();
+        AbyssalHeartForgeNetworking.register();
         SpdWeatherNetworking.register();
         SpdDifficultyEvents.register();
         SpdDifficultyScaling.register();
