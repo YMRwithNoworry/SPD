@@ -49,6 +49,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> VINE_PLAGUE_NODE = ITEMS.register("vine_plague_node", () ->
             new BlockItem(SpdBlocks.VINE_PLAGUE_NODE.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> WIDESPREAD_EPIDEMIC = ITEMS.register("widespread_epidemic", () ->
+            new BlockItem(SpdBlocks.WIDESPREAD_EPIDEMIC.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> ABYSSAL_HEART_FORGE = ITEMS.register("abyssal_heart_forge", () ->
             new BlockItem(SpdBlocks.ABYSSAL_HEART_FORGE.get(), new Item.Properties()));
 

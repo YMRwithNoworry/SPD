@@ -6,6 +6,7 @@ import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalTornadoEntity;
 import alku.spd.entity.EpxCloudEntity;
 import alku.spd.entity.EpxEntity;
+import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.entity.NamelessSlashEntity;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -22,6 +23,12 @@ public final class SpdEntities {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build("mold_zombie"));
+
+    public static final RegistrySupplier<EntityType<FalseMotherEntity>> FALSE_MOTHER = ENTITIES.register("false_mother", () ->
+            EntityType.Builder.of(FalseMotherEntity::new, MobCategory.MONSTER)
+                    .sized(2.2F, 2.8F)
+                    .clientTrackingRange(10)
+                    .build("false_mother"));
 
     public static final RegistrySupplier<EntityType<AbyssalLizardEntity>> ABYSSAL_LIZARD = ENTITIES.register("abyssal_lizard", () ->
             EntityType.Builder.of(AbyssalLizardEntity::new, MobCategory.MONSTER)

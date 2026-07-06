@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "spd:block/widespread_epidemic"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import alku.spd.block.entity.AbyssalFungalVinesBlockEntity;
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
 import alku.spd.block.entity.MascotBlockEntity;
+import alku.spd.block.entity.VinePlagueNodeBlockEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +21,9 @@ public final class SpdBlockEntities {
 
     public static final RegistrySupplier<BlockEntityType<MascotBlockEntity>> MASCOT = BLOCK_ENTITIES.register("mascot", () ->
             BlockEntityType.Builder.of(MascotBlockEntity::new, SpdBlocks.MASCOT.get()).build(null));
+
+    public static final RegistrySupplier<BlockEntityType<VinePlagueNodeBlockEntity>> VINE_PLAGUE_NODE = BLOCK_ENTITIES.register("vine_plague_node", () ->
+            BlockEntityType.Builder.of(VinePlagueNodeBlockEntity::new, SpdBlocks.VINE_PLAGUE_NODE.get()).build(null));
 
     private SpdBlockEntities() {
     }

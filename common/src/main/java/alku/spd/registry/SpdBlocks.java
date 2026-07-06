@@ -5,6 +5,7 @@ import alku.spd.block.AbyssalBloodSandBlock;
 import alku.spd.block.AbyssalFungalVinesBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
 import alku.spd.block.MascotBlock;
+import alku.spd.block.VinePlagueNodeBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -39,6 +40,11 @@ public final class SpdBlocks {
                     .sound(SoundType.GRASS)));
 
     public static final RegistrySupplier<Block> VINE_PLAGUE_NODE = BLOCKS.register("vine_plague_node", () ->
+            new VinePlagueNodeBlock(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)
+                    .strength(1.5F)
+                    .sound(SoundType.NETHERRACK)));
+
+    public static final RegistrySupplier<Block> WIDESPREAD_EPIDEMIC = BLOCKS.register("widespread_epidemic", () ->
             new Block(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)
                     .strength(1.5F)
                     .sound(SoundType.NETHERRACK)));

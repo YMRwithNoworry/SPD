@@ -2,6 +2,7 @@ package alku.spd.fabric;
 
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalLizardEntity;
+import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.registry.SpdEntities;
 import alku.spd.world.AbyssalBloodDesertSurface;
@@ -24,6 +25,7 @@ public final class SpdFabric implements ModInitializer {
         GeckoLib.initialize();
         Spd.init();
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes());
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.ABYSSAL_LIZARD.get(), 20, 1, 1);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.MOLD_ZOMBIE.get(), 80, 1, 4);

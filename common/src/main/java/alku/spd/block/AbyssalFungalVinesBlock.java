@@ -1,9 +1,11 @@
 package alku.spd.block;
 
+import alku.spd.registry.SpdBlocks;
 import alku.spd.block.entity.AbyssalFungalVinesBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,6 +28,17 @@ public class AbyssalFungalVinesBlock extends BushBlock implements EntityBlock {
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.is(SpdBlocks.WIDESPREAD_EPIDEMIC.get())
+                || state.is(SpdBlocks.VINE_PLAGUE_NODE.get())
+                || state.is(SpdBlocks.ABYSSAL_BLOOD_SAND.get())
+                || state.is(Blocks.GRASS_BLOCK)
+                || state.is(Blocks.DIRT)
+                || state.is(Blocks.COARSE_DIRT)
+                || super.mayPlaceOn(state, level, pos);
     }
 
     @Override

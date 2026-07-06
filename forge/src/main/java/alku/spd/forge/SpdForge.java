@@ -2,6 +2,7 @@ package alku.spd.forge;
 
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalLizardEntity;
+import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.registry.SpdBiomes;
 import alku.spd.registry.SpdEntities;
@@ -31,6 +32,7 @@ public final class SpdForge {
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardEntity.createAttributes().build());
+        event.put(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes().build());
         event.put(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes().build());
     }
 
