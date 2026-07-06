@@ -62,49 +62,34 @@ public class MoltenChromeNozzleBlockEntity extends BlockEntity {
 
     public ModularUI createUI(Player player) {
         UIElement root = new UIElement()
-                .layout(layout -> layout.width(190).height(142).paddingAll(6).gapAll(4))
+                .layout(layout -> layout.width(238).height(132).paddingAll(6).gapAll(4))
                 .addClass("panel_bg");
 
         UIElement content = new UIElement()
-                .layout(layout -> layout.widthPercent(100).height(112).gapAll(8));
+                .layout(layout -> layout.widthPercent(100).height(102).gapAll(10));
         content.getLayout().flexDirection(FlexDirection.ROW);
 
-        UIElement tankColumn = new UIElement()
-                .layout(layout -> layout.width(128).heightPercent(100).gapAll(4));
+        UIElement tankRow = new UIElement()
+                .layout(layout -> layout.width(120).heightPercent(100).gapAll(8).paddingTop(5));
+        tankRow.getLayout().flexDirection(FlexDirection.ROW);
         for (int i = 0; i < DEFAULT_TANKS.length; i++) {
-            tankColumn.addChild(createTankRow(i));
+            tankRow.addChild(createTankSlot(i));
         }
 
         UIElement statusColumn = new UIElement()
-                .layout(layout -> layout.width(42).heightPercent(100).gapAll(4));
+                .layout(layout -> layout.width(92).heightPercent(100).gapAll(4));
         statusColumn.addChildren(
                 new Label().setText(Component.translatable("container.spd.molten_chrome_nozzle.status")),
                 new Label().setText(Component.translatable("container.spd.molten_chrome_nozzle.status.active")),
                 new Label().setText(Component.translatable("container.spd.molten_chrome_nozzle.capacity", TANK_CAPACITY))
         );
 
-        content.addChildren(tankColumn, statusColumn);
+        content.addChildren(tankRow, statusColumn);
         root.addChildren(
                 new Label().setText(Component.translatable("container.spd.molten_chrome_nozzle")),
                 content
         );
         return new ModularUI(UI.of(root, StylesheetManager.INSTANCE.getStylesheetSafe(StylesheetManager.GDP)), player);
-    }
-
-    private UIElement createTankRow(int index) {
-        UIElement row = new UIElement()
-                .layout(layout -> layout.widthPercent(100).height(34).gapAll(5));
-        row.getLayout().flexDirection(FlexDirection.ROW);
-
-        ProgressBar tank = createTankSlot(index);
-        UIElement textColumn = new UIElement()
-                .layout(layout -> layout.width(88).heightPercent(100).gapAll(1));
-        textColumn.addChildren(
-                new Label().setText(Component.translatable(DEFAULT_TANKS[index].translationKey())),
-                new Label().setText(Component.translatable("container.spd.molten_chrome_nozzle.amount", amounts[index], TANK_CAPACITY))
-        );
-        row.addChildren(tank, textColumn);
-        return row;
     }
 
     private ProgressBar createTankSlot(int index) {
@@ -113,7 +98,7 @@ public class MoltenChromeNozzleBlockEntity extends BlockEntity {
         Component name = Component.translatable(metal.translationKey());
         Component amount = Component.translatable("container.spd.molten_chrome_nozzle.amount", amounts[index], TANK_CAPACITY);
 
-        progressBar.layout(layout -> layout.width(22).height(32));
+        progressBar.layout(layout -> layout.width(18).height(72));
         progressBar.setRange(0.0F, (float) TANK_CAPACITY);
         progressBar.setProgress(amounts[index]);
         progressBar.progressBarStyle(style -> style
