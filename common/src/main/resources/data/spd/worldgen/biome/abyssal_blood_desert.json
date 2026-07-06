@@ -104,6 +104,12 @@
         "weight": 20
       },
       {
+        "type": "spd:abyssal_eroded_silverfish",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 45
+      },
+      {
         "type": "spd:mold_zombie",
         "maxCount": 4,
         "minCount": 1,
