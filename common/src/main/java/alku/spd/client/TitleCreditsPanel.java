@@ -110,11 +110,12 @@ public final class TitleCreditsPanel {
 
     private static void drawFrame(GuiGraphics graphics, int x, int y, int width, int height, boolean hovered) {
         graphics.fill(x + 4, y + 5, x + width + 4, y + height + 5, 0x66000000);
-        graphics.fillGradient(x, y, x + width, y + height, 0xEE1B1315, 0xEE0A0708);
+        graphics.fillGradient(x, y, x + width, y + height, 0xFF1B1315, 0xFF0A0708);
         graphics.fill(x + 1, y + 1, x + width - 1, y + HEADER_HEIGHT, hovered ? 0xFF402522 : 0xFF2D1918);
+        graphics.fill(x + 7, y + HEADER_HEIGHT + 1, x + width - 7, y + height - 7, 0xFF0D0A0B);
         graphics.fill(x + 6, y + HEADER_HEIGHT, x + width - 6, y + HEADER_HEIGHT + 1, 0xBBD69A44);
-        graphics.fill(x + 4, y + 4, x + 7, y + height - 4, 0x99C58E45);
-        graphics.fill(x + width - 7, y + 4, x + width - 4, y + height - 4, 0x99C58E45);
+        graphics.fill(x + 4, y + 4, x + 7, y + height - 4, 0xFFC58E45);
+        graphics.fill(x + width - 7, y + 4, x + width - 4, y + height - 4, 0xFFC58E45);
         graphics.renderOutline(x, y, width, height, hovered ? 0xFFE8C77B : 0xFFC08B44);
     }
 
