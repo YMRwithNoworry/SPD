@@ -2,6 +2,7 @@ package alku.spd.block;
 
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
 import alku.spd.registry.SpdBlockEntities;
+import alku.spd.registry.SpdMenus;
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
 import com.lowdragmc.lowdraglib2.gui.ui.UI;
@@ -60,7 +61,7 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
         }
 
         try {
-            boolean opened = BlockUIMenuType.openUI(serverPlayer, pos);
+            boolean opened = SpdMenus.openAbyssalHeartForge(serverPlayer, pos);
             if (!opened) {
                 LOGGER.warn("LDLib2 refused to open Abyssal Heart Forge UI at {}", pos);
                 serverPlayer.displayClientMessage(Component.translatable("message.spd.abyssal_heart_forge.open_failed"), true);
