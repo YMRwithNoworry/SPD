@@ -30,6 +30,10 @@ public final class SpdBlocks {
                     .lightLevel(state -> 5)
                     .requiresCorrectToolForDrops()));
 
+    public static final RegistrySupplier<Block> BLOOD_ASH_ORE = BLOCKS.register("blood_ash_ore", () ->
+            new Block(BlockBehaviour.Properties.copy(Blocks.COAL_ORE)
+                    .requiresCorrectToolForDrops()));
+
     public static final RegistrySupplier<Block> ABYSSAL_BLOOD_SAND = BLOCKS.register("abyssal_blood_sand", () ->
             new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)
                     .isViewBlocking((state, level, pos) -> true)));

@@ -35,6 +35,8 @@ public final class SpdFabric implements ModInitializer {
         addOverworldOre("ore_blazing_vein_upper");
         addOverworldOre("ore_blazing_vein_middle");
         addOverworldOre("ore_blazing_vein_small");
+        addOverworldOre("ore_blood_ash");
+        addOverworldOre("ore_blood_ash_buried");
         ServerChunkEvents.CHUNK_LOAD.register(AbyssalBloodDesertSurface::replaceSurface);
     }
 

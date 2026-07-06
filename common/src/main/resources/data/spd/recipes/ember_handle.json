@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "I",
+    "I"
+  ],
+  "key": {
+    "I": {
+      "item": "spd:blood_ash_ingot"
+    }
+  },
+  "result": {
+    "item": "spd:ember_handle",
+    "count": 4
+  }
+}

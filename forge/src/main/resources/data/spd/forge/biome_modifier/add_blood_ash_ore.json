@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "spd:ore_blood_ash",
+    "spd:ore_blood_ash_buried"
+  ],
+  "step": "underground_ores"
+}

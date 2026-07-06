@@ -6,9 +6,12 @@ import alku.spd.item.NamelessSwordItem;
 import dev.architectury.core.item.ArchitecturySpawnEggItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 
 public final class SpdItems {
@@ -28,6 +31,23 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> BLAZING_CARBON_STEEL_INGOT = ITEMS.register("blazing_carbon_steel_ingot", () ->
             new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLOOD_ASH_ORE = ITEMS.register("blood_ash_ore", () ->
+            new BlockItem(SpdBlocks.BLOOD_ASH_ORE.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLOOD_ASH_RAW_ORE = ITEMS.register("blood_ash_raw_ore", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> BLOOD_ASH_INGOT = ITEMS.register("blood_ash_ingot", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> EMBER_HANDLE = ITEMS.register("ember_handle", () ->
+            new Item(new Item.Properties()) {
+                @Override
+                public Component getName(ItemStack stack) {
+                    return super.getName(stack).copy().withStyle(ChatFormatting.GOLD);
+                }
+            });
 
     public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
             new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
