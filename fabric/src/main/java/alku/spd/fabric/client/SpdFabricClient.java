@@ -3,6 +3,7 @@ package alku.spd.fabric.client;
 import alku.spd.client.AbyssalGloomClient;
 import alku.spd.client.SubjugationClientOverlay;
 import alku.spd.client.SpdClientCommands;
+import alku.spd.client.TitleMusicClient;
 import alku.spd.client.renderer.AbyssalFungalVinesRenderer;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
 import alku.spd.client.renderer.AbyssalErodedSilverfishRenderer;
@@ -36,6 +37,7 @@ public final class SpdFabricClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.MASCOT.get(), MascotRenderer::new);
         AbyssalGloomClient.register();
+        TitleMusicClient.register();
         SpdClientCommands.register();
         HudRenderCallback.EVENT.register(SubjugationClientOverlay::render);
     }

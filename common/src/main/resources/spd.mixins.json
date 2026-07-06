@@ -7,7 +7,8 @@
     "GameRendererAccessor",
     "LightTextureMixin",
     "ClientLevelMixin",
-    "PostChainAccessor"
+    "PostChainAccessor",
+    "TitleScreenMixin"
   ],
   "mixins": [
     "AbstractContainerMenuAccessor",

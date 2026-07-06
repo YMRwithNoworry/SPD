@@ -1,0 +1,10 @@
+{
+  "music.breathing": {
+    "sounds": [
+      {
+        "name": "spd:music/breathing",
+        "stream": true
+      }
+    ]
+  }
+}

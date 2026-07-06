@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import alku.spd.client.AbyssalGloomClient;
 import alku.spd.client.SubjugationClientOverlay;
 import alku.spd.client.SpdClientCommands;
+import alku.spd.client.TitleMusicClient;
 import alku.spd.client.renderer.AbyssalFungalVinesRenderer;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
 import alku.spd.client.renderer.AbyssalErodedSilverfishRenderer;
@@ -33,6 +34,7 @@ public final class SpdForgeClient {
     public static void setupClient(FMLClientSetupEvent event) {
         SpdClientCommands.register();
         AbyssalGloomClient.register();
+        TitleMusicClient.register();
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_FUNGAL_VINES.get(), AbyssalFungalVinesRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.MASCOT.get(), MascotRenderer::new);
