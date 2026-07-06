@@ -1,9 +1,11 @@
 package alku.spd.block;
 
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
+import alku.spd.gui.Ldlib2SlotRegistrar;
 import alku.spd.network.AbyssalHeartForgeNetworking;
 import alku.spd.registry.SpdBlockEntities;
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType;
+import com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerMenu;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
 import com.lowdragmc.lowdraglib2.gui.ui.UI;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
@@ -15,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -86,6 +89,11 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
     }
 
     @Override
+    public BlockUIMenuType.BlockUIHolder createUIHolder(Player player, BlockPos pos, BlockState blockState) {
+        return new AbyssalHeartForgeUIHolder(this, player, pos, blockState);
+    }
+
+    @Override
     public ModularUI createUI(BlockUIMenuType.BlockUIHolder holder) {
         if (holder.player.level().getBlockEntity(holder.pos) instanceof AbyssalHeartForgeBlockEntity forge) {
             return forge.createUI(holder.player);
@@ -121,5 +129,21 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
             level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 3.0F, Level.ExplosionInteraction.TNT);
         }
         super.playerWillDestroy(level, pos, state, player);
+    }
+
+    private static final class AbyssalHeartForgeUIHolder extends BlockUIMenuType.BlockUIHolder {
+        private AbyssalHeartForgeUIHolder(BlockUIMenuType.BlockUI blockUI, Player player, BlockPos pos, BlockState blockState) {
+            super(blockUI, player, pos, blockState);
+        }
+
+        @Nullable
+        @Override
+        public ModularUIContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+            ModularUIContainerMenu menu = super.createMenu(containerId, playerInventory, player);
+            if (menu != null) {
+                Ldlib2SlotRegistrar.registerMenuSlots(menu);
+            }
+            return menu;
+        }
     }
 }
