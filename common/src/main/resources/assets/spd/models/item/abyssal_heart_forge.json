@@ -1,7 +1,3 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "spd:block/abyssal_heart_forge",
-    "particle": "spd:block/abyssal_heart_forge"
-  }
+  "parent": "spd:block/abyssal_heart_forge"
 }

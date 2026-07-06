@@ -2,7 +2,7 @@ package alku.spd.block.entity;
 
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdItems;
-import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.SupplierDataSource;
+import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.DataBindingBuilder;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
 import com.lowdragmc.lowdraglib2.gui.ui.UI;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
@@ -200,10 +200,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
                 .layout(layout -> layout.width(44).heightPercent(100).gapAll(4));
         inputColumn.addChildren(
                 createFilteredSlot(INPUT_SLOT),
-                new ProgressBar()
-                        .bindDataSource(SupplierDataSource.of(() -> (float) getCraftProgress()))
-                        .label(label -> label.setDisplay(false))
-                        .layout(layout -> layout.width(40).height(14)),
+                createCraftProgressBar(),
                 createFilteredSlot(FUEL_SLOT)
         );
 
@@ -257,6 +254,14 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
 
     private double getCraftProgress() {
         return MAX_PROGRESS <= 0 ? 0.0D : Math.min(1.0D, (double) this.progress / (double) MAX_PROGRESS);
+    }
+
+    private ProgressBar createCraftProgressBar() {
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.label(label -> label.setDisplay(false));
+        progressBar.layout(layout -> layout.width(40).height(14));
+        progressBar.bind(DataBindingBuilder.floatValS2C(() -> (float) getCraftProgress()).build());
+        return progressBar;
     }
 
     private ItemSlot createFilteredSlot(int slot) {
