@@ -2,8 +2,13 @@ package alku.spd.block;
 
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
 import alku.spd.registry.SpdBlockEntities;
-import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
+import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType;
+import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
+import com.lowdragmc.lowdraglib2.gui.ui.UI;
+import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
+import com.lowdragmc.lowdraglib2.gui.ui.elements.Label;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class AbyssalHeartForgeBlock extends Block implements EntityBlock {
+public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockUIMenuType.BlockUI {
     public AbyssalHeartForgeBlock(Properties properties) {
         super(properties);
     }
@@ -43,9 +48,27 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock {
         }
 
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-            BlockEntityUIFactory.INSTANCE.openUI(forge, serverPlayer);
+            BlockUIMenuType.openUI(serverPlayer, pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public ModularUI createUI(BlockUIMenuType.BlockUIHolder holder) {
+        if (holder.player.level().getBlockEntity(holder.pos) instanceof AbyssalHeartForgeBlockEntity forge) {
+            return forge.createUI(holder.player);
+        }
+
+        UIElement root = new UIElement()
+                .layout(layout -> layout.width(220).height(188).paddingAll(5))
+                .addClass("panel_bg");
+        root.addChild(new Label().setText(getUIDisplayName(holder)));
+        return new ModularUI(UI.of(root), holder.player);
+    }
+
+    @Override
+    public Component getUIDisplayName(BlockUIMenuType.BlockUIHolder holder) {
+        return Component.translatable("container.spd.abyssal_heart_forge");
     }
 
     @Nullable

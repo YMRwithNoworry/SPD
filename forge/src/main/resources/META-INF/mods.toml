@@ -42,9 +42,9 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.spd]]
-modId = "ldlib"
+modId = "ldlib2"
 mandatory = true
-versionRange = "[1.0.50,)"
+versionRange = "[2.2.27,)"
 ordering = "AFTER"
 side = "BOTH"
 

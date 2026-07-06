@@ -31,7 +31,7 @@ dependencies {
 
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
     modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.1:$rootProject.geckolib_version"
-    modImplementation "maven.modrinth:ldlib:$rootProject.ldlib_fabric_version"
+    modImplementation files(rootProject.file("../LDlib2/fabric/build/libs/${rootProject.ldlib2_fabric_file}"))
     modImplementation "maven.modrinth:photon-editor:$rootProject.photon_fabric_version"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
