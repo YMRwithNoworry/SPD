@@ -7,6 +7,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
 import com.lowdragmc.lowdraglib2.gui.ui.UI;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
 import com.lowdragmc.lowdraglib2.gui.ui.elements.Label;
+import com.lowdragmc.lowdraglib2.gui.ui.style.StylesheetManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,11 +43,6 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof AbyssalHeartForgeBlockEntity forge)) {
-            return InteractionResult.PASS;
-        }
-
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
             BlockUIMenuType.openUI(serverPlayer, pos);
         }
@@ -63,7 +59,7 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
                 .layout(layout -> layout.width(220).height(188).paddingAll(5))
                 .addClass("panel_bg");
         root.addChild(new Label().setText(getUIDisplayName(holder)));
-        return new ModularUI(UI.of(root), holder.player);
+        return new ModularUI(UI.of(root, StylesheetManager.INSTANCE.getStylesheetSafe(StylesheetManager.GDP)), holder.player);
     }
 
     @Override

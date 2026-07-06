@@ -11,6 +11,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.elements.Label;
 import com.lowdragmc.lowdraglib2.gui.ui.elements.ProgressBar;
 import com.lowdragmc.lowdraglib2.gui.ui.elements.inventory.InventorySlots;
 import com.lowdragmc.lowdraglib2.gui.ui.style.StylesheetManager;
+import dev.vfyjxf.taffy.style.FlexDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -32,8 +33,6 @@ import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import java.util.List;
 
 public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Container, GeoBlockEntity {
     public static final int SLOT_COUNT = 18;
@@ -195,7 +194,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
 
         UIElement forgeRow = new UIElement()
                 .layout(layout -> layout.widthPercent(100).height(78).gapAll(10));
-        forgeRow.getLayout().flexDirection(dev.vfyjxf.taffy.style.FlexDirection.ROW);
+        forgeRow.getLayout().flexDirection(FlexDirection.ROW);
 
         UIElement inputColumn = new UIElement()
                 .layout(layout -> layout.width(44).heightPercent(100).gapAll(4));
@@ -212,7 +211,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
                 .layout(layout -> layout.width(72).height(72).gapAll(0));
         for (int row = 0; row < 4; row++) {
             UIElement outputRow = new UIElement();
-            outputRow.getLayout().flexDirection(dev.vfyjxf.taffy.style.FlexDirection.ROW);
+            outputRow.getLayout().flexDirection(FlexDirection.ROW);
             for (int column = 0; column < 4; column++) {
                 outputRow.addChild(createOutputSlot(OUTPUT_START + row * 4 + column));
             }
@@ -227,7 +226,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
                 new InventorySlots()
         );
 
-        return new ModularUI(UI.of(root, List.of(StylesheetManager.INSTANCE.getStylesheetSafe(StylesheetManager.MC))), player);
+        return new ModularUI(UI.of(root, StylesheetManager.INSTANCE.getStylesheetSafe(StylesheetManager.GDP)), player);
     }
 
     @Override
