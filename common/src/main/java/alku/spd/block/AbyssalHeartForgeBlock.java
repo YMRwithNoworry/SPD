@@ -1,14 +1,16 @@
 package alku.spd.block;
 
 import alku.spd.block.entity.AbyssalHeartForgeBlockEntity;
-import alku.spd.gui.Ldlib2SlotRegistrar;
+import alku.spd.mixin.AbstractContainerMenuAccessor;
 import alku.spd.network.AbyssalHeartForgeNetworking;
 import alku.spd.registry.SpdBlockEntities;
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType;
 import com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerMenu;
+import com.lowdragmc.lowdraglib2.gui.slot.LocalSlot;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
 import com.lowdragmc.lowdraglib2.gui.ui.UI;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
+import com.lowdragmc.lowdraglib2.gui.ui.elements.ItemSlot;
 import com.lowdragmc.lowdraglib2.gui.ui.elements.Label;
 import com.lowdragmc.lowdraglib2.gui.ui.style.StylesheetManager;
 import net.minecraft.core.BlockPos;
@@ -26,10 +28,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockUIMenuType.BlockUI {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbyssalHeartForgeBlock.class);
@@ -111,6 +117,40 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
         return Component.translatable("container.spd.abyssal_heart_forge");
     }
 
+    public static void registerMenuSlots(ModularUIContainerMenu menu) {
+        ModularUI modularUI = menu.getModularUI();
+        if (modularUI == null) {
+            LOGGER.warn("[SPD-FORGE-GUI] Cannot register LDLib2 slots for menu {} because its ModularUI is missing", menu.containerId);
+            return;
+        }
+
+        int before = menu.slots.size();
+        int added = 0;
+        Set<Slot> knownSlots = java.util.Collections.newSetFromMap(new IdentityHashMap<>());
+        knownSlots.addAll(menu.slots);
+
+        for (ItemSlot itemSlot : modularUI.ui.rootElement.selfAndAllChildren()
+                .filter(ItemSlot.class::isInstance)
+                .map(ItemSlot.class::cast)
+                .toList()) {
+            Slot slot = itemSlot.getSlot();
+            if (slot == null || slot instanceof LocalSlot || knownSlots.contains(slot)) {
+                continue;
+            }
+            ((AbstractContainerMenuAccessor) menu).spd$addSlot(slot);
+            knownSlots.add(slot);
+            added++;
+        }
+
+        if (added > 0 || before == 0) {
+            LOGGER.info("[SPD-FORGE-GUI] Registered {} LDLib2 vanilla slots for menu {} ({} -> {})",
+                    added,
+                    menu.containerId,
+                    before,
+                    menu.slots.size());
+        }
+    }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
@@ -141,7 +181,7 @@ public class AbyssalHeartForgeBlock extends Block implements EntityBlock, BlockU
         public ModularUIContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
             ModularUIContainerMenu menu = super.createMenu(containerId, playerInventory, player);
             if (menu != null) {
-                Ldlib2SlotRegistrar.registerMenuSlots(menu);
+                AbyssalHeartForgeBlock.registerMenuSlots(menu);
             }
             return menu;
         }

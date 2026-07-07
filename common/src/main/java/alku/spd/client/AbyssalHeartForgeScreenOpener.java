@@ -1,7 +1,6 @@
 package alku.spd.client;
 
 import alku.spd.block.AbyssalHeartForgeBlock;
-import alku.spd.gui.Ldlib2SlotRegistrar;
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType;
 import com.lowdragmc.lowdraglib2.gui.factory.LDMenuTypes;
 import com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerMenu;
@@ -42,7 +41,7 @@ public final class AbyssalHeartForgeScreenOpener {
                 minecraft.player.getInventory(),
                 holder
         );
-        Ldlib2SlotRegistrar.registerMenuSlots(menu);
+        AbyssalHeartForgeBlock.registerMenuSlots(menu);
         ModularUIContainerScreen screen = new ModularUIContainerScreen(menu, minecraft.player.getInventory(), block.getUIDisplayName(holder));
         minecraft.player.containerMenu = menu;
         minecraft.setScreen(screen);
