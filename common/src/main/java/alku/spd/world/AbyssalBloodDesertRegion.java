@@ -22,7 +22,6 @@ public final class AbyssalBloodDesertRegion extends Region {
 
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-        addModifiedVanillaOverworldBiomes(mapper, builder ->
-                builder.replaceBiome(Biomes.DESERT, SpdBiomes.ABYSSAL_BLOOD_DESERT));
+        addBiomeSimilar(mapper, Biomes.DESERT, SpdBiomes.ABYSSAL_BLOOD_DESERT);
     }
 }

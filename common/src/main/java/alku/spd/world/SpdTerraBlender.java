@@ -24,11 +24,17 @@ public final class SpdTerraBlender {
         Regions.register(new AbyssalBloodDesertRegion(
                 new ResourceLocation(Spd.MOD_ID, "abyssal_blood_desert"),
                 BLOOD_DESERT_REGION_WEIGHT));
+
+        SurfaceRules.RuleSource bloodDesertSurfaceRule = bloodDesertSurfaceRule();
+        SurfaceRuleManager.addSurfaceRules(
+                SurfaceRuleManager.RuleCategory.OVERWORLD,
+                Spd.MOD_ID,
+                bloodDesertSurfaceRule);
         SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(
                 SurfaceRuleManager.RuleCategory.OVERWORLD,
                 SurfaceRuleManager.RuleStage.AFTER_BEDROCK,
-                100,
-                bloodDesertSurfaceRule());
+                1000,
+                bloodDesertSurfaceRule);
     }
 
     private static SurfaceRules.RuleSource bloodDesertSurfaceRule() {
