@@ -41,8 +41,7 @@ public final class AbyssalBloodDesertSurface {
                     continue;
                 }
 
-                int bottomY = Math.max(level.getMinBuildHeight(), topY - 8);
-                for (int y = topY - 1; y >= bottomY; y--) {
+                for (int y = topY - 1; y >= level.getMinBuildHeight(); y--) {
                     pos.set(x, y, z);
                     BlockState state = chunk.getBlockState(pos);
                     if (REPLACEABLE_SAND_BLOCKS.contains(state.getBlock())) {
