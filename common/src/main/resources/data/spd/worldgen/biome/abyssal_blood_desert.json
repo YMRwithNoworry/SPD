@@ -10,8 +10,8 @@
   "effects": {
     "fog_color": 10455189,
     "sky_color": 7254527,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": 9285927,
+    "water_fog_color": 5339146
   },
   "features": [
     [],
@@ -23,7 +23,8 @@
     [],
     [],
     [
-      "spd:abyssal_dead_wood_sparse"
+      "spd:abyssal_dead_wood_sparse",
+      "spd:abyssal_blood_desert_cactus"
     ],
     [],
     []

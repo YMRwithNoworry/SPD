@@ -6,14 +6,12 @@ import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.registry.SpdEntities;
-import alku.spd.world.AbyssalBloodDesertSurface;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -37,7 +35,6 @@ public final class SpdFabric implements ModInitializer {
         addOverworldOre("ore_blazing_vein_small");
         addOverworldOre("ore_blood_ash");
         addOverworldOre("ore_blood_ash_buried");
-        ServerChunkEvents.CHUNK_LOAD.register(AbyssalBloodDesertSurface::replaceSurface);
     }
 
     private static void addOverworldOre(String name) {

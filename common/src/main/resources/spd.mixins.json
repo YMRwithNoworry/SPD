@@ -13,12 +13,14 @@
   "mixins": [
     "AbstractContainerMenuAccessor",
     "AnvilMenuMixin",
+    "CactusBlockMixin",
     "ItemCombinerMenuAccessor",
     "ItemStackMixin",
     "LivingEntityMixin",
     "MultiNoiseBiomeSourceParameterListPresetMixin",
     "PlayerMixin",
-    "RepairItemRecipeMixin"
+    "RepairItemRecipeMixin",
+    "SurfaceRuleDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1
