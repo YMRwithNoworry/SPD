@@ -10,6 +10,7 @@ dependencies {
 
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
     modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.1:$rootProject.geckolib_version"
+    modImplementation "com.github.glitchfiend:TerraBlender-common:$rootProject.terrablender_version"
     modImplementation files(rootProject.file("../LDlib2/fabric/build/libs/${rootProject.ldlib2_fabric_file}"))
     modImplementation "maven.modrinth:photon-editor:$rootProject.photon_fabric_version"
 }

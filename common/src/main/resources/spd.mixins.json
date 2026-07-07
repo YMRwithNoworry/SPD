@@ -17,8 +17,6 @@
     "ItemCombinerMenuAccessor",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "MultiNoiseBiomeSourceParameterListPresetMixin",
-    "NoiseGeneratorSettingsMixin",
     "PlayerMixin",
     "RepairItemRecipeMixin"
   ],

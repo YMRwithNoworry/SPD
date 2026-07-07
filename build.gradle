@@ -24,6 +24,7 @@ subprojects {
     }
 
     repositories {
+        maven { url "https://maven.minecraftforge.net/" }
         maven { url "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
         maven { url "https://api.modrinth.com/maven" }
         // Add repositories to retrieve artifacts from in here.

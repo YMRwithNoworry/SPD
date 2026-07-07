@@ -6,6 +6,7 @@ import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.registry.SpdEntities;
+import alku.spd.world.SpdTerraBlender;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,7 @@ public final class SpdFabric implements ModInitializer {
     public void onInitialize() {
         GeckoLib.initialize();
         Spd.init();
+        SpdTerraBlender.register();
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes());
