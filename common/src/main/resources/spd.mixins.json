@@ -18,9 +18,9 @@
     "ItemStackMixin",
     "LivingEntityMixin",
     "MultiNoiseBiomeSourceParameterListPresetMixin",
+    "NoiseGeneratorSettingsMixin",
     "PlayerMixin",
-    "RepairItemRecipeMixin",
-    "SurfaceRuleDataMixin"
+    "RepairItemRecipeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
