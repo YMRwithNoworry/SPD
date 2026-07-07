@@ -5,14 +5,13 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 
 @Environment(EnvType.CLIENT)
 public final class TitleMusicClient {
-    private static TitleMusicSound titleMusic;
+    private static NonWorldMusicSound nonWorldMusic;
     private static boolean registered;
 
     private TitleMusicClient() {
@@ -27,24 +26,28 @@ public final class TitleMusicClient {
     }
 
     private static void tick(Minecraft minecraft) {
-        if (minecraft.screen instanceof TitleScreen) {
+        if (shouldPlayBreathingMusic(minecraft)) {
             minecraft.getMusicManager().stopPlaying();
-            if (titleMusic == null || titleMusic.isStopped() || !minecraft.getSoundManager().isActive(titleMusic)) {
-                titleMusic = new TitleMusicSound();
-                minecraft.getSoundManager().play(titleMusic);
+            if (nonWorldMusic == null || nonWorldMusic.isStopped() || !minecraft.getSoundManager().isActive(nonWorldMusic)) {
+                nonWorldMusic = new NonWorldMusicSound();
+                minecraft.getSoundManager().play(nonWorldMusic);
             }
             return;
         }
 
-        if (titleMusic != null) {
-            minecraft.getSoundManager().stop(titleMusic);
-            titleMusic.finish();
-            titleMusic = null;
+        if (nonWorldMusic != null) {
+            minecraft.getSoundManager().stop(nonWorldMusic);
+            nonWorldMusic.finish();
+            nonWorldMusic = null;
         }
     }
 
-    private static final class TitleMusicSound extends AbstractTickableSoundInstance {
-        private TitleMusicSound() {
+    private static boolean shouldPlayBreathingMusic(Minecraft minecraft) {
+        return minecraft.level == null;
+    }
+
+    private static final class NonWorldMusicSound extends AbstractTickableSoundInstance {
+        private NonWorldMusicSound() {
             super(SpdSounds.BREATHING_MUSIC.get(), SoundSource.MUSIC, SoundInstance.createUnseededRandom());
             this.looping = true;
             this.relative = true;
@@ -56,7 +59,7 @@ public final class TitleMusicClient {
         @Override
         public void tick() {
             Minecraft minecraft = Minecraft.getInstance();
-            if (!(minecraft.screen instanceof TitleScreen)) {
+            if (!shouldPlayBreathingMusic(minecraft)) {
                 finish();
                 return;
             }
