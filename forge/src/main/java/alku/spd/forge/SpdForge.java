@@ -54,7 +54,7 @@ public final class SpdForge {
     }
 
     private void onChunkLoad(ChunkEvent.Load event) {
-        if (event.isNewChunk() && event.getLevel() instanceof ServerLevel level) {
+        if (event.getLevel() instanceof ServerLevel level) {
             AbyssalBloodDesertSurface.replaceSurface(level, event.getChunk());
         }
     }

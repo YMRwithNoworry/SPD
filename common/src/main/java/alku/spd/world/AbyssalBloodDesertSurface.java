@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.Set;
 
@@ -31,23 +30,18 @@ public final class AbyssalBloodDesertSurface {
             int x = chunkPos.getMinBlockX() + localX;
             for (int localZ = 0; localZ < 16; localZ++) {
                 int z = chunkPos.getMinBlockZ() + localZ;
-                int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, localX, localZ);
-                if (topY <= level.getMinBuildHeight()) {
-                    continue;
-                }
-
-                pos.set(x, topY - 1, z);
-                if (!level.getBiome(pos).is(SpdBiomes.ABYSSAL_BLOOD_DESERT)) {
-                    continue;
-                }
-
-                for (int y = topY - 1; y >= level.getMinBuildHeight(); y--) {
+                for (int y = level.getMaxBuildHeight() - 1; y >= level.getMinBuildHeight(); y--) {
                     pos.set(x, y, z);
                     BlockState state = chunk.getBlockState(pos);
-                    if (REPLACEABLE_SAND_BLOCKS.contains(state.getBlock())) {
-                        chunk.setBlockState(pos, bloodSand, false);
-                        changed = true;
+                    if (!REPLACEABLE_SAND_BLOCKS.contains(state.getBlock())) {
+                        continue;
                     }
+                    if (!level.getBiome(pos).is(SpdBiomes.ABYSSAL_BLOOD_DESERT)) {
+                        continue;
+                    }
+
+                    chunk.setBlockState(pos, bloodSand, false);
+                    changed = true;
                 }
             }
         }
