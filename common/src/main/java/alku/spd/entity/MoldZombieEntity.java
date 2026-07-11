@@ -36,11 +36,11 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final double VANILLA_ZOMBIE_SPEED = 0.23D;
     private static final double WALKING_SPEED = VANILLA_ZOMBIE_SPEED * 1.2D;
     private static final double RUNNING_SPEED = VANILLA_ZOMBIE_SPEED * 2.4D;
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("daizhe");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("paobu");
-    private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("追逐");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("gongji");
-    private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("siwang");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.mold_zombie.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.mold_zombie.walk");
+    private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("animation.mold_zombie.chase");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.mold_zombie.attack");
+    private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("animation.mold_zombie.death");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int appliedVariant = Integer.MIN_VALUE;
