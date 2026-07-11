@@ -37,16 +37,19 @@ public final class SpdCorrosion {
             return;
         }
 
-        entity.removeEffectNoUpdate(SpdEffects.ABYSSAL_PRESSURE.get());
-        if (instance.getAmplifier() > 0) {
-            entity.addEffect(new MobEffectInstance(
-                    SpdEffects.ABYSSAL_PRESSURE.get(),
-                    DEFAULT_PRESSURE_DURATION,
-                    instance.getAmplifier() - 1,
-                    instance.isAmbient(),
-                    instance.isVisible(),
-                    instance.showIcon()));
+        if (instance.getAmplifier() <= 0) {
+            entity.removeEffect(SpdEffects.ABYSSAL_PRESSURE.get());
+            return;
         }
+
+        entity.removeEffectNoUpdate(SpdEffects.ABYSSAL_PRESSURE.get());
+        entity.addEffect(new MobEffectInstance(
+                SpdEffects.ABYSSAL_PRESSURE.get(),
+                DEFAULT_PRESSURE_DURATION,
+                instance.getAmplifier() - 1,
+                instance.isAmbient(),
+                instance.isVisible(),
+                instance.showIcon()));
     }
 
     public static int getAbyssalPressureLayers(LivingEntity entity) {

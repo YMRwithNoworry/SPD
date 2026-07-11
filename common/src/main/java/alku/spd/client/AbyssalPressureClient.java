@@ -27,16 +27,6 @@ public final class AbyssalPressureClient {
         int layers = Math.min(10, effect.getAmplifier() + 1);
         int width = minecraft.getWindow().getGuiScaledWidth();
         int height = minecraft.getWindow().getGuiScaledHeight();
-        int edge = layers >= 7 ? Math.max(24, Math.min(width, height) / 5)
-                : layers >= 4 ? 16 : 8;
-        int alpha = layers >= 7 ? 80 + (layers - 7) * 12
-                : layers >= 4 ? 42 + (layers - 4) * 10 : 10 + layers * 6;
-        int color = (Math.min(150, alpha) << 24) | 0x2A0000;
-
-        graphics.fill(0, 0, width, edge, color);
-        graphics.fill(0, height - edge, width, height, color);
-        graphics.fill(0, edge, edge, height - edge, color);
-        graphics.fill(width - edge, edge, width, height - edge, color);
 
         if (layers >= 4) {
             renderSpores(graphics, minecraft, width, height, layers);
