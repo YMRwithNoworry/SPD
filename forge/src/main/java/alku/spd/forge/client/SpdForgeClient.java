@@ -8,6 +8,7 @@ import alku.spd.client.TitleMusicClient;
 import alku.spd.client.renderer.AbyssalFungalVinesRenderer;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
 import alku.spd.client.renderer.AbyssalErodedSilverfishRenderer;
+import alku.spd.client.renderer.AbyssalFoxRenderer;
 import alku.spd.client.renderer.AbyssalLizardRenderer;
 import alku.spd.client.renderer.AbyssalTornadoRenderer;
 import alku.spd.client.renderer.EpxRenderer;
@@ -44,6 +45,7 @@ public final class SpdForgeClient {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishRenderer::new);
+        event.registerEntityRenderer(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_LIGHT_WAVE.get(), NoopRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_TORNADO.get(), AbyssalTornadoRenderer::new);
         event.registerEntityRenderer(SpdEntities.NAMELESS_SLASH.get(), NoopRenderer::new);

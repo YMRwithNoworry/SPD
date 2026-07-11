@@ -2,6 +2,7 @@ package alku.spd.registry;
 
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
+import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalLightWaveEntity;
 import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalTornadoEntity;
@@ -42,6 +43,12 @@ public final class SpdEntities {
                     .sized(0.8F, 0.45F)
                     .clientTrackingRange(8)
                     .build("abyssal_eroded_silverfish"));
+
+    public static final RegistrySupplier<EntityType<AbyssalFoxEntity>> ABYSSAL_FOX = ENTITIES.register("abyssal_fox", () ->
+            EntityType.Builder.of(AbyssalFoxEntity::new, MobCategory.CREATURE)
+                    .sized(0.7F, 0.7F)
+                    .clientTrackingRange(8)
+                    .build("abyssal_fox"));
 
     public static final RegistrySupplier<EntityType<AbyssalLightWaveEntity>> ABYSSAL_LIGHT_WAVE = ENTITIES.register("abyssal_light_wave", () ->
             EntityType.Builder.<AbyssalLightWaveEntity>of(AbyssalLightWaveEntity::new, MobCategory.MISC)

@@ -30,6 +30,8 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.BLOOD_ASH_RAW_ORE.get());
                 output.accept(SpdItems.BLOOD_ASH_INGOT.get());
                 output.accept(SpdItems.EMBER_HANDLE.get());
+                output.accept(SpdItems.FUNGAL_RESIDUE.get());
+                output.accept(SpdItems.CHROME_DUST.get());
                 output.accept(SpdItems.NAMELESS_SWORD.get());
                 output.accept(SpdItems.ABYSSAL_BLOOD_SAND.get());
                 output.accept(SpdItems.GUIDE_BOOK.get());
@@ -43,6 +45,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.ABYSSAL_LIZARD_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_ERODED_SILVERFISH_SPAWN_EGG.get());
                 output.accept(SpdItems.MOLD_ZOMBIE_SPAWN_EGG.get());
+                output.accept(SpdItems.ABYSSAL_FOX_SPAWN_EGG.get());
             })
             .build());
 

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "spd:abyssal_blood_desert",
+    {
+      "id": "spd:fungal_corroded_thicket",
+      "required": false
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package alku.spd.forge;
 
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
+import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
@@ -10,6 +11,7 @@ import alku.spd.registry.SpdEntities;
 import alku.spd.world.SpdTerraBlender;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +24,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib.GeckoLib;
 
 import java.util.UUID;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 @Mod(Spd.MOD_ID)
 public final class SpdForge {
@@ -38,7 +41,14 @@ public final class SpdForge {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(SpdTerraBlender::register);
+        event.enqueueWork(() -> {
+            SpdTerraBlender.register();
+            SpawnPlacements.register(
+                    SpdEntities.ABYSSAL_FOX.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    AbyssalFoxEntity::checkSpawnRules);
+        });
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
@@ -46,6 +56,7 @@ public final class SpdForge {
         event.put(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishEntity.createAttributes().build());
         event.put(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes().build());
         event.put(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes().build());
+        event.put(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxEntity.createAttributes().build());
     }
 
     private void addItemAttributes(ItemAttributeModifierEvent event) {
