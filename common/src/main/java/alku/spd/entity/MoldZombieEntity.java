@@ -19,6 +19,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -169,8 +170,17 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
                 return PlayState.CONTINUE;
             }
 
-            if (state.isMoving()) {
-                state.setAndContinue(this.isRunningVariant() ? CHASE : WALK);
+            Vec3 movement = this.getDeltaMovement();
+            boolean moving = state.isMoving()
+                    || movement.x * movement.x + movement.z * movement.z > 1.0E-5D;
+
+            if (this.isRunningVariant() && moving) {
+                state.setAndContinue(CHASE);
+                return PlayState.CONTINUE;
+            }
+
+            if (moving) {
+                state.setAndContinue(WALK);
                 return PlayState.CONTINUE;
             }
 
@@ -184,4 +194,3 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         return this.cache;
     }
 }
-
