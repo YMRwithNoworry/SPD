@@ -8,7 +8,6 @@ import alku.spd.client.renderer.AbyssalFungalVinesRenderer;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
 import alku.spd.client.renderer.AbyssalErodedSilverfishRenderer;
 import alku.spd.client.renderer.AbyssalFoxRenderer;
-import alku.spd.client.renderer.AbyssalLizardRenderer;
 import alku.spd.client.renderer.AbyssalTornadoRenderer;
 import alku.spd.client.renderer.AbyssalWolfRenderer;
 import alku.spd.client.renderer.EpxRenderer;
@@ -26,7 +25,6 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 public final class SpdFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.register(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfRenderer::new);

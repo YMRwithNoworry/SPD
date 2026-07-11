@@ -3,7 +3,6 @@ package alku.spd.fabric;
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
-import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
@@ -30,7 +29,6 @@ public final class SpdFabric implements ModInitializer {
         GeckoLib.initialize();
         Spd.init();
         SpdTerraBlender.register();
-        FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes());
@@ -46,7 +44,6 @@ public final class SpdFabric implements ModInitializer {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 AbyssalWolfEntity::checkSpawnRules);
-        BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.ABYSSAL_LIZARD.get(), 20, 1, 1);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), 45, 1, 3);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.MOLD_ZOMBIE.get(), 80, 1, 4);
         BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_FOX_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_FOX.get(), 10, 1, 2);

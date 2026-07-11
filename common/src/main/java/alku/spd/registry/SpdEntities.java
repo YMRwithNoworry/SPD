@@ -4,7 +4,6 @@ import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalLightWaveEntity;
-import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalTornadoEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.EpxCloudEntity;
@@ -32,12 +31,6 @@ public final class SpdEntities {
                     .sized(2.2F, 2.8F)
                     .clientTrackingRange(10)
                     .build("false_mother"));
-
-    public static final RegistrySupplier<EntityType<AbyssalLizardEntity>> ABYSSAL_LIZARD = ENTITIES.register("abyssal_lizard", () ->
-            EntityType.Builder.of(AbyssalLizardEntity::new, MobCategory.MONSTER)
-                    .sized(2.4F, 3.2F)
-                    .clientTrackingRange(10)
-                    .build("abyssal_lizard"));
 
     public static final RegistrySupplier<EntityType<AbyssalErodedSilverfishEntity>> ABYSSAL_ERODED_SILVERFISH = ENTITIES.register("abyssal_eroded_silverfish", () ->
             EntityType.Builder.of(AbyssalErodedSilverfishEntity::new, MobCategory.MONSTER)

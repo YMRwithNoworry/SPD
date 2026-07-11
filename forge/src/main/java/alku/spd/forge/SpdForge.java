@@ -3,7 +3,6 @@ package alku.spd.forge;
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
-import alku.spd.entity.AbyssalLizardEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
@@ -58,7 +57,6 @@ public final class SpdForge {
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(SpdEntities.ABYSSAL_LIZARD.get(), AbyssalLizardEntity.createAttributes().build());
         event.put(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishEntity.createAttributes().build());
         event.put(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes().build());
         event.put(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes().build());

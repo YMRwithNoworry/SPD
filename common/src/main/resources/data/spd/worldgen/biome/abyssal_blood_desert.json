@@ -99,12 +99,6 @@
         "weight": 80
       },
       {
-        "type": "spd:abyssal_lizard",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 20
-      },
-      {
         "type": "spd:abyssal_eroded_silverfish",
         "maxCount": 3,
         "minCount": 1,

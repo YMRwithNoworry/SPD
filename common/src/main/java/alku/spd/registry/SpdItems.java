@@ -157,9 +157,6 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> MASCOT = ITEMS.register("mascot", () ->
             new BlockItem(SpdBlocks.MASCOT.get(), new Item.Properties()));
 
-    public static final RegistrySupplier<Item> ABYSSAL_LIZARD_SPAWN_EGG = ITEMS.register("abyssal_lizard_spawn_egg", () ->
-            new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_LIZARD, 0x302832, 0x8D8272, new Item.Properties()));
-
     public static final RegistrySupplier<Item> ABYSSAL_ERODED_SILVERFISH_SPAWN_EGG = ITEMS.register("abyssal_eroded_silverfish_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_ERODED_SILVERFISH, 0x311724, 0x8E2A40, new Item.Properties()));
 
