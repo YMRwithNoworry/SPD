@@ -405,7 +405,10 @@ public class AbyssalFoxEntity extends Fox implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 4, state -> {
-            state.setAndContinue(state.isMoving() ? MOVE : IDLE);
+            Vec3 movement = this.getDeltaMovement();
+            boolean moving = state.isMoving()
+                    || movement.x * movement.x + movement.z * movement.z > 1.0E-5D;
+            state.setAndContinue(moving ? MOVE : IDLE);
             return PlayState.CONTINUE;
         }));
     }
