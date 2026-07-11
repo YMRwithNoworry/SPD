@@ -107,9 +107,8 @@ public class AbyssalWolfEntity extends Wolf implements GeoEntity {
         this.goalSelector.addGoal(1, new PounceGoal(this));
         this.goalSelector.addGoal(2, new AbyssalMeleeGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this).setAlertOthers(AbyssalWolfEntity.class));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 5, true, false,
-                target -> this.pacifiedTicks <= 0 && target instanceof Player player
-                        && !player.isCreative() && !player.isSpectator() && this.distanceToSqr(player) <= 64.0D));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
+                target -> this.pacifiedTicks <= 0 && SpdEntityTargeting.isNonSpdLiving(target)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, true));
     }
 

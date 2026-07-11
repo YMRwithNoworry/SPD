@@ -123,9 +123,8 @@ public class AbyssalFoxEntity extends Fox implements GeoEntity {
         this.goalSelector.addGoal(2, new PounceAttackGoal(this));
         this.goalSelector.addGoal(3, new FastMeleeAttackGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this).setAlertOthers(AbyssalFoxEntity.class));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 5, true, false,
-                target -> target instanceof Player player && !player.isCreative() && !player.isSpectator()
-                        && this.distanceToSqr(player) <= 25.0D));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
+                SpdEntityTargeting::isNonSpdLiving));
     }
 
     @Override
