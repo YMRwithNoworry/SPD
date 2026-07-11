@@ -122,6 +122,12 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_HEART_SPORE = ITEMS.register("abyssal_heart_spore", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> LIQUID_GOLD = ITEMS.register("liquid_gold", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> CULTURE_MEDIUM = ITEMS.register("culture_medium", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
             new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
                     .durability(2600)

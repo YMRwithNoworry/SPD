@@ -1,11 +1,14 @@
 package alku.spd.mixin;
 
+import alku.spd.Spd;
 import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.NamelessSwordItem;
 import alku.spd.registry.SpdEffects;
+import alku.spd.registry.SpdItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import alku.spd.world.SpdCorrosion;
 import alku.spd.world.SpdDifficulty;
 import alku.spd.effect.SubjugationHooks;
@@ -134,7 +137,14 @@ public abstract class LivingEntityMixin implements EpxCarrier {
 
     @Inject(method = "die", at = @At("HEAD"))
     private void spd$handleEpxDeath(DamageSource source, CallbackInfo ci) {
-        EpxEvents.onLivingDeath((LivingEntity) (Object) this, source);
+        LivingEntity living = (LivingEntity) (Object) this;
+        EpxEvents.onLivingDeath(living, source);
+        if (!living.level().isClientSide()
+                && Spd.MOD_ID.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())) {
+            float roll = living.getRandom().nextFloat();
+            int count = roll < 0.7F ? 1 : roll < 0.9F ? 2 : 4;
+            living.spawnAtLocation(new ItemStack(SpdItems.LIQUID_GOLD.get(), count));
+        }
     }
 
     @ModifyVariable(method = "hurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)

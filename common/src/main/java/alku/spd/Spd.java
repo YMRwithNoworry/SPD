@@ -6,6 +6,7 @@ import alku.spd.registry.SpdCreativeTabs;
 import alku.spd.registry.SpdEffects;
 import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdItems;
+import alku.spd.registry.SpdRecipeSerializers;
 import alku.spd.registry.SpdSounds;
 import alku.spd.network.AbyssalHeartForgeNetworking;
 import alku.spd.network.MoltenChromeNozzleNetworking;
@@ -29,6 +30,7 @@ public final class Spd {
         SpdBlockEntities.register();
         SpdEntities.register();
         SpdItems.register();
+        SpdRecipeSerializers.register();
         SpdCreativeTabs.register();
         AbyssalHeartForgeNetworking.register();
         MoltenChromeNozzleNetworking.register();
