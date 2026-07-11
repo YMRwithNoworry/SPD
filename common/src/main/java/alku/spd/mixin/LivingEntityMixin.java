@@ -2,6 +2,7 @@ package alku.spd.mixin;
 
 import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.entity.AbyssalFoxEntity;
+import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.NamelessSwordItem;
 import alku.spd.registry.SpdEffects;
@@ -87,6 +88,7 @@ public abstract class LivingEntityMixin implements EpxCarrier {
         Entity attacker = source.getEntity();
         if (attacker instanceof LivingEntity abyssalAttacker
                 && !(abyssalAttacker instanceof AbyssalFoxEntity)
+                && !(abyssalAttacker instanceof AbyssalWolfEntity)
                 && SpdEntityTargeting.isAbyssalEntity(abyssalAttacker)) {
             SpdCorrosion.addAbyssalPressure(target, 1, SpdCorrosion.DEFAULT_PRESSURE_DURATION, abyssalAttacker);
         }

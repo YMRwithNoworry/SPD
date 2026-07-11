@@ -3,6 +3,7 @@ package alku.spd.registry;
 import alku.spd.Spd;
 import alku.spd.effect.AbyssalBoostEffect;
 import alku.spd.effect.AbyssalPressureEffect;
+import alku.spd.effect.RendingEffect;
 import alku.spd.effect.ErosionSuppressionEffect;
 import alku.spd.effect.MoldCurseEffect;
 import alku.spd.effect.MoldMutationEffect;
@@ -23,6 +24,7 @@ public final class SpdEffects {
     public static final RegistrySupplier<MobEffect> EROSION_SUPPRESSION = EFFECTS.register("erosion_suppression", ErosionSuppressionEffect::new);
     public static final RegistrySupplier<MobEffect> ABYSSAL_PRESSURE = EFFECTS.register("abyssal_pressure", AbyssalPressureEffect::new);
     public static final RegistrySupplier<MobEffect> ABYSSAL_BOOST = EFFECTS.register("abyssal_boost", AbyssalBoostEffect::new);
+    public static final RegistrySupplier<MobEffect> RENDING = EFFECTS.register("rending", RendingEffect::new);
 
     private SpdEffects() {
     }

@@ -116,6 +116,12 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> CHROME_DUST = ITEMS.register("chrome_dust", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> CORRUPTED_SAND_SCALE_HIDE = ITEMS.register("corrupted_sand_scale_hide", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> ABYSSAL_HEART_SPORE = ITEMS.register("abyssal_heart_spore", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
             new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
                     .durability(2600)
@@ -162,6 +168,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> ABYSSAL_FOX_SPAWN_EGG = ITEMS.register("abyssal_fox_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_FOX, 0x3B171D, 0x8D2C3F, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> ABYSSAL_WOLF_SPAWN_EGG = ITEMS.register("abyssal_wolf_spawn_egg", () ->
+            new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_WOLF, 0x32171B, 0x9A3741, new Item.Properties()));
 
     private SpdItems() {
     }

@@ -22,6 +22,8 @@ import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.monster.Zombie;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.MoldZombieEntity;
+import alku.spd.entity.AbyssalWolfEntity;
+import net.minecraft.world.entity.animal.Wolf;
 
 import java.util.UUID;
 
@@ -63,6 +65,7 @@ public final class AbyssalPressureEvents {
             }
 
             applyTierEffects(level, living);
+            applyRending(level, living);
             tryConvert(living);
         }
     }
@@ -117,6 +120,20 @@ public final class AbyssalPressureEvents {
             fox.convertTo(SpdEntities.ABYSSAL_FOX.get(), true);
         } else if (living instanceof Zombie zombie && !(zombie instanceof MoldZombieEntity)) {
             zombie.convertTo(SpdEntities.MOLD_ZOMBIE.get(), true);
+        } else if (living instanceof Wolf wolf && !(wolf instanceof AbyssalWolfEntity) && !wolf.isTame()) {
+            wolf.convertTo(SpdEntities.ABYSSAL_WOLF.get(), true);
         }
+    }
+
+    private static void applyRending(ServerLevel level, LivingEntity living) {
+        if (!living.hasEffect(SpdEffects.RENDING.get()) || level.getGameTime() % 20L != 0L) {
+            return;
+        }
+        double horizontalSpeed = living.getDeltaMovement().horizontalDistanceSqr();
+        float damage = horizontalSpeed > 1.0E-4D ? 1.0F : 0.5F;
+        DamageSource source = new DamageSource(level.registryAccess()
+                .registryOrThrow(Registries.DAMAGE_TYPE)
+                .getHolderOrThrow(CORROSION_DAMAGE));
+        living.hurt(source, damage);
     }
 }

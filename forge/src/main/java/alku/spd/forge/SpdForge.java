@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalLizardEntity;
+import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.item.BlazingVeinPiercingSpearItem;
@@ -48,6 +49,11 @@ public final class SpdForge {
                     SpawnPlacements.Type.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     AbyssalFoxEntity::checkSpawnRules);
+            SpawnPlacements.register(
+                    SpdEntities.ABYSSAL_WOLF.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    AbyssalWolfEntity::checkSpawnRules);
         });
     }
 
@@ -57,6 +63,7 @@ public final class SpdForge {
         event.put(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes().build());
         event.put(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes().build());
         event.put(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxEntity.createAttributes().build());
+        event.put(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfEntity.createAttributes().build());
     }
 
     private void addItemAttributes(ItemAttributeModifierEvent event) {
