@@ -86,10 +86,7 @@ public final class AbyssalPressureEvents {
         boolean damageTick = layers >= 7 || level.getGameTime() % 40L == 0L;
         if (damageTick) {
             float damage = layers >= 7 ? (layers == 10 ? 2.25F : 1.5F) : 1.0F;
-            DamageSource source = new DamageSource(level.registryAccess()
-                    .registryOrThrow(Registries.DAMAGE_TYPE)
-                    .getHolderOrThrow(CORROSION_DAMAGE));
-            living.hurt(source, damage);
+            living.hurt(corrosionDamageSource(level), damage);
         }
 
         level.sendParticles(ParticleTypes.ASH,
@@ -131,9 +128,14 @@ public final class AbyssalPressureEvents {
         }
         double horizontalSpeed = living.getDeltaMovement().horizontalDistanceSqr();
         float damage = horizontalSpeed > 1.0E-4D ? 1.0F : 0.5F;
-        DamageSource source = new DamageSource(level.registryAccess()
+        living.hurt(corrosionDamageSource(level), damage);
+    }
+
+    private static DamageSource corrosionDamageSource(ServerLevel level) {
+        return level.registryAccess()
                 .registryOrThrow(Registries.DAMAGE_TYPE)
-                .getHolderOrThrow(CORROSION_DAMAGE));
-        living.hurt(source, damage);
+                .getHolder(CORROSION_DAMAGE)
+                .<DamageSource>map(DamageSource::new)
+                .orElseGet(() -> level.damageSources().magic());
     }
 }
