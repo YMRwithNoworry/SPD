@@ -13,7 +13,10 @@ public class MoldZombieModel extends GeoModel<MoldZombieEntity> {
 
     @Override
     public ResourceLocation getTextureResource(MoldZombieEntity animatable) {
-        return new ResourceLocation(Spd.MOD_ID, "textures/entity/mold_zombie.png");
+        String texture = animatable.isPouncerVariant()
+                ? "textures/entity/mold_zombie_pouncer.png"
+                : "textures/entity/mold_zombie.png";
+        return new ResourceLocation(Spd.MOD_ID, texture);
     }
 
     @Override

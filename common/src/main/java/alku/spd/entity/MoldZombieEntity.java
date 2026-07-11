@@ -8,14 +8,18 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,14 +32,18 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.EnumSet;
+
 public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> POUNCER_VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.BOOLEAN);
     private static final int VARIANT_UNSET = -1;
     private static final int VARIANT_WALKING = 0;
     private static final int VARIANT_RUNNING = 1;
     private static final double VANILLA_ZOMBIE_SPEED = 0.23D;
     private static final double WALKING_SPEED = VANILLA_ZOMBIE_SPEED * 1.2D;
     private static final double RUNNING_SPEED = VANILLA_ZOMBIE_SPEED * 2.4D;
+    private static final float POUNCER_CHANCE = 0.2F;
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.mold_zombie.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.mold_zombie.walk");
     private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("animation.mold_zombie.chase");
@@ -44,6 +52,7 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int appliedVariant = Integer.MIN_VALUE;
+    private int pounceCooldown;
 
     public MoldZombieEntity(EntityType<? extends Zombie> entityType, Level level) {
         super(entityType, level);
@@ -58,6 +67,7 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new PounceGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, SpdEntityTargeting::isNonSpdLiving));
     }
 
@@ -65,12 +75,14 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT, VARIANT_UNSET);
+        this.entityData.define(POUNCER_VARIANT, false);
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, SpawnGroupData spawnGroupData, CompoundTag tag) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
         this.ensureVariantAssigned();
+        this.entityData.set(POUNCER_VARIANT, this.random.nextFloat() < POUNCER_CHANCE);
         this.applyVariantAttributes();
         return data;
     }
@@ -81,6 +93,9 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         if (!this.level().isClientSide) {
             this.ensureVariantAssigned();
             this.applyVariantAttributes();
+            if (this.pounceCooldown > 0) {
+                this.pounceCooldown--;
+            }
         }
     }
 
@@ -101,6 +116,10 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
 
     private boolean isRunningVariant() {
         return this.entityData.get(VARIANT) == VARIANT_RUNNING;
+    }
+
+    public boolean isPouncerVariant() {
+        return this.entityData.get(POUNCER_VARIANT);
     }
 
     private void applyVariantAttributes() {
@@ -144,6 +163,7 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("MoldZombieVariant", this.entityData.get(VARIANT));
+        tag.putBoolean("MoldZombiePouncerVariant", this.isPouncerVariant());
     }
 
     @Override
@@ -154,6 +174,9 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
             this.entityData.set(VARIANT, variant == VARIANT_RUNNING ? VARIANT_RUNNING : VARIANT_WALKING);
             this.appliedVariant = Integer.MIN_VALUE;
             this.applyVariantAttributes();
+        }
+        if (tag.contains("MoldZombiePouncerVariant")) {
+            this.entityData.set(POUNCER_VARIANT, tag.getBoolean("MoldZombiePouncerVariant"));
         }
     }
 
@@ -192,5 +215,72 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    private static final class PounceGoal extends Goal {
+        private static final double MIN_DISTANCE_SQR = 9.0D;
+        private static final double MAX_DISTANCE_SQR = 36.0D;
+        private static final int MAX_POUNCE_TICKS = 24;
+        private static final int POUNCE_COOLDOWN_TICKS = 80;
+
+        private final MoldZombieEntity zombie;
+        private Player target;
+        private int pounceTicks;
+        private boolean hit;
+
+        private PounceGoal(MoldZombieEntity zombie) {
+            this.zombie = zombie;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (!this.zombie.isPouncerVariant() || this.zombie.pounceCooldown > 0 || !this.zombie.onGround()) {
+                return false;
+            }
+            if (!(this.zombie.getTarget() instanceof Player player) || !player.isAlive()) {
+                return false;
+            }
+            double distanceSqr = this.zombie.distanceToSqr(player);
+            if (distanceSqr < MIN_DISTANCE_SQR || distanceSqr > MAX_DISTANCE_SQR || !this.zombie.hasLineOfSight(player)) {
+                return false;
+            }
+            this.target = player;
+            return true;
+        }
+
+        @Override
+        public void start() {
+            Vec3 direction = this.target.position().subtract(this.zombie.position()).multiply(1.0D, 0.0D, 1.0D).normalize();
+            this.zombie.getNavigation().stop();
+            this.zombie.setDeltaMovement(direction.x * 1.05D, 0.48D, direction.z * 1.05D);
+            this.pounceTicks = MAX_POUNCE_TICKS;
+            this.hit = false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.target != null && this.target.isAlive() && this.pounceTicks > 0 && !this.hit;
+        }
+
+        @Override
+        public void tick() {
+            this.pounceTicks--;
+            this.zombie.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
+            if (this.zombie.distanceToSqr(this.target) <= 2.25D && this.zombie.doHurtTarget(this.target)) {
+                this.target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0), this.zombie);
+                this.hit = true;
+                return;
+            }
+            if (this.pounceTicks < MAX_POUNCE_TICKS - 3 && this.zombie.onGround()) {
+                this.pounceTicks = 0;
+            }
+        }
+
+        @Override
+        public void stop() {
+            this.zombie.pounceCooldown = POUNCE_COOLDOWN_TICKS;
+            this.target = null;
+        }
     }
 }
