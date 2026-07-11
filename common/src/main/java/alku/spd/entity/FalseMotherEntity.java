@@ -32,7 +32,6 @@ public class FalseMotherEntity extends PathfinderMob implements GeoEntity {
     private static final int FILLS_PER_WAVE = 3;
     private static final int FILL_WINDOW_TICKS = 20 * 5;
     private static final int MAX_SPREAD_RADIUS = 24;
-    private static final double FUNGAL_PLANT_CHANCE = 1.0D / 3.0D;
     private static final double ASSIMILATED_MOB_CHANCE = 1.0D / 3.0D;
     private static final int ASSIMILATED_EFFECT_TICKS = 20 * 10;
 
@@ -163,13 +162,6 @@ public class FalseMotherEntity extends PathfinderMob implements GeoEntity {
         }
 
         level.setBlock(spreadPos, SpdBlocks.WIDESPREAD_EPIDEMIC.get().defaultBlockState(), 3);
-
-        if (random.nextDouble() < FUNGAL_PLANT_CHANCE) {
-            BlockState fungalPlant = SpdBlocks.ABYSSAL_FUNGAL_VINES.get().defaultBlockState();
-            if (fungalPlant.canSurvive(level, plantPos)) {
-                level.setBlock(plantPos, fungalPlant, 3);
-            }
-        }
 
         if (random.nextDouble() < ASSIMILATED_MOB_CHANCE) {
             spawnAssimilatedMob(level, plantPos, random);

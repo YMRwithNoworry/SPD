@@ -2,7 +2,6 @@ package alku.spd.registry;
 
 import alku.spd.Spd;
 import alku.spd.block.AbyssalBloodSandBlock;
-import alku.spd.block.AbyssalFungalVinesBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
 import alku.spd.block.CrucibleWallBlock;
 import alku.spd.block.MascotBlock;
@@ -37,13 +36,6 @@ public final class SpdBlocks {
     public static final RegistrySupplier<Block> ABYSSAL_BLOOD_SAND = BLOCKS.register("abyssal_blood_sand", () ->
             new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)
                     .isViewBlocking((state, level, pos) -> true)));
-
-    public static final RegistrySupplier<Block> ABYSSAL_FUNGAL_VINES = BLOCKS.register("abyssal_fungal_vines", () ->
-            new AbyssalFungalVinesBlock(BlockBehaviour.Properties.copy(Blocks.GRASS)
-                    .noCollission()
-                    .noOcclusion()
-                    .strength(0.2F)
-                    .sound(SoundType.GRASS)));
 
     public static final RegistrySupplier<Block> VINE_PLAGUE_NODE = BLOCKS.register("vine_plague_node", () ->
             new VinePlagueNodeBlock(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)

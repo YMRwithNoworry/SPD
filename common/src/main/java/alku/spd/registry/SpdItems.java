@@ -136,9 +136,6 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> GUIDE_BOOK = ITEMS.register("guide_book", () ->
             new GuideBookItem(new Item.Properties().stacksTo(1)));
 
-    public static final RegistrySupplier<Item> ABYSSAL_FUNGAL_VINES = ITEMS.register("abyssal_fungal_vines", () ->
-            new BlockItem(SpdBlocks.ABYSSAL_FUNGAL_VINES.get(), new Item.Properties()));
-
     public static final RegistrySupplier<Item> VINE_PLAGUE_NODE = ITEMS.register("vine_plague_node", () ->
             new BlockItem(SpdBlocks.VINE_PLAGUE_NODE.get(), new Item.Properties()));
 
