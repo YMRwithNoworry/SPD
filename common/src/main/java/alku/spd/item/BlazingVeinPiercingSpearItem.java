@@ -20,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public class BlazingVeinPiercingSpearItem extends SwordItem {
     public static final double ATTACK_REACH = 4.0D;
@@ -89,18 +88,19 @@ public class BlazingVeinPiercingSpearItem extends SwordItem {
         Vec3 end = blockHit.getType() == HitResult.Type.MISS ? desiredEnd : blockHit.getLocation();
         AABB searchArea = new AABB(start, end).inflate(0.75D);
 
-        List<PierceTarget> targets = level.getEntitiesOfClass(LivingEntity.class, searchArea, target ->
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, searchArea, target ->
                         target != player && target.isAlive() && !target.isSpectator())
                 .stream()
-                .map(target -> PierceTarget.from(target, start, end))
-                .flatMap(Optional::stream)
-                .sorted(Comparator.comparingDouble(PierceTarget::distanceSqr))
+                .filter(target -> target.getBoundingBox().inflate(0.35D).clip(start, end).isPresent())
+                .sorted(Comparator.comparingDouble(target -> target.getBoundingBox().inflate(0.35D)
+                        .clip(start, end)
+                        .map(hit -> hit.distanceToSqr(start))
+                        .orElse(Double.MAX_VALUE)))
                 .limit(MAX_PIERCED_TARGETS)
                 .toList();
 
         int hits = 0;
-        for (PierceTarget pierceTarget : targets) {
-            LivingEntity target = pierceTarget.target();
+        for (LivingEntity target : targets) {
             if (target.hurt(level.damageSources().playerAttack(player), PIERCE_DAMAGE)) {
                 target.addEffect(new MobEffectInstance(SpdEffects.SEARING_PULSE.get(), SEARING_PULSE_TICKS, 0), player);
                 hits++;
@@ -109,10 +109,4 @@ public class BlazingVeinPiercingSpearItem extends SwordItem {
         return hits;
     }
 
-    private record PierceTarget(LivingEntity target, double distanceSqr) {
-        private static Optional<PierceTarget> from(LivingEntity target, Vec3 start, Vec3 end) {
-            return target.getBoundingBox().inflate(0.35D).clip(start, end)
-                    .map(hit -> new PierceTarget(target, hit.distanceToSqr(start)));
-        }
-    }
 }
