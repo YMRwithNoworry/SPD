@@ -13,6 +13,7 @@
   "mixins": [
     "AbstractContainerMenuAccessor",
     "AnvilMenuMixin",
+    "FoodDataMixin",
     "CactusBlockMixin",
     "ItemCombinerMenuAccessor",
     "ItemStackMixin",

@@ -46,6 +46,7 @@ public final class SubjugationClientOverlay {
     }
 
     public static void render(GuiGraphics graphics, float partialTick) {
+        AbyssalPressureClient.render(graphics);
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null) {
             return;

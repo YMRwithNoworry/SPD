@@ -24,6 +24,7 @@
   "container.spd.molten_chrome_nozzle.tank.iron": "Molten Iron",
   "effect.spd.abyssal_boost": "Erosion Boost",
   "effect.spd.abyssal_pressure": "Abyssal Pressure",
+  "death.attack.abyssal_corrosion": "%1$s was consumed by abyssal corrosion",
   "effect.spd.erosion_suppression": "Erosion Suppression",
   "effect.spd.mold_curse": "Mold Curse",
   "effect.spd.mold_mutation": "Mold Mutation",

@@ -5,6 +5,7 @@ import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdItems;
 import alku.spd.registry.SpdTags;
 import alku.spd.world.AbyssalFoxInfectionEvents;
+import alku.spd.world.SpdCorrosion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -67,7 +68,6 @@ public class AbyssalFoxEntity extends Fox implements GeoEntity {
             0.1D,
             AttributeModifier.Operation.MULTIPLY_TOTAL);
     private static final int TAIL_SWEEP_COOLDOWN = 20 * 8;
-    private static final int PRESSURE_DURATION = 20 * 10;
     private static final int POUNCE_WINDUP = 12;
     private static final int POUNCE_MISS_STUN = 8;
 
@@ -276,10 +276,7 @@ public class AbyssalFoxEntity extends Fox implements GeoEntity {
     }
 
     private void applyAbyssalPressure(LivingEntity target, int layers) {
-        MobEffectInstance current = target.getEffect(SpdEffects.ABYSSAL_PRESSURE.get());
-        int currentLayers = current == null ? 0 : current.getAmplifier() + 1;
-        int newLayers = Mth.clamp(currentLayers + layers, 1, 5);
-        target.addEffect(new MobEffectInstance(SpdEffects.ABYSSAL_PRESSURE.get(), PRESSURE_DURATION, newLayers - 1), this);
+        SpdCorrosion.addAbyssalPressure(target, layers, SpdCorrosion.DEFAULT_PRESSURE_DURATION, this);
     }
 
     private void performTailSweep() {

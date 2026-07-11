@@ -11,6 +11,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 public final class SpdTags {
+    public static final TagKey<DamageType> ABYSSAL_CORROSION_DAMAGE = TagKey.create(
+            Registries.DAMAGE_TYPE,
+            new ResourceLocation(Spd.MOD_ID, "abyssal_corrosion"));
     public static final TagKey<EntityType<?>> ABYSSAL_ENTITIES = TagKey.create(
             Registries.ENTITY_TYPE,
             new ResourceLocation(Spd.MOD_ID, "abyssal_entities"));
@@ -32,6 +35,12 @@ public final class SpdTags {
     public static final TagKey<Item> COMMON_ORES = TagKey.create(
             Registries.ITEM,
             new ResourceLocation("c", "ores"));
+    public static final TagKey<Item> ABYSSAL_PRESSURE_RESISTANT_ARMOR = TagKey.create(
+            Registries.ITEM,
+            new ResourceLocation(Spd.MOD_ID, "abyssal_pressure_resistant_armor"));
+    public static final TagKey<Item> ABYSSAL_PRESSURE_CURES = TagKey.create(
+            Registries.ITEM,
+            new ResourceLocation(Spd.MOD_ID, "abyssal_pressure_cures"));
 
     private SpdTags() {
     }

@@ -11,6 +11,7 @@ import alku.spd.network.AbyssalHeartForgeNetworking;
 import alku.spd.network.MoltenChromeNozzleNetworking;
 import alku.spd.world.EpxEvents;
 import alku.spd.world.AbyssalFoxInfectionEvents;
+import alku.spd.world.AbyssalPressureEvents;
 import alku.spd.world.MoldCurseEvents;
 import alku.spd.world.SpdDifficultyScaling;
 import alku.spd.world.SpdDifficultyEvents;
@@ -36,6 +37,7 @@ public final class Spd {
         SpdWeatherEvents.register();
         MoldCurseEvents.register();
         AbyssalFoxInfectionEvents.register();
+        AbyssalPressureEvents.register();
         EpxEvents.register();
     }
 }

@@ -24,6 +24,7 @@
   "container.spd.molten_chrome_nozzle.tank.iron": "熔铁",
   "effect.spd.abyssal_boost": "侵蚀增益",
   "effect.spd.abyssal_pressure": "渊蚀压",
+  "death.attack.abyssal_corrosion": "%1$s 的躯体被渊蚀彻底侵蚀",
   "effect.spd.erosion_suppression": "侵蚀抑制",
   "effect.spd.mold_curse": "霉咒",
   "effect.spd.mold_mutation": "霉变",

@@ -1,6 +1,7 @@
 package alku.spd.mixin;
 
 import alku.spd.entity.SpdEntityTargeting;
+import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.NamelessSwordItem;
 import alku.spd.registry.SpdEffects;
@@ -84,6 +85,11 @@ public abstract class LivingEntityMixin implements EpxCarrier {
         }
 
         Entity attacker = source.getEntity();
+        if (attacker instanceof LivingEntity abyssalAttacker
+                && !(abyssalAttacker instanceof AbyssalFoxEntity)
+                && SpdEntityTargeting.isAbyssalEntity(abyssalAttacker)) {
+            SpdCorrosion.addAbyssalPressure(target, 1, SpdCorrosion.DEFAULT_PRESSURE_DURATION, abyssalAttacker);
+        }
         if (!(attacker instanceof LivingEntity livingAttacker) || !SpdEntityTargeting.isMoldEntity(livingAttacker)) {
             return;
         }
@@ -159,6 +165,14 @@ public abstract class LivingEntityMixin implements EpxCarrier {
         tag.putInt("SpdEpxCount", this.spd$epxCount);
         tag.putInt("SpdEpxKills", this.spd$epxKills);
         tag.putLong("SpdNextBufactorTick", this.spd$nextBufactorTick);
+    }
+
+    @Inject(method = "completeUsingItem", at = @At("HEAD"))
+    private void spd$clearAbyssalPressureWithCure(CallbackInfo ci) {
+        LivingEntity living = (LivingEntity) (Object) this;
+        if (living.getUseItem().is(alku.spd.registry.SpdTags.ABYSSAL_PRESSURE_CURES)) {
+            living.removeEffect(SpdEffects.ABYSSAL_PRESSURE.get());
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
