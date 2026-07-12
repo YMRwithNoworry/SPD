@@ -1,5 +1,6 @@
 package alku.spd.client;
 
+import alku.spd.registry.SpdBiomes;
 import alku.spd.registry.SpdSounds;
 import dev.architectury.event.events.client.ClientTickEvent;
 import net.fabricmc.api.EnvType;
@@ -43,7 +44,9 @@ public final class TitleMusicClient {
     }
 
     private static boolean shouldPlayBreathingMusic(Minecraft minecraft) {
-        return minecraft.level == null;
+        return minecraft.level == null
+                || minecraft.player != null
+                && minecraft.level.getBiome(minecraft.player.blockPosition()).is(SpdBiomes.ABYSSAL_BLOOD_DESERT);
     }
 
     private static final class NonWorldMusicSound extends AbstractTickableSoundInstance {
