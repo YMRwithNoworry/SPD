@@ -21,7 +21,8 @@
     "LivingEntityMixin",
     "PlayerMixin",
     "RepairItemRecipeMixin",
-    "TurtleAccessorMixin"
+    "TurtleAccessorMixin",
+    "TurtleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

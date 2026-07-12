@@ -35,6 +35,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.CHROME_DUST.get());
                 output.accept(SpdItems.CORRUPTED_SAND_SCALE_HIDE.get());
                 output.accept(SpdItems.ABYSSAL_HEART_SPORE.get());
+                output.accept(SpdItems.ETCHED_TURTLE_SCUTE.get());
                 output.accept(SpdItems.LIQUID_GOLD.get());
                 output.accept(SpdItems.CULTURE_MEDIUM.get());
                 output.accept(SpdItems.NAMELESS_SWORD.get());

@@ -127,6 +127,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_HEART_SPORE = ITEMS.register("abyssal_heart_spore", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> ETCHED_TURTLE_SCUTE = ITEMS.register("etched_turtle_scute", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> LIQUID_GOLD = ITEMS.register("liquid_gold", () ->
             new Item(new Item.Properties()));
 

@@ -2,8 +2,8 @@ package alku.spd.entity;
 
 import net.minecraft.world.Difficulty;
 
-final class AbyssalTurtleMechanics {
-    private static final int MAX_INFECTION = 6000;
+public final class AbyssalTurtleMechanics {
+    public static final int MAX_INFECTION = 6000;
 
     private AbyssalTurtleMechanics() {
     }
@@ -37,7 +37,7 @@ final class AbyssalTurtleMechanics {
         return 2.0F;
     }
 
-    static int infectionProgress(int progress, boolean inInfectionBiome) {
+    public static int infectionProgress(int progress, boolean inInfectionBiome) {
         int change = inInfectionBiome ? 20 : -5;
         return Math.max(0, Math.min(MAX_INFECTION, progress + change));
     }

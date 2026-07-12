@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spd:etched_turtle_scute",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1, "max": 2 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spd:abyssal_heart_spore",
+          "conditions": [ { "condition": "minecraft:random_chance", "chance": 0.3 } ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spd:fungal_residue",
+          "conditions": [ { "condition": "minecraft:random_chance", "chance": 0.5 } ],
+          "functions": [ { "function": "minecraft:set_count", "count": 2 } ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spd:corrupted_sand_scale_hide",
+          "conditions": [ { "condition": "minecraft:random_chance", "chance": 0.2 } ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "spd:abyssal_turtle_egg",
+          "conditions": [ { "condition": "minecraft:random_chance", "chance": 0.05 } ]
+        }
+      ]
+    }
+  ]
+}
