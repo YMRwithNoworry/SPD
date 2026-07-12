@@ -250,7 +250,7 @@ Commit: `git commit -m "-（添加海龟感染与掉落）"`
 
 - [ ] **Step 1: Write failing asset contract tests**
 
-Assert the supplied model SHA-256, texture dimensions 128x128, model bones include `body`, `head`, `leg0..leg3`, animation keys are exactly `idle`, `walk`, `attack`, every animated bone exists in the model, and all blockstate/item model texture references resolve.
+Assert the supplied model SHA-256, entity texture dimensions 128x128, spawn egg texture dimensions 16x16 and SHA-256 `b11f6d2ba82d8e6904936a6b8fe5b1534a4f902e38de776a5fd68d614b5b11ea`, model bones include `body`, `head`, `leg0..leg3`, animation keys are exactly `idle`, `walk`, `attack`, every animated bone exists in the model, and all blockstate/item model texture references resolve.
 
 - [ ] **Step 2: Verify RED**
 
@@ -258,11 +258,11 @@ Run the asset test and confirm resources are missing.
 
 - [ ] **Step 3: Import supplied resources**
 
-Copy `E:\代码\MC模型\转换后\霉染海龟   - Converted.geo.json` to the geo path, `E:\代码\MC模型\转换后\海龟动画.json` to the animation path, and `C:\Users\Administrator\AppData\Local\Temp\codex-clipboard-Pu4Fz3.png` to the entity texture path. Preserve bytes for all supplied files.
+Copy `E:\代码\MC模型\转换后\霉染海龟   - Converted.geo.json` to the geo path, `E:\代码\MC模型\转换后\海龟动画.json` to the animation path, `C:\Users\Administrator\AppData\Local\Temp\codex-clipboard-Pu4Fz3.png` to the entity texture path, and `C:\Users\Administrator\AppData\Local\Temp\codex-clipboard-KtT8hv.png` to `assets/spd/textures/item/abyssal_turtle_spawn_egg.png`. Preserve bytes for all supplied files.
 
 - [ ] **Step 4: Generate supporting pixel textures**
 
-Create egg, scute, spawn egg, and sluggishness textures from sampled dark-brown, blood-red, and calcified-white colors in the supplied entity texture. Keep item textures 16x16 and block textures 16x16; define stable blockstate variants for every `eggs=1..4,hatch=0..2` combination. Use standard generated item models.
+Create egg, scute, and sluggishness textures from sampled dark-brown, blood-red, and calcified-white colors in the supplied entity texture. Keep generated item textures 16x16 and block textures 16x16; define stable blockstate variants for every `eggs=1..4,hatch=0..2` combination. Use the supplied spawn egg texture unchanged and use standard generated item models.
 
 - [ ] **Step 5: Wire animation controller and renderers**
 
