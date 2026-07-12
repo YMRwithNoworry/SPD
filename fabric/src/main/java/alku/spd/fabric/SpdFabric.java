@@ -6,6 +6,7 @@ import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
+import alku.spd.registry.SpdBiomes;
 import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdTags;
 import alku.spd.world.SpdTerraBlender;
@@ -53,10 +54,19 @@ public final class SpdFabric implements ModInitializer {
         addOverworldOre("ore_blazing_vein_small");
         addOverworldOre("ore_blood_ash");
         addOverworldOre("ore_blood_ash_buried");
+        addChromeCaveOre("ore_blazing_vein_chrome_caves");
     }
 
     private static void addOverworldOre(String name) {
         ResourceKey<PlacedFeature> key = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Spd.MOD_ID, name));
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES, key);
+    }
+
+    private static void addChromeCaveOre(String name) {
+        ResourceKey<PlacedFeature> key = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Spd.MOD_ID, name));
+        BiomeModifications.addFeature(
+                BiomeSelectors.includeByKey(SpdBiomes.CHROME_SEABED_CAVES),
+                GenerationStep.Decoration.UNDERGROUND_ORES,
+                key);
     }
 }

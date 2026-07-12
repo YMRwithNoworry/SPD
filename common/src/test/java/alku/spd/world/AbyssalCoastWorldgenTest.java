@@ -77,6 +77,38 @@ final class AbyssalCoastWorldgenTest {
     }
 
     @Test
+    void chromeSeabedCavesUseTheirOwnDenseBlazingVeinFeature() throws Exception {
+        JsonObject configured = resourceJson(
+                "/data/spd/worldgen/configured_feature/ore_blazing_vein_chrome_caves.json");
+        assertEquals(14, configured.getAsJsonObject("config").get("size").getAsInt());
+
+        JsonObject placed = resourceJson(
+                "/data/spd/worldgen/placed_feature/ore_blazing_vein_chrome_caves.json");
+        assertEquals("spd:ore_blazing_vein_chrome_caves", placed.get("feature").getAsString());
+        JsonArray placement = placed.getAsJsonArray("placement");
+        assertEquals(50, placement.get(0).getAsJsonObject().get("count").getAsInt());
+        JsonObject height = placement.get(2).getAsJsonObject().getAsJsonObject("height");
+        assertEquals("minecraft:uniform", height.get("type").getAsString());
+        assertEquals(-48, height.getAsJsonObject("min_inclusive").get("absolute").getAsInt());
+        assertEquals(40, height.getAsJsonObject("max_inclusive").get("absolute").getAsInt());
+
+        String fabric = repositoryFile("fabric/src/main/java/alku/spd/fabric/SpdFabric.java");
+        assertTrue(fabric.contains("addChromeCaveOre(\"ore_blazing_vein_chrome_caves\")"));
+        String chromeCaveOreHook = fabric.substring(fabric.indexOf("private static void addChromeCaveOre"));
+        assertTrue(chromeCaveOreHook.contains(
+                "BiomeSelectors.includeByKey(SpdBiomes.CHROME_SEABED_CAVES)"));
+        assertFalse(chromeCaveOreHook.contains("BiomeSelectors.foundInOverworld()"));
+
+        JsonObject forge = repositoryJson(
+                "forge/src/main/resources/data/spd/forge/biome_modifier/add_chrome_cave_blazing_vein.json");
+        assertEquals("forge:add_features", forge.get("type").getAsString());
+        assertEquals("spd:chrome_seabed_caves", forge.get("biomes").getAsString());
+        assertEquals(List.of("spd:ore_blazing_vein_chrome_caves"),
+                forge.getAsJsonArray("features").asList().stream().map(JsonElement::getAsString).toList());
+        assertEquals("underground_ores", forge.get("step").getAsString());
+    }
+
+    @Test
     void terraBlenderMapsSurfaceBiomesAndUndergroundCavesToDistinctDepths() {
         List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mappings = new ArrayList<>();
         new AbyssalCoastRegion(new ResourceLocation(Spd.MOD_ID, "test_abyssal_coast"), 10)
@@ -170,5 +202,13 @@ final class AbyssalCoastWorldgenTest {
 
     private String source(String relativePath) throws Exception {
         return Files.readString(Path.of("src/main/java/alku/spd", relativePath), StandardCharsets.UTF_8);
+    }
+
+    private String repositoryFile(String relativePath) throws Exception {
+        return Files.readString(Path.of("..", relativePath), StandardCharsets.UTF_8);
+    }
+
+    private JsonObject repositoryJson(String relativePath) throws Exception {
+        return JsonParser.parseString(repositoryFile(relativePath)).getAsJsonObject();
     }
 }
