@@ -30,6 +30,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.BLOOD_ASH_ORE.get());
                 output.accept(SpdItems.BLOOD_ASH_RAW_ORE.get());
                 output.accept(SpdItems.BLOOD_ASH_INGOT.get());
+                output.accept(SpdItems.BLOOD_ASH_INGOT_BLOCK.get());
                 output.accept(SpdItems.EMBER_HANDLE.get());
                 output.accept(SpdItems.FUNGAL_RESIDUE.get());
                 output.accept(SpdItems.CHROME_DUST.get());

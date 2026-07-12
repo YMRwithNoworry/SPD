@@ -107,6 +107,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> BLOOD_ASH_INGOT = ITEMS.register("blood_ash_ingot", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> BLOOD_ASH_INGOT_BLOCK = ITEMS.register("blood_ash_ingot_block", () ->
+            new BlockItem(SpdBlocks.BLOOD_ASH_INGOT_BLOCK.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> EMBER_HANDLE = ITEMS.register("ember_handle", () ->
             new Item(new Item.Properties()) {
                 @Override

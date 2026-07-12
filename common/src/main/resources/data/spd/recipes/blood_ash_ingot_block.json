@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "spd:blood_ash_ingot"
+    }
+  },
+  "result": {
+    "item": "spd:blood_ash_ingot_block",
+    "count": 1
+  }
+}
