@@ -46,6 +46,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.CRUCIBLE_WALL.get());
                 output.accept(SpdItems.MOLTEN_CHROME_NOZZLE.get());
                 output.accept(SpdItems.MASCOT.get());
+                output.accept(SpdItems.ABYSSAL_BLAZING_RUNE_STELE.get());
                 output.accept(SpdItems.ABYSSAL_ERODED_SILVERFISH_SPAWN_EGG.get());
                 output.accept(SpdItems.MOLD_ZOMBIE_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_FOX_SPAWN_EGG.get());

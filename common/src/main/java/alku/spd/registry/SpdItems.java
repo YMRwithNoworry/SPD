@@ -2,6 +2,7 @@ package alku.spd.registry;
 
 import alku.spd.Spd;
 import alku.spd.item.BlazingVeinPiercingSpearItem;
+import alku.spd.item.AbyssalBlazingRuneSteleItem;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.BlazingVeinDaggerItem;
 import alku.spd.item.GuideBookItem;
@@ -163,6 +164,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> MASCOT = ITEMS.register("mascot", () ->
             new BlockItem(SpdBlocks.MASCOT.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> ABYSSAL_BLAZING_RUNE_STELE = ITEMS.register("abyssal_blazing_rune_stele", () ->
+            new AbyssalBlazingRuneSteleItem(SpdBlocks.ABYSSAL_BLAZING_RUNE_STELE.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> ABYSSAL_ERODED_SILVERFISH_SPAWN_EGG = ITEMS.register("abyssal_eroded_silverfish_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_ERODED_SILVERFISH, 0x311724, 0x8E2A40, new Item.Properties()));
