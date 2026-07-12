@@ -15,6 +15,7 @@ import java.util.Optional;
 public final class CrucibleStructure {
     private static final int MIN_SIZE = 3;
     private static final int MAX_SIZE = 9;
+    private static final int MIN_HEIGHT = 3;
 
     private CrucibleStructure() {
     }
@@ -35,12 +36,14 @@ public final class CrucibleStructure {
 
     private static Optional<Structure> findStructure(ServerLevel level, BlockPos changedPos) {
         for (int size = MIN_SIZE; size <= MAX_SIZE; size++) {
-            for (int minY = changedPos.getY() - size + 1; minY <= changedPos.getY(); minY++) {
-                for (int minX = changedPos.getX() - size + 1; minX <= changedPos.getX(); minX++) {
-                    for (int minZ = changedPos.getZ() - size + 1; minZ <= changedPos.getZ(); minZ++) {
-                        Structure candidate = new Structure(new BlockPos(minX, minY, minZ), size);
-                        if (candidate.contains(changedPos) && candidate.isValid(level)) {
-                            return Optional.of(candidate);
+            for (int height = MIN_HEIGHT; height <= MAX_SIZE; height++) {
+                for (int minY = changedPos.getY() - height + 1; minY <= changedPos.getY(); minY++) {
+                    for (int minX = changedPos.getX() - size + 1; minX <= changedPos.getX(); minX++) {
+                        for (int minZ = changedPos.getZ() - size + 1; minZ <= changedPos.getZ(); minZ++) {
+                            Structure candidate = new Structure(new BlockPos(minX, minY, minZ), size, height);
+                            if (candidate.contains(changedPos) && candidate.isValid(level)) {
+                                return Optional.of(candidate);
+                            }
                         }
                     }
                 }
@@ -75,20 +78,22 @@ public final class CrucibleStructure {
 
     private static final class Structure {
         private final BlockPos origin;
-        private final int size;
+        private final int footprintSize;
+        private final int height;
         private final List<NozzleCandidate> nozzleCandidates = new ArrayList<>();
         private final List<NozzleCandidate> nozzleBlocks = new ArrayList<>();
         private final List<BlockPos> activeNozzles = new ArrayList<>();
 
-        private Structure(BlockPos origin, int size) {
+        private Structure(BlockPos origin, int footprintSize, int height) {
             this.origin = origin;
-            this.size = size;
+            this.footprintSize = footprintSize;
+            this.height = height;
         }
 
         private boolean contains(BlockPos pos) {
-            return pos.getX() >= origin.getX() && pos.getX() < origin.getX() + size
-                    && pos.getY() >= origin.getY() && pos.getY() < origin.getY() + size
-                    && pos.getZ() >= origin.getZ() && pos.getZ() < origin.getZ() + size;
+            return pos.getX() >= origin.getX() && pos.getX() < origin.getX() + footprintSize
+                    && pos.getY() >= origin.getY() && pos.getY() < origin.getY() + height
+                    && pos.getZ() >= origin.getZ() && pos.getZ() < origin.getZ() + footprintSize;
         }
 
         private boolean isValid(ServerLevel level) {
@@ -96,16 +101,16 @@ public final class CrucibleStructure {
             nozzleBlocks.clear();
             activeNozzles.clear();
 
-            for (int dx = 0; dx < size; dx++) {
-                for (int dy = 0; dy < size; dy++) {
-                    for (int dz = 0; dz < size; dz++) {
+            for (int dx = 0; dx < footprintSize; dx++) {
+                for (int dy = 0; dy < height; dy++) {
+                    for (int dz = 0; dz < footprintSize; dz++) {
                         BlockPos pos = origin.offset(dx, dy, dz);
-                        boolean xInside = dx > 0 && dx < size - 1;
-                        boolean yInside = dy > 0 && dy < size - 1;
-                        boolean zInside = dz > 0 && dz < size - 1;
+                        boolean xInside = dx > 0 && dx < footprintSize - 1;
+                        boolean yInside = dy > 0 && dy < height - 1;
+                        boolean zInside = dz > 0 && dz < footprintSize - 1;
                         boolean bottomFace = dy == 0 && xInside && zInside;
-                        boolean xWall = yInside && (dx == 0 || dx == size - 1) && zInside;
-                        boolean zWall = yInside && (dz == 0 || dz == size - 1) && xInside;
+                        boolean xWall = yInside && (dx == 0 || dx == footprintSize - 1) && zInside;
+                        boolean zWall = yInside && (dz == 0 || dz == footprintSize - 1) && xInside;
                         boolean optionalEdge = isOptionalCrucibleEdge(dx, dy, dz);
                         boolean shell = bottomFace || xWall || zWall;
                         BlockState state = level.getBlockState(pos);
@@ -143,26 +148,26 @@ public final class CrucibleStructure {
         }
 
         private boolean isOptionalCrucibleEdge(int dx, int dy, int dz) {
-            boolean xBoundary = dx == 0 || dx == size - 1;
-            boolean yBoundary = dy == 0 || dy == size - 1;
-            boolean zBoundary = dz == 0 || dz == size - 1;
+            boolean xBoundary = dx == 0 || dx == footprintSize - 1;
+            boolean yBoundary = dy == 0 || dy == height - 1;
+            boolean zBoundary = dz == 0 || dz == footprintSize - 1;
             return (xBoundary ? 1 : 0) + (yBoundary ? 1 : 0) + (zBoundary ? 1 : 0) >= 2;
         }
 
         private Optional<Direction> getNozzleFacing(int dx, int dy, int dz) {
-            if (dy <= 0 || dy >= size - 1) {
+            if (dy <= 0 || dy >= height - 1) {
                 return Optional.empty();
             }
-            if (dx == 0 && dz > 0 && dz < size - 1) {
+            if (dx == 0 && dz > 0 && dz < footprintSize - 1) {
                 return Optional.of(Direction.WEST);
             }
-            if (dx == size - 1 && dz > 0 && dz < size - 1) {
+            if (dx == footprintSize - 1 && dz > 0 && dz < footprintSize - 1) {
                 return Optional.of(Direction.EAST);
             }
-            if (dz == 0 && dx > 0 && dx < size - 1) {
+            if (dz == 0 && dx > 0 && dx < footprintSize - 1) {
                 return Optional.of(Direction.NORTH);
             }
-            if (dz == size - 1 && dx > 0 && dx < size - 1) {
+            if (dz == footprintSize - 1 && dx > 0 && dx < footprintSize - 1) {
                 return Optional.of(Direction.SOUTH);
             }
             return Optional.empty();
