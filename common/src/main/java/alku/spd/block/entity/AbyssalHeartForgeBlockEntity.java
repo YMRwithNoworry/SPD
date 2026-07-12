@@ -43,6 +43,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
     public static final int MAX_PROGRESS = 200;
 
     private static final int REQUIRED_SHARDS = 4;
+    private static final float EXTRA_MINERAL_CHANCE = 0.95F;
     private static final ItemStack[] EXTRA_OUTPUTS = {
             new ItemStack(Items.IRON_INGOT),
             new ItemStack(Items.GOLD_INGOT),
@@ -311,7 +312,7 @@ public class AbyssalHeartForgeBlockEntity extends BlockEntity implements Contain
             this.items.set(FUEL_SLOT, ItemStack.EMPTY);
         }
 
-        if (level.random.nextFloat() < 0.30F) {
+        if (level.random.nextFloat() < EXTRA_MINERAL_CHANCE) {
             ItemStack extra = EXTRA_OUTPUTS[level.random.nextInt(EXTRA_OUTPUTS.length)].copy();
             insertOutput(extra);
         }
