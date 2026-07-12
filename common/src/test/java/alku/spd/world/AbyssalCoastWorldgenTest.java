@@ -13,7 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import terrablender.api.Region;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,10 +38,14 @@ final class AbyssalCoastWorldgenTest {
             "spd:fungal_shallows",
             "spd:chrome_seabed_caves");
 
-    @Test
-    void biomeKeysExposeAllThreeEcosystemBiomes() {
+    @BeforeAll
+    static void bootstrapMinecraft() {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
+    }
+
+    @Test
+    void biomeKeysExposeAllThreeEcosystemBiomes() {
         assertBiomeKey(SpdBiomes.ABYSSAL_COAST, "abyssal_coast");
         assertBiomeKey(SpdBiomes.FUNGAL_SHALLOWS, "fungal_shallows");
         assertBiomeKey(SpdBiomes.CHROME_SEABED_CAVES, "chrome_seabed_caves");
@@ -76,7 +82,6 @@ final class AbyssalCoastWorldgenTest {
         new AbyssalCoastRegion(new ResourceLocation(Spd.MOD_ID, "test_abyssal_coast"), 10)
                 .addBiomes(null, mappings::add);
 
-        assertEquals(3, mappings.size());
         assertDepth(mappingFor(mappings, SpdBiomes.ABYSSAL_COAST), -0.05F, 0.05F);
         assertDepth(mappingFor(mappings, SpdBiomes.FUNGAL_SHALLOWS), -0.05F, 0.05F);
         Climate.ParameterPoint caves = mappingFor(mappings, SpdBiomes.CHROME_SEABED_CAVES);
@@ -84,6 +89,16 @@ final class AbyssalCoastWorldgenTest {
         long undergroundTarget = Climate.quantizeCoord(0.5F);
         assertTrue(caves.depth().distance(undergroundTarget)
                 < mappingFor(mappings, SpdBiomes.ABYSSAL_COAST).depth().distance(undergroundTarget));
+
+        Climate.ParameterList<ResourceKey<Biome>> selector = new Climate.ParameterList<>(mappings);
+        assertEquals(SpdBiomes.ABYSSAL_COAST,
+                selector.findValue(Climate.target(0.8F, -0.7F, -0.15F, 0.0F, 0.0F, 0.0F)));
+        assertEquals(SpdBiomes.FUNGAL_SHALLOWS,
+                selector.findValue(Climate.target(0.8F, -0.7F, -0.7F, 0.0F, 0.0F, 0.0F)));
+        assertEquals(SpdBiomes.CHROME_SEABED_CAVES,
+                selector.findValue(Climate.target(0.8F, -0.7F, -0.15F, 0.0F, 0.5F, 0.0F)));
+        assertEquals(Region.DEFERRED_PLACEHOLDER,
+                selector.findValue(Climate.target(-0.8F, 0.8F, 0.5F, 0.0F, 0.0F, 0.0F)));
     }
 
     @Test

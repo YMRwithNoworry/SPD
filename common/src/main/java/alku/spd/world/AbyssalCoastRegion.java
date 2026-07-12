@@ -9,6 +9,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import terrablender.api.Region;
 import terrablender.api.RegionType;
+import terrablender.api.VanillaParameterOverlayBuilder;
 
 import java.util.function.Consumer;
 
@@ -26,11 +27,18 @@ public final class AbyssalCoastRegion extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry,
                           Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-0.19F, -0.11F), FULL, FULL, SURFACE_DEPTH,
-                0.0F, SpdBiomes.ABYSSAL_COAST);
-        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-1.0F, -0.46F), FULL, FULL, SURFACE_DEPTH,
-                0.0F, SpdBiomes.FUNGAL_SHALLOWS);
-        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-1.0F, 0.2F), FULL, FULL,
-                UNDERGROUND_DEPTH, 0.0F, SpdBiomes.CHROME_SEABED_CAVES);
+        VanillaParameterOverlayBuilder overlay = new VanillaParameterOverlayBuilder();
+        overlay.add(parameters(Climate.Parameter.span(-0.19F, -0.11F), SURFACE_DEPTH),
+                SpdBiomes.ABYSSAL_COAST);
+        overlay.add(parameters(Climate.Parameter.span(-1.0F, -0.46F), SURFACE_DEPTH),
+                SpdBiomes.FUNGAL_SHALLOWS);
+        overlay.add(parameters(Climate.Parameter.span(-1.0F, 0.2F), UNDERGROUND_DEPTH),
+                SpdBiomes.CHROME_SEABED_CAVES);
+        overlay.build().forEach(mapper::accept);
+    }
+
+    private static Climate.ParameterPoint parameters(Climate.Parameter continentalness,
+                                                      Climate.Parameter depth) {
+        return Climate.parameters(HOT, DRY, continentalness, FULL, depth, FULL, 0.0F);
     }
 }
