@@ -23,7 +23,9 @@ public abstract class CactusBlockMixin {
             }
         }
 
-        if (level.getBlockState(pos.below()).is(SpdBlocks.ABYSSAL_BLOOD_SAND.get())
+        if (level.getBlockState(pos.below()).is(SpdBlocks.RUST_SAND.get())) {
+            cir.setReturnValue(false);
+        } else if (level.getBlockState(pos.below()).is(SpdBlocks.ABYSSAL_BLOOD_SAND.get())
                 && !level.getBlockState(pos.above()).liquid()) {
             cir.setReturnValue(true);
         }

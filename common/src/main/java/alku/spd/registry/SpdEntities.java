@@ -11,6 +11,7 @@ import alku.spd.entity.EpxEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.entity.NamelessSlashEntity;
+import alku.spd.entity.SpiteArmoredTurtleEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -49,6 +50,12 @@ public final class SpdEntities {
                     .sized(0.75F, 0.9F)
                     .clientTrackingRange(8)
                     .build("abyssal_wolf"));
+
+    public static final RegistrySupplier<EntityType<SpiteArmoredTurtleEntity>> SPITE_ARMORED_TURTLE = ENTITIES.register("spite_armored_turtle", () ->
+            EntityType.Builder.of(SpiteArmoredTurtleEntity::new, MobCategory.CREATURE)
+                    .sized(1.2F, 0.4F)
+                    .clientTrackingRange(10)
+                    .build("spite_armored_turtle"));
 
     public static final RegistrySupplier<EntityType<AbyssalLightWaveEntity>> ABYSSAL_LIGHT_WAVE = ENTITIES.register("abyssal_light_wave", () ->
             EntityType.Builder.<AbyssalLightWaveEntity>of(AbyssalLightWaveEntity::new, MobCategory.MISC)

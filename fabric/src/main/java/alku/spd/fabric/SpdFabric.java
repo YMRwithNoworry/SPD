@@ -6,6 +6,7 @@ import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
+import alku.spd.entity.SpiteArmoredTurtleEntity;
 import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdTags;
 import alku.spd.world.SpdTerraBlender;
@@ -18,6 +19,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -34,6 +36,7 @@ public final class SpdFabric implements ModInitializer {
         FabricDefaultAttributeRegistry.register(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SpdEntities.SPITE_ARMORED_TURTLE.get(), SpiteArmoredTurtleEntity.createAttributes());
         SpawnPlacements.register(
                 SpdEntities.ABYSSAL_FOX.get(),
                 SpawnPlacements.Type.ON_GROUND,
@@ -44,10 +47,19 @@ public final class SpdFabric implements ModInitializer {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 AbyssalWolfEntity::checkSpawnRules);
+        SpawnPlacements.register(
+                SpdEntities.SPITE_ARMORED_TURTLE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpiteArmoredTurtleEntity::checkSpawnRules);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), 45, 1, 3);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.MOLD_ZOMBIE.get(), 80, 1, 4);
         BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_FOX_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_FOX.get(), 10, 1, 2);
         BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_WOLF_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_WOLF.get(), 8, 2, 3);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(BiomeTags.IS_OCEAN), MobCategory.CREATURE,
+                SpdEntities.SPITE_ARMORED_TURTLE.get(), 3, 1, 2);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(BiomeTags.IS_BEACH), MobCategory.CREATURE,
+                SpdEntities.SPITE_ARMORED_TURTLE.get(), 3, 1, 2);
         addOverworldOre("ore_blazing_vein_upper");
         addOverworldOre("ore_blazing_vein_middle");
         addOverworldOre("ore_blazing_vein_small");

@@ -36,9 +36,13 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.ABYSSAL_HEART_SPORE.get());
                 output.accept(SpdItems.LIQUID_GOLD.get());
                 output.accept(SpdItems.CULTURE_MEDIUM.get());
+                output.accept(SpdItems.HEAVY_SPITE_SCUTE.get());
+                output.accept(SpdItems.RESIDUAL_MALICE.get());
                 output.accept(SpdItems.NAMELESS_SWORD.get());
                 output.accept(SpdItems.ABYSSAL_BLOOD_SAND.get());
+                output.accept(SpdItems.RUST_SAND.get());
                 output.accept(SpdItems.GUIDE_BOOK.get());
+                output.accept(SpdItems.SPITE_NODULE.get());
                 output.accept(SpdItems.VINE_PLAGUE_NODE.get());
                 output.accept(SpdItems.WIDESPREAD_EPIDEMIC.get());
                 output.accept(SpdItems.ABYSSAL_HEART_FORGE.get());
@@ -49,6 +53,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.MOLD_ZOMBIE_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_FOX_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_WOLF_SPAWN_EGG.get());
+                output.accept(SpdItems.SPITE_ARMORED_TURTLE_SPAWN_EGG.get());
             })
             .build());
 

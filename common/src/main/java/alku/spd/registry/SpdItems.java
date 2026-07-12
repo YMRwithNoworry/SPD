@@ -128,6 +128,12 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> CULTURE_MEDIUM = ITEMS.register("culture_medium", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> HEAVY_SPITE_SCUTE = ITEMS.register("heavy_spite_scute", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> RESIDUAL_MALICE = ITEMS.register("residual_malice", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
             new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
                     .durability(2600)
@@ -135,6 +141,12 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> ABYSSAL_BLOOD_SAND = ITEMS.register("abyssal_blood_sand", () ->
             new BlockItem(SpdBlocks.ABYSSAL_BLOOD_SAND.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> SPITE_NODULE = ITEMS.register("spite_nodule", () ->
+            new BlockItem(SpdBlocks.SPITE_NODULE.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> RUST_SAND = ITEMS.register("rust_sand", () ->
+            new BlockItem(SpdBlocks.RUST_SAND.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> SPD_TAB_ICON = ITEMS.register("spd_tab_icon", () ->
             new Item(new Item.Properties()));
@@ -171,6 +183,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> ABYSSAL_WOLF_SPAWN_EGG = ITEMS.register("abyssal_wolf_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_WOLF, 0x32171B, 0x9A3741, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> SPITE_ARMORED_TURTLE_SPAWN_EGG = ITEMS.register("spite_armored_turtle_spawn_egg", () ->
+            new ArchitecturySpawnEggItem(SpdEntities.SPITE_ARMORED_TURTLE, 0x4A4D4B, 0xA8242F, new Item.Properties()));
 
     private SpdItems() {
     }

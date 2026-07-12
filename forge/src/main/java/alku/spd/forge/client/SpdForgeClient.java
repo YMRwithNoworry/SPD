@@ -14,6 +14,7 @@ import alku.spd.client.renderer.EpxRenderer;
 import alku.spd.client.renderer.FalseMotherRenderer;
 import alku.spd.client.renderer.MascotRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
+import alku.spd.client.renderer.SpiteArmoredTurtleRenderer;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdEntities;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
@@ -44,6 +45,7 @@ public final class SpdForgeClient {
         event.registerEntityRenderer(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfRenderer::new);
+        event.registerEntityRenderer(SpdEntities.SPITE_ARMORED_TURTLE.get(), SpiteArmoredTurtleRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_LIGHT_WAVE.get(), NoopRenderer::new);
         event.registerEntityRenderer(SpdEntities.ABYSSAL_TORNADO.get(), AbyssalTornadoRenderer::new);
         event.registerEntityRenderer(SpdEntities.NAMELESS_SLASH.get(), NoopRenderer::new);

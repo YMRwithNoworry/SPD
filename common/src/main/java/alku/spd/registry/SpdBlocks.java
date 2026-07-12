@@ -6,6 +6,7 @@ import alku.spd.block.AbyssalHeartForgeBlock;
 import alku.spd.block.CrucibleWallBlock;
 import alku.spd.block.MascotBlock;
 import alku.spd.block.MoltenChromeNozzleBlock;
+import alku.spd.block.SpiteNoduleBlock;
 import alku.spd.block.VinePlagueNodeBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -34,6 +35,15 @@ public final class SpdBlocks {
                     .requiresCorrectToolForDrops()));
 
     public static final RegistrySupplier<Block> ABYSSAL_BLOOD_SAND = BLOCKS.register("abyssal_blood_sand", () ->
+            new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)
+                    .isViewBlocking((state, level, pos) -> true)));
+
+    public static final RegistrySupplier<Block> SPITE_NODULE = BLOCKS.register("spite_nodule", () ->
+            new SpiteNoduleBlock(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)
+                    .strength(1.0F)
+                    .sound(SoundType.NETHERRACK)));
+
+    public static final RegistrySupplier<Block> RUST_SAND = BLOCKS.register("rust_sand", () ->
             new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)
                     .isViewBlocking((state, level, pos) -> true)));
 
