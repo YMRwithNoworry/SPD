@@ -26,7 +26,10 @@ final class MoldZombieAssetTest {
     void modelMatchesTheSuppliedGeckoLibAsset() throws Exception {
         try (InputStream stream = getClass().getResourceAsStream(MODEL_PATH)) {
             assertNotNull(stream, MODEL_PATH);
-            String actual = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(stream.readAllBytes()));
+            byte[] normalized = new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                    .replace("\r\n", "\n")
+                    .getBytes(StandardCharsets.UTF_8);
+            String actual = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(normalized));
 
             assertEquals(MODEL_SHA256, actual);
         }
