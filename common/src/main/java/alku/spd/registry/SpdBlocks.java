@@ -2,6 +2,7 @@ package alku.spd.registry;
 
 import alku.spd.Spd;
 import alku.spd.block.AbyssalBloodSandBlock;
+import alku.spd.block.AbyssalBlazingRuneSteleBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
 import alku.spd.block.CrucibleWallBlock;
 import alku.spd.block.MascotBlock;
@@ -67,6 +68,10 @@ public final class SpdBlocks {
                     .noOcclusion()
                     .strength(1.0F)
                     .sound(SoundType.STONE)));
+
+    public static final RegistrySupplier<Block> ABYSSAL_BLAZING_RUNE_STELE = BLOCKS.register("abyssal_blazing_rune_stele", () ->
+            new AbyssalBlazingRuneSteleBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)
+                    .noOcclusion()));
 
     private SpdBlocks() {
     }
