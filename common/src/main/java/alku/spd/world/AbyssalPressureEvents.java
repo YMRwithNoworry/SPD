@@ -23,6 +23,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.entity.AbyssalWolfEntity;
+import alku.spd.entity.SpdEntityTargeting;
 import net.minecraft.world.entity.animal.Wolf;
 
 import java.util.UUID;
@@ -54,6 +55,12 @@ public final class AbyssalPressureEvents {
 
         for (Entity entity : level.getAllEntities()) {
             if (!(entity instanceof LivingEntity living) || !living.isAlive()) {
+                continue;
+            }
+            if (SpdEntityTargeting.isSpdEntity(living)) {
+                if (living.hasEffect(SpdEffects.ABYSSAL_PRESSURE.get())) {
+                    living.removeEffect(SpdEffects.ABYSSAL_PRESSURE.get());
+                }
                 continue;
             }
 

@@ -167,6 +167,11 @@ public abstract class LivingEntityMixin implements EpxCarrier {
     @Inject(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", at = @At("HEAD"), cancellable = true)
     private void spd$blockSuppressedErosionBoost(MobEffectInstance effectInstance, Entity source, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity target = (LivingEntity) (Object) this;
+        if (SpdEntityTargeting.isSpdEntity(target)
+                && effectInstance.getEffect() == SpdEffects.ABYSSAL_PRESSURE.get()) {
+            cir.setReturnValue(false);
+            return;
+        }
         if (!SpdCorrosion.canReceiveErosionBoost(target, effectInstance.getEffect())) {
             cir.setReturnValue(false);
         }

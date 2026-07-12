@@ -1,5 +1,6 @@
 package alku.spd.world;
 
+import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.registry.SpdBiomes;
 import alku.spd.registry.SpdBlocks;
 import alku.spd.registry.SpdEffects;
@@ -53,6 +54,9 @@ public final class SpdCorrosion {
     }
 
     public static int getAbyssalPressureLayers(LivingEntity entity) {
+        if (SpdEntityTargeting.isSpdEntity(entity)) {
+            return 0;
+        }
         MobEffectInstance instance = entity.getEffect(SpdEffects.ABYSSAL_PRESSURE.get());
         return instance == null ? 0 : Math.min(MAX_ABYSSAL_PRESSURE_LAYERS, instance.getAmplifier() + 1);
     }
@@ -62,7 +66,7 @@ public final class SpdCorrosion {
     }
 
     public static void addAbyssalPressure(LivingEntity entity, int layers, int duration, LivingEntity source) {
-        if (layers <= 0 || entity.level().isClientSide()) {
+        if (layers <= 0 || entity.level().isClientSide() || SpdEntityTargeting.isSpdEntity(entity)) {
             return;
         }
 
