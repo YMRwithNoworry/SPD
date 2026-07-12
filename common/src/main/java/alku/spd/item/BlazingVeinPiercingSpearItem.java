@@ -17,11 +17,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class BlazingVeinPiercingSpearItem extends SwordItem {
+public class BlazingVeinPiercingSpearItem extends SwordItem implements GeoItem {
     public static final double ATTACK_REACH = 4.0D;
     public static final double FORGE_REACH_BONUS = 1.0D;
 
@@ -31,8 +37,14 @@ public class BlazingVeinPiercingSpearItem extends SwordItem {
     private static final float PIERCE_DAMAGE = 7.0F;
     private static final int SEARING_PULSE_TICKS = 20 * 3;
 
+    private static final Supplier<Object> EMPTY_RENDER_PROVIDER = () -> null;
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final Supplier<Object> renderProvider = EMPTY_RENDER_PROVIDER;
+
     public BlazingVeinPiercingSpearItem(Tier tier, Properties properties) {
         super(tier, 4, -2.8F, properties);
+        GeoItem.registerSyncedAnimatable(this);
     }
 
     public static boolean isBlazingVeinPiercingSpear(ItemStack stack) {
@@ -78,6 +90,24 @@ public class BlazingVeinPiercingSpearItem extends SwordItem {
     @Override
     public boolean isValidRepairItem(ItemStack stack, ItemStack repairCandidate) {
         return repairCandidate.is(SpdItems.BLAZING_CARBON_STEEL_INGOT.get());
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public void createRenderer(Consumer<Object> consumer) {
+    }
+
+    @Override
+    public Supplier<Object> getRenderProvider() {
+        return this.renderProvider;
     }
 
     private static int pierce(ServerLevel level, Player player) {
