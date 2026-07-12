@@ -3,6 +3,7 @@ package alku.spd.forge;
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
+import alku.spd.entity.AbyssalTurtleEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
@@ -53,6 +54,11 @@ public final class SpdForge {
                     SpawnPlacements.Type.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     AbyssalWolfEntity::checkSpawnRules);
+            SpawnPlacements.register(
+                    SpdEntities.ABYSSAL_TURTLE.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    AbyssalTurtleEntity::checkSpawnRules);
         });
     }
 
@@ -62,6 +68,7 @@ public final class SpdForge {
         event.put(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes().build());
         event.put(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxEntity.createAttributes().build());
         event.put(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfEntity.createAttributes().build());
+        event.put(SpdEntities.ABYSSAL_TURTLE.get(), AbyssalTurtleEntity.createAttributes().build());
     }
 
     private void addItemAttributes(ItemAttributeModifierEvent event) {

@@ -3,6 +3,7 @@ package alku.spd.fabric;
 import alku.spd.Spd;
 import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
+import alku.spd.entity.AbyssalTurtleEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
 import alku.spd.entity.MoldZombieEntity;
@@ -35,6 +36,7 @@ public final class SpdFabric implements ModInitializer {
         FabricDefaultAttributeRegistry.register(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SpdEntities.ABYSSAL_TURTLE.get(), AbyssalTurtleEntity.createAttributes());
         SpawnPlacements.register(
                 SpdEntities.ABYSSAL_FOX.get(),
                 SpawnPlacements.Type.ON_GROUND,
@@ -45,6 +47,11 @@ public final class SpdFabric implements ModInitializer {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 AbyssalWolfEntity::checkSpawnRules);
+        SpawnPlacements.register(
+                SpdEntities.ABYSSAL_TURTLE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                AbyssalTurtleEntity::checkSpawnRules);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), 45, 1, 3);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.MOLD_ZOMBIE.get(), 80, 1, 4);
         BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_FOX_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_FOX.get(), 10, 1, 2);
