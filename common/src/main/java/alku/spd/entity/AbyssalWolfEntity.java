@@ -258,7 +258,8 @@ public class AbyssalWolfEntity extends Wolf implements GeoEntity {
             if (this.attackAnimationTicks > 0 || this.swinging) state.setAndContinue(ATTACK);
             else {
                 Vec3 motion = this.getDeltaMovement();
-                boolean moving = state.isMoving() || motion.x * motion.x + motion.z * motion.z > 1.0E-5D;
+                boolean moving = AbyssalWolfAnimation.isMoving(state.isMoving(), this.walkAnimation.isMoving(),
+                        state.getLimbSwingAmount(), motion.x, motion.z);
                 state.setAndContinue(moving ? WALK : IDLE);
             }
             return PlayState.CONTINUE;
