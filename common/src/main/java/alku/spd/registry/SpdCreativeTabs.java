@@ -39,6 +39,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.CULTURE_MEDIUM.get());
                 output.accept(SpdItems.NAMELESS_SWORD.get());
                 output.accept(SpdItems.ABYSSAL_BLOOD_SAND.get());
+                output.accept(SpdItems.ABYSSAL_TURTLE_EGG.get());
                 output.accept(SpdItems.GUIDE_BOOK.get());
                 output.accept(SpdItems.VINE_PLAGUE_NODE.get());
                 output.accept(SpdItems.WIDESPREAD_EPIDEMIC.get());

@@ -20,7 +20,8 @@
     "ItemStackMixin",
     "LivingEntityMixin",
     "PlayerMixin",
-    "RepairItemRecipeMixin"
+    "RepairItemRecipeMixin",
+    "TurtleAccessorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

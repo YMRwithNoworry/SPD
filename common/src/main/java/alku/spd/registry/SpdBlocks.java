@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import alku.spd.block.AbyssalBloodSandBlock;
 import alku.spd.block.AbyssalBlazingRuneSteleBlock;
 import alku.spd.block.AbyssalHeartForgeBlock;
+import alku.spd.block.AbyssalTurtleEggBlock;
 import alku.spd.block.CrucibleWallBlock;
 import alku.spd.block.MascotBlock;
 import alku.spd.block.MoltenChromeNozzleBlock;
@@ -37,6 +38,11 @@ public final class SpdBlocks {
     public static final RegistrySupplier<Block> ABYSSAL_BLOOD_SAND = BLOCKS.register("abyssal_blood_sand", () ->
             new AbyssalBloodSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)
                     .isViewBlocking((state, level, pos) -> true)));
+
+    public static final RegistrySupplier<Block> ABYSSAL_TURTLE_EGG = BLOCKS.register("abyssal_turtle_egg", () ->
+            new AbyssalTurtleEggBlock(BlockBehaviour.Properties.copy(Blocks.TURTLE_EGG)
+                    .randomTicks()
+                    .noOcclusion()));
 
     public static final RegistrySupplier<Block> VINE_PLAGUE_NODE = BLOCKS.register("vine_plague_node", () ->
             new VinePlagueNodeBlock(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)

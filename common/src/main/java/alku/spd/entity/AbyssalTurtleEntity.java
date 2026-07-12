@@ -2,8 +2,10 @@ package alku.spd.entity;
 
 import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdEffects;
+import alku.spd.registry.SpdBlocks;
 import alku.spd.registry.SpdTags;
 import alku.spd.world.SpdCorrosion;
+import alku.spd.mixin.TurtleAccessorMixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.DamageTypeTags;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -41,6 +44,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.EnumSet;
 import java.util.UUID;
 
 public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
@@ -97,6 +101,8 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.removeAllGoals(goal -> goal.getClass().getName().contains("TurtleLayEggGoal"));
+        this.goalSelector.addGoal(1, new LayAbyssalEggGoal(this));
         this.goalSelector.addGoal(2, new AdaptiveMeleeAttackGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
     }
@@ -350,6 +356,56 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
         @Override
         public boolean canContinueToUse() {
             return !this.turtle.isShellGuarding() && super.canContinueToUse();
+        }
+    }
+
+    private static final class LayAbyssalEggGoal extends Goal {
+        private final AbyssalTurtleEntity turtle;
+        @Nullable
+        private BlockPos nest;
+
+        private LayAbyssalEggGoal(AbyssalTurtleEntity turtle) {
+            this.turtle = turtle;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (!this.turtle.hasEgg() || this.turtle.isShellGuarding()) return false;
+            BlockPos home = ((TurtleAccessorMixin) (Object) this.turtle).spd$getHomePos();
+            this.nest = findNest(home);
+            return this.nest != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.nest != null && this.turtle.hasEgg() && !this.turtle.isShellGuarding();
+        }
+
+        @Override
+        public void start() {
+            if (this.nest != null) {
+                this.turtle.getNavigation().moveTo(this.nest.getX() + 0.5D, this.nest.getY(), this.nest.getZ() + 0.5D, 1.0D);
+            }
+        }
+
+        @Override
+        public void tick() {
+            if (this.nest == null || this.turtle.distanceToSqr(this.nest.getX() + 0.5D, this.nest.getY(), this.nest.getZ() + 0.5D) > 3.0D) return;
+            BlockState eggs = SpdBlocks.ABYSSAL_TURTLE_EGG.get().defaultBlockState()
+                    .setValue(net.minecraft.world.level.block.TurtleEggBlock.EGGS, 1 + this.turtle.getRandom().nextInt(2));
+            this.turtle.level().setBlock(this.nest, eggs, 3);
+            ((TurtleAccessorMixin) (Object) this.turtle).spd$setHasEgg(false);
+            this.nest = null;
+        }
+
+        @Nullable
+        private BlockPos findNest(BlockPos home) {
+            Level level = this.turtle.level();
+            for (BlockPos candidate : BlockPos.betweenClosed(home.offset(-8, -2, -8), home.offset(8, 2, 8))) {
+                if (level.isEmptyBlock(candidate) && TurtleEggBlock.onSand(level, candidate)) return candidate.immutable();
+            }
+            return null;
         }
     }
 }

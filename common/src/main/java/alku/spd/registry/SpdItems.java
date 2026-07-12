@@ -141,6 +141,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_BLOOD_SAND = ITEMS.register("abyssal_blood_sand", () ->
             new BlockItem(SpdBlocks.ABYSSAL_BLOOD_SAND.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> ABYSSAL_TURTLE_EGG = ITEMS.register("abyssal_turtle_egg", () ->
+            new BlockItem(SpdBlocks.ABYSSAL_TURTLE_EGG.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> SPD_TAB_ICON = ITEMS.register("spd_tab_icon", () ->
             new Item(new Item.Properties()));
 
