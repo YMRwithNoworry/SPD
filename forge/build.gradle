@@ -2,6 +2,10 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
+repositories {
+    maven { url = 'https://maven.blamejared.com/' }
+}
+
 loom {
     forge {
         mixinConfig "spd.mixins.json"
@@ -39,8 +43,19 @@ dependencies {
     modImplementation files(rootProject.file("../LDlib2/forge/build/libs/${rootProject.ldlib2_forge_file}"))
     modImplementation "maven.modrinth:photon-editor:$rootProject.photon_forge_version"
 
+    compileOnly("mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}") { transitive = false }
+    compileOnly("mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}") { transitive = false }
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
+    testImplementation("mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}") { transitive = false }
+    testImplementation("mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}") { transitive = false }
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 processResources {
