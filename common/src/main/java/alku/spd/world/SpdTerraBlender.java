@@ -9,7 +9,7 @@ import terrablender.api.Regions;
 import terrablender.api.SurfaceRuleManager;
 
 public final class SpdTerraBlender {
-    private static final int BLOOD_DESERT_REGION_WEIGHT = 3;
+    private static final int BLOOD_DESERT_REGION_WEIGHT = 10;
     private static boolean registered;
 
     private SpdTerraBlender() {

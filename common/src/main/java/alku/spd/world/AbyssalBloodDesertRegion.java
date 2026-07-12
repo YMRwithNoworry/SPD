@@ -4,7 +4,6 @@ import alku.spd.registry.SpdBiomes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import terrablender.api.Region;
 import terrablender.api.RegionType;
 
@@ -22,6 +21,15 @@ public final class AbyssalBloodDesertRegion extends Region {
 
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-        addBiomeSimilar(mapper, Biomes.DESERT, SpdBiomes.ABYSSAL_BLOOD_DESERT);
+        addBiome(
+                mapper,
+                Climate.Parameter.span(0.55F, 1.0F),
+                Climate.Parameter.span(-1.0F, -0.35F),
+                Climate.Parameter.span(0.0F, 1.0F),
+                Climate.Parameter.span(-1.0F, 1.0F),
+                Climate.Parameter.span(-1.0F, 1.0F),
+                Climate.Parameter.span(-1.0F, 1.0F),
+                0.0F,
+                SpdBiomes.ABYSSAL_BLOOD_DESERT);
     }
 }
