@@ -36,6 +36,19 @@ final class AbyssalBlazingRuneSteleResourceTest {
         assertNotNull(getClass().getResource("/data/spd/loot_tables/blocks/abyssal_blazing_rune_stele.json"));
     }
 
+    @Test
+    void modelIsCenteredOnThePlacedBlock() throws Exception {
+        JsonObject model = resourceJson("/assets/spd/geo/abyssal_blazing_rune_stele.geo.json");
+        JsonObject geometry = model.getAsJsonArray("minecraft:geometry").get(0).getAsJsonObject();
+        JsonObject mainCube = geometry.getAsJsonArray("bones").get(0).getAsJsonObject()
+                .getAsJsonArray("cubes").get(0).getAsJsonObject();
+        double originX = mainCube.getAsJsonArray("origin").get(0).getAsDouble();
+        double width = mainCube.getAsJsonArray("size").get(0).getAsDouble();
+
+        assertEquals(15.0D, width, 1.0E-9D);
+        assertEquals(0.0D, originX + width / 2.0D, 1.0E-9D);
+    }
+
     private JsonObject resourceJson(String path) throws Exception {
         try (InputStream stream = getClass().getResourceAsStream(path)) {
             assertNotNull(stream, path);

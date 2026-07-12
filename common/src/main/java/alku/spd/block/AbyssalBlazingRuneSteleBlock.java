@@ -29,8 +29,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbyssalBlazingRuneSteleBlock extends DoublePlantBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    private static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(0.0D, 0.0D, 3.0D, 15.0D, 16.0D, 13.0D);
-    private static final VoxelShape EAST_WEST_SHAPE = Block.box(3.0D, 0.0D, 0.0D, 13.0D, 16.0D, 15.0D);
+    private static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(0.5D, 0.0D, 3.0D, 15.5D, 16.0D, 13.0D);
+    private static final VoxelShape EAST_WEST_SHAPE = Block.box(3.0D, 0.0D, 0.5D, 13.0D, 16.0D, 15.5D);
 
     public AbyssalBlazingRuneSteleBlock(Properties properties) {
         super(properties);
@@ -47,11 +47,15 @@ public class AbyssalBlazingRuneSteleBlock extends DoublePlantBlock implements En
         return facing.getAxis() == Direction.Axis.Z ? NORTH_SOUTH_SHAPE : EAST_WEST_SHAPE;
     }
 
+    static Direction facingForPlacement(Direction playerFacing) {
+        return playerFacing.getOpposite();
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = super.getStateForPlacement(context);
-        return state == null ? null : state.setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return state == null ? null : state.setValue(FACING, facingForPlacement(context.getHorizontalDirection()));
     }
 
     @Override
