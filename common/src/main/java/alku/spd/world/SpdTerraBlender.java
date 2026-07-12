@@ -67,6 +67,8 @@ public final class SpdTerraBlender {
                         coastAndShallows),
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(SpdBiomes.CHROME_SEABED_CAVES),
-                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, sacredStigma)));
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, sacredStigma),
+                                SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, sacredStigma))));
     }
 }

@@ -1,14 +1,18 @@
 package alku.spd.world;
 
+import alku.spd.Spd;
 import alku.spd.registry.SpdBiomes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.Bootstrap;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.SharedConstants;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Climate;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -16,6 +20,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,16 +71,24 @@ final class AbyssalCoastWorldgenTest {
     }
 
     @Test
-    void terraBlenderMapsTheThreeClimatesAndKeepsBloodDesertRules() throws Exception {
-        String region = source("world/AbyssalCoastRegion.java");
-        String terraBlender = source("world/SpdTerraBlender.java");
+    void terraBlenderMapsSurfaceBiomesAndUndergroundCavesToDistinctDepths() {
+        List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mappings = new ArrayList<>();
+        new AbyssalCoastRegion(new ResourceLocation(Spd.MOD_ID, "test_abyssal_coast"), 10)
+                .addBiomes(null, mappings::add);
 
-        assertTrue(region.contains("SpdBiomes.ABYSSAL_COAST"));
-        assertTrue(region.contains("SpdBiomes.FUNGAL_SHALLOWS"));
-        assertTrue(region.contains("SpdBiomes.CHROME_SEABED_CAVES"));
-        assertTrue(region.contains("Climate.Parameter.span(-0.19F, -0.11F)"), "coast needs low continentalness");
-        assertTrue(region.contains("Climate.Parameter.span(-1.0F, -0.46F)"), "shallows need ocean continentalness");
-        assertTrue(region.contains("Climate.Parameter.span(-1.0F, -0.1F)"), "caves need negative depth");
+        assertEquals(3, mappings.size());
+        assertDepth(mappingFor(mappings, SpdBiomes.ABYSSAL_COAST), -0.05F, 0.05F);
+        assertDepth(mappingFor(mappings, SpdBiomes.FUNGAL_SHALLOWS), -0.05F, 0.05F);
+        Climate.ParameterPoint caves = mappingFor(mappings, SpdBiomes.CHROME_SEABED_CAVES);
+        assertDepth(caves, 0.2F, 0.9F);
+        long undergroundTarget = Climate.quantizeCoord(0.5F);
+        assertTrue(caves.depth().distance(undergroundTarget)
+                < mappingFor(mappings, SpdBiomes.ABYSSAL_COAST).depth().distance(undergroundTarget));
+    }
+
+    @Test
+    void terraBlenderKeepsBloodDesertRulesAndCoversCaveFloorsAndCeilings() throws Exception {
+        String terraBlender = source("world/SpdTerraBlender.java");
 
         assertTrue(terraBlender.contains("ABYSSAL_COAST_REGION_WEIGHT = 10"));
         assertTrue(terraBlender.contains("new AbyssalCoastRegion"));
@@ -84,11 +98,30 @@ final class AbyssalCoastWorldgenTest {
         assertTrue(terraBlender.contains("SpdBiomes.FUNGAL_SHALLOWS"));
         assertTrue(terraBlender.contains("SpdBiomes.CHROME_SEABED_CAVES"));
         assertTrue(terraBlender.contains("SurfaceRules.isBiome(SpdBiomes.ABYSSAL_BLOOD_DESERT)"));
+        int caveRuleStart = terraBlender.indexOf("SurfaceRules.isBiome(SpdBiomes.CHROME_SEABED_CAVES)");
+        String caveRule = terraBlender.substring(caveRuleStart);
+        assertTrue(caveRule.contains("SurfaceRules.ON_FLOOR"));
+        assertTrue(caveRule.contains("SurfaceRules.ON_CEILING"));
     }
 
     private void assertBiomeKey(ResourceKey<Biome> key, String path) {
         assertEquals("spd", key.location().getNamespace());
         assertEquals(path, key.location().getPath());
+    }
+
+    private Climate.ParameterPoint mappingFor(
+            List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mappings,
+            ResourceKey<Biome> biome) {
+        return mappings.stream()
+                .filter(mapping -> mapping.getSecond().equals(biome))
+                .map(Pair::getFirst)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Missing biome mapping " + biome.location()));
+    }
+
+    private void assertDepth(Climate.ParameterPoint point, float min, float max) {
+        assertEquals(Climate.quantizeCoord(min), point.depth().min());
+        assertEquals(Climate.quantizeCoord(max), point.depth().max());
     }
 
     private void assertWater(JsonObject biome) {

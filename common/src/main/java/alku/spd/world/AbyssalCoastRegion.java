@@ -16,7 +16,8 @@ public final class AbyssalCoastRegion extends Region {
     private static final Climate.Parameter HOT = Climate.Parameter.span(0.55F, 1.0F);
     private static final Climate.Parameter DRY = Climate.Parameter.span(-1.0F, -0.35F);
     private static final Climate.Parameter FULL = Climate.Parameter.span(-1.0F, 1.0F);
-    private static final Climate.Parameter SURFACE = Climate.Parameter.span(0.0F, 1.0F);
+    private static final Climate.Parameter SURFACE_DEPTH = Climate.Parameter.span(-0.05F, 0.05F);
+    private static final Climate.Parameter UNDERGROUND_DEPTH = Climate.Parameter.span(0.2F, 0.9F);
 
     public AbyssalCoastRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);
@@ -25,11 +26,11 @@ public final class AbyssalCoastRegion extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry,
                           Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-0.19F, -0.11F), FULL, FULL, SURFACE,
+        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-0.19F, -0.11F), FULL, FULL, SURFACE_DEPTH,
                 0.0F, SpdBiomes.ABYSSAL_COAST);
-        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-1.0F, -0.46F), FULL, FULL, SURFACE,
+        addBiome(mapper, HOT, DRY, Climate.Parameter.span(-1.0F, -0.46F), FULL, FULL, SURFACE_DEPTH,
                 0.0F, SpdBiomes.FUNGAL_SHALLOWS);
         addBiome(mapper, HOT, DRY, Climate.Parameter.span(-1.0F, 0.2F), FULL, FULL,
-                Climate.Parameter.span(-1.0F, -0.1F), 0.0F, SpdBiomes.CHROME_SEABED_CAVES);
+                UNDERGROUND_DEPTH, 0.0F, SpdBiomes.CHROME_SEABED_CAVES);
     }
 }
