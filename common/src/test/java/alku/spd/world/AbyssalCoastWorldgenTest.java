@@ -93,11 +93,12 @@ final class AbyssalCoastWorldgenTest {
         assertEquals(40, height.getAsJsonObject("max_inclusive").get("absolute").getAsInt());
 
         String fabric = repositoryFile("fabric/src/main/java/alku/spd/fabric/SpdFabric.java");
-        assertTrue(fabric.contains("addChromeCaveOre(\"ore_blazing_vein_chrome_caves\")"));
-        String chromeCaveOreHook = fabric.substring(fabric.indexOf("private static void addChromeCaveOre"));
-        assertTrue(chromeCaveOreHook.contains(
-                "BiomeSelectors.includeByKey(SpdBiomes.CHROME_SEABED_CAVES)"));
-        assertFalse(chromeCaveOreHook.contains("BiomeSelectors.foundInOverworld()"));
+        assertEquals(1, occurrences(fabric, "addChromeCaveOre(\"ore_blazing_vein_chrome_caves\")"));
+        String chromeCaveOreHook = methodBody(fabric, "private static void addChromeCaveOre");
+        assertEquals(1, occurrences(chromeCaveOreHook, "BiomeModifications.addFeature"));
+        assertEquals("BiomeSelectors.includeByKey(SpdBiomes.CHROME_SEABED_CAVES)",
+                firstInvocationArgument(chromeCaveOreHook, "BiomeModifications.addFeature")
+                        .replaceAll("\\s+", ""));
 
         JsonObject forge = repositoryJson(
                 "forge/src/main/resources/data/spd/forge/biome_modifier/add_chrome_cave_blazing_vein.json");
@@ -210,5 +211,43 @@ final class AbyssalCoastWorldgenTest {
 
     private JsonObject repositoryJson(String relativePath) throws Exception {
         return JsonParser.parseString(repositoryFile(relativePath)).getAsJsonObject();
+    }
+
+    private String methodBody(String source, String signature) {
+        int methodStart = source.indexOf(signature);
+        assertTrue(methodStart >= 0, "Missing method " + signature);
+        int bodyStart = source.indexOf('{', methodStart);
+        int depth = 0;
+        for (int index = bodyStart; index < source.length(); index++) {
+            char current = source.charAt(index);
+            if (current == '{') {
+                depth++;
+            } else if (current == '}' && --depth == 0) {
+                return source.substring(bodyStart + 1, index);
+            }
+        }
+        throw new AssertionError("Unclosed method " + signature);
+    }
+
+    private String firstInvocationArgument(String source, String invocation) {
+        int invocationStart = source.indexOf(invocation);
+        assertTrue(invocationStart >= 0, "Missing invocation " + invocation);
+        int argumentStart = source.indexOf('(', invocationStart) + 1;
+        int depth = 0;
+        for (int index = argumentStart; index < source.length(); index++) {
+            char current = source.charAt(index);
+            if (current == '(') {
+                depth++;
+            } else if (current == ')') {
+                depth--;
+            } else if (current == ',' && depth == 0) {
+                return source.substring(argumentStart, index);
+            }
+        }
+        throw new AssertionError("Missing first argument boundary for " + invocation);
+    }
+
+    private int occurrences(String source, String value) {
+        return (source.length() - source.replace(value, "").length()) / value.length();
     }
 }
