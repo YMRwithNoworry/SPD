@@ -186,6 +186,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_WOLF_SPAWN_EGG = ITEMS.register("abyssal_wolf_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_WOLF, 0x32171B, 0x9A3741, new Item.Properties()));
 
+    public static final RegistrySupplier<Item> ABYSSAL_TURTLE_SPAWN_EGG = ITEMS.register("abyssal_turtle_spawn_egg", () ->
+            new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_TURTLE, 0x311719, 0x8A3037, new Item.Properties()));
+
     private SpdItems() {
     }
 

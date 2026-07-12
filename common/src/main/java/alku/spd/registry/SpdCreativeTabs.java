@@ -53,6 +53,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.MOLD_ZOMBIE_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_FOX_SPAWN_EGG.get());
                 output.accept(SpdItems.ABYSSAL_WOLF_SPAWN_EGG.get());
+                output.accept(SpdItems.ABYSSAL_TURTLE_SPAWN_EGG.get());
             })
             .build());
 

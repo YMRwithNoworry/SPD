@@ -9,6 +9,7 @@ import alku.spd.client.renderer.AbyssalBlazingRuneSteleRenderer;
 import alku.spd.client.renderer.AbyssalErodedSilverfishRenderer;
 import alku.spd.client.renderer.AbyssalFoxRenderer;
 import alku.spd.client.renderer.AbyssalTornadoRenderer;
+import alku.spd.client.renderer.AbyssalTurtleRenderer;
 import alku.spd.client.renderer.AbyssalWolfRenderer;
 import alku.spd.client.renderer.EpxRenderer;
 import alku.spd.client.renderer.FalseMotherRenderer;
@@ -28,6 +29,7 @@ public final class SpdFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfRenderer::new);
+        EntityRendererRegistry.register(SpdEntities.ABYSSAL_TURTLE.get(), AbyssalTurtleRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_LIGHT_WAVE.get(), NoopRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_TORNADO.get(), AbyssalTornadoRenderer::new);
         EntityRendererRegistry.register(SpdEntities.NAMELESS_SLASH.get(), NoopRenderer::new);

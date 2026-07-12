@@ -41,6 +41,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -61,6 +62,9 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
             AbyssalTurtleEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(
             AbyssalTurtleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final RawAnimation IDLE_ANIMATION = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation WALK_ANIMATION = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation ATTACK_ANIMATION = RawAnimation.begin().thenPlay("attack");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int fogTicks;
@@ -300,7 +304,12 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "base", 5, state -> PlayState.STOP));
+        controllers.add(new AnimationController<>(this, "base", 5, state -> {
+            if (this.attackAnimationTicks > 0) return state.setAndContinue(ATTACK_ANIMATION);
+            if (this.isShellGuarding()) return state.setAndContinue(IDLE_ANIMATION);
+            if (this.isCharging() || state.isMoving()) return state.setAndContinue(WALK_ANIMATION);
+            return state.setAndContinue(IDLE_ANIMATION);
+        }));
     }
 
     @Override
