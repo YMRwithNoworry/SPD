@@ -13,4 +13,10 @@ dependencies {
     modImplementation "com.github.glitchfiend:TerraBlender-common:$rootProject.terrablender_version"
     modImplementation files(rootProject.file("../LDlib2/fabric/build/libs/${rootProject.ldlib2_fabric_file}"))
     modImplementation "maven.modrinth:photon-editor:$rootProject.photon_fabric_version"
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }

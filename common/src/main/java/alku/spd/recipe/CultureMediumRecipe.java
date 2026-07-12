@@ -69,6 +69,11 @@ public final class CultureMediumRecipe extends CustomRecipe {
     }
 
     @Override
+    public boolean isSpecial() {
+        return false;
+    }
+
+    @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 3;
     }
