@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalWolfEntity;
+import alku.spd.item.BlazingVeinDaggerItem;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.NamelessSwordItem;
 import alku.spd.registry.SpdEffects;
@@ -59,6 +60,18 @@ public abstract class LivingEntityMixin implements EpxCarrier {
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void spd$blockSubjugatedDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity target = (LivingEntity) (Object) this;
+        if (!target.level().isClientSide()
+                && target instanceof Player player
+                && player.isSprinting()
+                && BlazingVeinDaggerItem.isBlazingVeinDagger(player.getMainHandItem())
+                && source.getEntity() instanceof LivingEntity attacker
+                && source.getDirectEntity() == attacker
+                && attacker != target
+                && target.getRandom().nextFloat() < 0.10F) {
+            cir.setReturnValue(false);
+            return;
+        }
+
         Entity attacker = source.getEntity();
         Entity direct = source.getDirectEntity();
         if ((attacker instanceof LivingEntity livingAttacker && SubjugationHooks.isSubjugated(livingAttacker))

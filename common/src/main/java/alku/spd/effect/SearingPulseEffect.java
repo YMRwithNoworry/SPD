@@ -5,6 +5,8 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SearingPulseEffect extends MobEffect {
+    static final float MOVING_DAMAGE = 0.5F;
+
     public SearingPulseEffect() {
         super(MobEffectCategory.HARMFUL, 0xD93D25);
     }
@@ -17,7 +19,7 @@ public class SearingPulseEffect extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (!entity.level().isClientSide && entity.getDeltaMovement().horizontalDistanceSqr() > 0.0025D) {
-            entity.hurt(entity.damageSources().onFire(), 1.0F);
+            entity.hurt(entity.damageSources().onFire(), MOVING_DAMAGE);
         }
     }
 }

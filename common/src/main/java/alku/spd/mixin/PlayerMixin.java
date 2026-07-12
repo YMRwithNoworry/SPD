@@ -1,6 +1,7 @@
 package alku.spd.mixin;
 
 import alku.spd.effect.SubjugationHooks;
+import alku.spd.item.BlazingVeinDaggerItem;
 import alku.spd.world.SpdCorrosion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,21 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         if (SpdCorrosion.getAbyssalPressureLayers(player) > 0) {
             cir.setReturnValue(cir.getReturnValue() * 0.9F);
+        }
+    }
+
+    @Inject(method = "sweepAttack", at = @At("HEAD"), cancellable = true)
+    private void spd$disableDaggerSweep(CallbackInfo ci) {
+        if (BlazingVeinDaggerItem.isBlazingVeinDagger(((Player) (Object) this).getMainHandItem())) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void spd$syncDaggerSwiftEdge(CallbackInfo ci) {
+        Player player = (Player) (Object) this;
+        if (!player.level().isClientSide()) {
+            BlazingVeinDaggerItem.syncHeldState(player);
         }
     }
 }

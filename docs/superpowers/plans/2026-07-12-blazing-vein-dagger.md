@@ -8,6 +8,8 @@
 
 **Tech Stack:** Java 17, Minecraft 1.20.1, Architectury 9.2.14, GeckoLib 4.4.9, Fabric, Forge 47.4.20, JUnit 5, Gradle 8.12.1.
 
+**Implementation note:** The original `ExpectPlatform` renderer bridge was replaced with loader-specific client Mixins after Forge rejected the common and Forge classes as a split `alku.spd.platform` module package. The common item now keeps only client-agnostic renderer fallbacks.
+
 ---
 
 ## File Map
@@ -346,4 +348,3 @@ Expected: local HEAD equals remote master and .superpowers plus CLAUDE.md stay u
 - Scope coverage: base attributes, fire resistance, repair material, enchantment-compatible sword inheritance, no sweep attack, Swift Edge timing and speed multiplier, instant slash, Searing Pulse proc, sprint dodge, custom model rendering, both loaders, recipe, language, creative tab, build, and remote push are each assigned to a task.
 - Cross-loader boundary: no Forge or Fabric API appears in common gameplay code; only platform implementations and SpdForgeClient refer to loader APIs.
 - TDD coverage: combo timing, maximum layer, instant-slash trigger, and multiplicative speed behavior are proven by red-green unit tests before item code is introduced.
-

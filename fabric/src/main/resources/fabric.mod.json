@@ -21,7 +21,8 @@
     ]
   },
   "mixins": [
-    "spd.mixins.json"
+    "spd.mixins.json",
+    "spd.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.19.3",

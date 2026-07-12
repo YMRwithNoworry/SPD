@@ -9,6 +9,7 @@ repositories {
 loom {
     forge {
         mixinConfig "spd.mixins.json"
+        mixinConfig "spd.forge.mixins.json"
     }
 }
 

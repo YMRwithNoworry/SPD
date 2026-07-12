@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I",
+    "H"
+  ],
+  "key": {
+    "I": {
+      "item": "spd:blazing_carbon_steel_ingot"
+    },
+    "H": {
+      "item": "spd:ember_handle"
+    }
+  },
+  "result": {
+    "item": "spd:blazing_vein_dagger"
+  }
+}
