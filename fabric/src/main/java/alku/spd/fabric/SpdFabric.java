@@ -56,6 +56,7 @@ public final class SpdFabric implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, SpdEntities.MOLD_ZOMBIE.get(), 80, 1, 4);
         BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_FOX_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_FOX.get(), 10, 1, 2);
         BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_WOLF_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_WOLF.get(), 8, 2, 3);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(SpdTags.ABYSSAL_TURTLE_SPAWNS), MobCategory.CREATURE, SpdEntities.ABYSSAL_TURTLE.get(), 8, 1, 2);
         addOverworldOre("ore_blazing_vein_upper");
         addOverworldOre("ore_blazing_vein_middle");
         addOverworldOre("ore_blazing_vein_small");
