@@ -26,6 +26,9 @@ public final class SpdTags {
     public static final TagKey<Biome> ABYSSAL_WOLF_SPAWNS = TagKey.create(
             Registries.BIOME,
             new ResourceLocation(Spd.MOD_ID, "abyssal_wolf_spawns"));
+    public static final TagKey<Biome> ABYSSAL_TURTLE_SPAWNS = TagKey.create(
+            Registries.BIOME,
+            new ResourceLocation(Spd.MOD_ID, "abyssal_turtle_spawns"));
     public static final TagKey<Block> PURIFICATION_BLOCKS = TagKey.create(
             Registries.BLOCK,
             new ResourceLocation(Spd.MOD_ID, "purification_blocks"));

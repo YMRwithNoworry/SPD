@@ -127,6 +127,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> ABYSSAL_HEART_SPORE = ITEMS.register("abyssal_heart_spore", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> ETCHED_TURTLE_SCUTE = ITEMS.register("etched_turtle_scute", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> LIQUID_GOLD = ITEMS.register("liquid_gold", () ->
             new Item(new Item.Properties()));
 
@@ -140,6 +143,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> ABYSSAL_BLOOD_SAND = ITEMS.register("abyssal_blood_sand", () ->
             new BlockItem(SpdBlocks.ABYSSAL_BLOOD_SAND.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> ABYSSAL_TURTLE_EGG = ITEMS.register("abyssal_turtle_egg", () ->
+            new BlockItem(SpdBlocks.ABYSSAL_TURTLE_EGG.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> SPD_TAB_ICON = ITEMS.register("spd_tab_icon", () ->
             new Item(new Item.Properties()));
@@ -179,6 +185,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> ABYSSAL_WOLF_SPAWN_EGG = ITEMS.register("abyssal_wolf_spawn_egg", () ->
             new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_WOLF, 0x32171B, 0x9A3741, new Item.Properties()));
+
+    public static final RegistrySupplier<Item> ABYSSAL_TURTLE_SPAWN_EGG = ITEMS.register("abyssal_turtle_spawn_egg", () ->
+            new ArchitecturySpawnEggItem(SpdEntities.ABYSSAL_TURTLE, 0x311719, 0x8A3037, new Item.Properties()));
 
     private SpdItems() {
     }

@@ -5,6 +5,7 @@ import alku.spd.entity.AbyssalErodedSilverfishEntity;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalLightWaveEntity;
 import alku.spd.entity.AbyssalTornadoEntity;
+import alku.spd.entity.AbyssalTurtleEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.EpxCloudEntity;
 import alku.spd.entity.EpxEntity;
@@ -49,6 +50,12 @@ public final class SpdEntities {
                     .sized(0.75F, 0.9F)
                     .clientTrackingRange(8)
                     .build("abyssal_wolf"));
+
+    public static final RegistrySupplier<EntityType<AbyssalTurtleEntity>> ABYSSAL_TURTLE = ENTITIES.register("abyssal_turtle", () ->
+            EntityType.Builder.of(AbyssalTurtleEntity::new, MobCategory.CREATURE)
+                    .sized(1.2F, 0.5F)
+                    .clientTrackingRange(10)
+                    .build("abyssal_turtle"));
 
     public static final RegistrySupplier<EntityType<AbyssalLightWaveEntity>> ABYSSAL_LIGHT_WAVE = ENTITIES.register("abyssal_light_wave", () ->
             EntityType.Builder.<AbyssalLightWaveEntity>of(AbyssalLightWaveEntity::new, MobCategory.MISC)

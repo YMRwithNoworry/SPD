@@ -2,6 +2,7 @@ package alku.spd.mixin;
 
 import alku.spd.effect.SubjugationHooks;
 import alku.spd.item.BlazingVeinDaggerItem;
+import alku.spd.registry.SpdEffects;
 import alku.spd.world.SpdCorrosion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +27,9 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         if (SpdCorrosion.getAbyssalPressureLayers(player) > 0) {
             cir.setReturnValue(cir.getReturnValue() * 0.9F);
+        }
+        if (player.hasEffect(SpdEffects.SPORE_SLUGGISHNESS.get())) {
+            cir.setReturnValue(cir.getReturnValue() * 0.85F);
         }
     }
 
