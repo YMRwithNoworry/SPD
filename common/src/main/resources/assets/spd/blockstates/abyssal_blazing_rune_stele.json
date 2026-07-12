@@ -1,0 +1,9 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "spd:block/abyssal_blazing_rune_stele"
+      }
+    }
+  ]
+}

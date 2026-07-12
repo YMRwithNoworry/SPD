@@ -1,0 +1,15 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "spd:block/abyssal_blazing_rune_stele"
+  },
+  "display": {
+    "gui": { "rotation": [30, 225, 0], "translation": [0, -2, 0], "scale": [0.42, 0.42, 0.42] },
+    "ground": { "translation": [0, 2, 0], "scale": [0.25, 0.25, 0.25] },
+    "fixed": { "rotation": [0, 180, 0], "scale": [0.4, 0.4, 0.4] },
+    "thirdperson_righthand": { "rotation": [75, 45, 0], "translation": [0, 1.5, 0], "scale": [0.32, 0.32, 0.32] },
+    "thirdperson_lefthand": { "rotation": [75, -45, 0], "translation": [0, 1.5, 0], "scale": [0.32, 0.32, 0.32] },
+    "firstperson_righthand": { "rotation": [0, 45, 0], "translation": [1.5, 1.5, 0], "scale": [0.32, 0.32, 0.32] },
+    "firstperson_lefthand": { "rotation": [0, 225, 0], "translation": [1.5, 1.5, 0], "scale": [0.32, 0.32, 0.32] }
+  }
+}

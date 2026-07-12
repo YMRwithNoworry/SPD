@@ -75,5 +75,6 @@
   "message.spd.abyssal_heart_forge.open_failed": "Failed to open the Abyssal Heart Forge UI. Check that LDLib2 loaded correctly",
   "message.spd.molten_chrome_nozzle.inactive": "The Molten Chrome Nozzle is not connected to a complete crucible",
   "message.spd.molten_chrome_nozzle.missing_block_entity": "Molten Chrome Nozzle block entity is invalid; cannot open the UI",
-  "message.spd.molten_chrome_nozzle.open_failed": "Failed to open the Molten Chrome Nozzle UI. Check that LDLib2 loaded correctly"
+  "message.spd.molten_chrome_nozzle.open_failed": "Failed to open the Molten Chrome Nozzle UI. Check that LDLib2 loaded correctly",
+  "block.spd.abyssal_blazing_rune_stele": "Abyssal Blazing Rune Stele"
 }
