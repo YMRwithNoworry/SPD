@@ -1,5 +1,6 @@
 package alku.spd.block;
 
+import alku.spd.block.entity.AbyssalBlazingRuneSteleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,8 +13,11 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -23,7 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class AbyssalBlazingRuneSteleBlock extends DoublePlantBlock {
+public class AbyssalBlazingRuneSteleBlock extends DoublePlantBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(0.0D, 0.0D, 3.0D, 15.0D, 16.0D, 13.0D);
     private static final VoxelShape EAST_WEST_SHAPE = Block.box(3.0D, 0.0D, 0.0D, 13.0D, 16.0D, 15.0D);
@@ -82,6 +86,21 @@ public class AbyssalBlazingRuneSteleBlock extends DoublePlantBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return shapeFor(state.getValue(FACING));
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER
+                ? RenderShape.ENTITYBLOCK_ANIMATED
+                : RenderShape.INVISIBLE;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER
+                ? new AbyssalBlazingRuneSteleBlockEntity(pos, state)
+                : null;
     }
 
     @Override

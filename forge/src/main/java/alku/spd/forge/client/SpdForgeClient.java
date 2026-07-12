@@ -6,6 +6,7 @@ import alku.spd.client.SubjugationClientOverlay;
 import alku.spd.client.SpdClientCommands;
 import alku.spd.client.TitleMusicClient;
 import alku.spd.client.renderer.AbyssalHeartForgeRenderer;
+import alku.spd.client.renderer.AbyssalBlazingRuneSteleRenderer;
 import alku.spd.client.renderer.AbyssalErodedSilverfishRenderer;
 import alku.spd.client.renderer.AbyssalFoxRenderer;
 import alku.spd.client.renderer.AbyssalTornadoRenderer;
@@ -37,6 +38,8 @@ public final class SpdForgeClient {
         TitleMusicClient.register();
         BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_HEART_FORGE.get(), AbyssalHeartForgeRenderer::new);
         BlockEntityRendererRegistry.register(SpdBlockEntities.MASCOT.get(), MascotRenderer::new);
+        BlockEntityRendererRegistry.register(SpdBlockEntities.ABYSSAL_BLAZING_RUNE_STELE.get(),
+                AbyssalBlazingRuneSteleRenderer::new);
     }
 
     @SubscribeEvent
