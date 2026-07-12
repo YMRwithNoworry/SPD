@@ -9,6 +9,7 @@ import alku.spd.effect.MoldCurseEffect;
 import alku.spd.effect.MoldMutationEffect;
 import alku.spd.effect.SearingPulseEffect;
 import alku.spd.effect.SubjugationEffect;
+import alku.spd.effect.SporeSluggishnessEffect;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +26,7 @@ public final class SpdEffects {
     public static final RegistrySupplier<MobEffect> ABYSSAL_PRESSURE = EFFECTS.register("abyssal_pressure", AbyssalPressureEffect::new);
     public static final RegistrySupplier<MobEffect> ABYSSAL_BOOST = EFFECTS.register("abyssal_boost", AbyssalBoostEffect::new);
     public static final RegistrySupplier<MobEffect> RENDING = EFFECTS.register("rending", RendingEffect::new);
+    public static final RegistrySupplier<MobEffect> SPORE_SLUGGISHNESS = EFFECTS.register("spore_sluggishness", SporeSluggishnessEffect::new);
 
     private SpdEffects() {
     }

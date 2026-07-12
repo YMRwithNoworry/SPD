@@ -1,25 +1,37 @@
 package alku.spd.entity;
 
 import alku.spd.registry.SpdEntities;
+import alku.spd.registry.SpdEffects;
 import alku.spd.registry.SpdTags;
+import alku.spd.world.SpdCorrosion;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -28,11 +40,33 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
+import java.util.UUID;
+
 public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
     private static final double LAND_SPEED = 0.15D;
     private static final double WATER_SPEED = 0.32D;
+    private static final int FOG_COOLDOWN_TICKS = 100;
+    private static final int FOG_DURATION_TICKS = 40;
+    private static final int SHELL_DURATION_TICKS = 120;
+    private static final int SHELL_COOLDOWN_TICKS = 400;
+    private static final int CHARGE_COOLDOWN_TICKS = 160;
+    private static final int CHARGE_RETREAT_TICKS = 10;
+    private static final UUID ARMOR_PIERCE_MODIFIER_ID = UUID.fromString("73494fc3-f9eb-4fe3-8d8e-10f35ca8f51e");
+    private static final EntityDataAccessor<Boolean> SHELL_GUARD = SynchedEntityData.defineId(
+            AbyssalTurtleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(
+            AbyssalTurtleEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private int fogTicks;
+    private int fogCooldown;
+    private int shellTicks;
+    private int shellCooldown;
+    private int chargeCooldown;
+    private int chargeRetreatTicks;
+    private boolean chargeResolved;
+    private int attackAnimationTicks;
 
     public AbyssalTurtleEntity(EntityType<? extends AbyssalTurtleEntity> type, Level level) {
         super(type, level);
@@ -54,6 +88,13 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SHELL_GUARD, false);
+        this.entityData.define(CHARGING, false);
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new AdaptiveMeleeAttackGoal(this));
@@ -64,6 +105,20 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
     public void aiStep() {
         this.updateEnvironmentAttributes();
         super.aiStep();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.attackAnimationTicks > 0) this.attackAnimationTicks--;
+        if (this.level().isClientSide) return;
+
+        if (this.fogCooldown > 0) this.fogCooldown--;
+        if (this.shellCooldown > 0) this.shellCooldown--;
+        if (this.chargeCooldown > 0) this.chargeCooldown--;
+        this.tickSporeFog();
+        this.tickShellGuard();
+        this.tickWaterCharge();
     }
 
     private void updateEnvironmentAttributes() {
@@ -80,12 +135,150 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        boolean purification = source.is(SpdTags.PURIFICATION_DAMAGE);
+        if (purification && this.isShellGuarding()) {
+            this.stopShellGuard();
+        }
         if (source.is(SpdTags.PURIFICATION_DAMAGE)) {
             amount *= AbyssalTurtleMechanics.purificationDamageMultiplier();
         } else if (source.is(DamageTypeTags.IS_FIRE)) {
             amount *= AbyssalTurtleMechanics.fireDamageMultiplier();
         }
-        return super.hurt(source, amount);
+        if (this.isShellGuarding()) {
+            amount *= AbyssalTurtleMechanics.shellDamageMultiplier();
+        }
+        boolean hurt = super.hurt(source, amount);
+        if (hurt && !this.level().isClientSide) {
+            this.startSporeFog();
+            if (source.getEntity() instanceof LivingEntity attacker) {
+                this.applySporePulse(attacker);
+                this.setTarget(attacker);
+            }
+            if (!purification && this.getHealth() <= this.getMaxHealth() * 0.4F) {
+                this.startShellGuard();
+            }
+        }
+        return hurt;
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if (!(entity instanceof LivingEntity target) || this.isShellGuarding()) return false;
+        AttributeInstance armor = target.getAttribute(Attributes.ARMOR);
+        AttributeModifier pierce = new AttributeModifier(ARMOR_PIERCE_MODIFIER_ID,
+                "SPD abyssal turtle calcium erosion", -2.0D, AttributeModifier.Operation.ADDITION);
+        boolean addedPierce = this.random.nextFloat() < 0.2F && armor != null
+                && armor.getModifier(ARMOR_PIERCE_MODIFIER_ID) == null;
+        if (addedPierce) armor.addTransientModifier(pierce);
+        try {
+            float damage = AbyssalTurtleMechanics.biteDamage(this.level().getDifficulty());
+            if (!target.hurt(this.damageSources().mobAttack(this), damage)) return false;
+        } finally {
+            if (addedPierce && armor != null) armor.removeModifier(ARMOR_PIERCE_MODIFIER_ID);
+        }
+        this.attackAnimationTicks = 12;
+        SpdCorrosion.addAbyssalPressure(target, 2, 20 * 12, this);
+        this.startSporeFog();
+        return true;
+    }
+
+    private void tickSporeFog() {
+        if (this.fogTicks <= 0) return;
+        this.fogTicks--;
+        if (this.fogTicks % 20 != 0) return;
+        List<LivingEntity> targets = this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(2.0D), SpdEntityTargeting::isNonSpdLiving);
+        for (LivingEntity target : targets) this.applySporePulse(target);
+    }
+
+    private void startSporeFog() {
+        if (this.fogCooldown > 0) return;
+        this.fogCooldown = FOG_COOLDOWN_TICKS;
+        this.fogTicks = FOG_DURATION_TICKS;
+    }
+
+    private void applySporePulse(LivingEntity target) {
+        if (!SpdEntityTargeting.isNonSpdLiving(target)) return;
+        SpdCorrosion.addAbyssalPressure(target, 1, 20 * 10, this);
+        target.addEffect(new MobEffectInstance(SpdEffects.SPORE_SLUGGISHNESS.get(), 40, 0), this);
+    }
+
+    private void tickShellGuard() {
+        if (!this.isShellGuarding()) return;
+        this.navigation.stop();
+        if (this.shellTicks > 0) this.shellTicks--;
+        if (this.shellTicks > 0 && this.shellTicks % 20 == 0) {
+            for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class,
+                    this.getBoundingBox().inflate(2.0D), SpdEntityTargeting::isNonSpdLiving)) {
+                this.applySporePulse(target);
+            }
+        }
+        if (this.shellTicks <= 0) this.stopShellGuard();
+    }
+
+    private void startShellGuard() {
+        if (this.shellCooldown > 0 || this.isShellGuarding()) return;
+        this.shellCooldown = SHELL_COOLDOWN_TICKS;
+        this.shellTicks = SHELL_DURATION_TICKS;
+        this.entityData.set(SHELL_GUARD, true);
+        this.navigation.stop();
+    }
+
+    private void stopShellGuard() {
+        this.shellTicks = 0;
+        this.entityData.set(SHELL_GUARD, false);
+    }
+
+    private void tickWaterCharge() {
+        LivingEntity target = this.getTarget();
+        if (!this.isCharging() && target != null && target.isAlive() && this.isInWater()
+                && this.chargeCooldown <= 0 && !this.isShellGuarding()
+                && this.distanceToSqr(target) > 16.0D && this.random.nextInt(20) == 0) {
+            this.entityData.set(CHARGING, true);
+            this.chargeCooldown = CHARGE_COOLDOWN_TICKS;
+            this.chargeResolved = false;
+            this.chargeRetreatTicks = 0;
+        }
+        if (!this.isCharging()) return;
+        if (target == null || !target.isAlive() || !this.isInWater()) {
+            this.stopCharge();
+            return;
+        }
+        if (this.chargeRetreatTicks > 0) {
+            Vec3 retreat = this.position().subtract(target.position()).normalize();
+            this.getMoveControl().setWantedPosition(this.getX() + retreat.x * 3.0D,
+                    this.getY(), this.getZ() + retreat.z * 3.0D, 1.4D);
+            this.chargeRetreatTicks--;
+            if (this.chargeRetreatTicks <= 0) this.stopCharge();
+            return;
+        }
+        this.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.9D);
+        if (!this.chargeResolved && this.distanceToSqr(target) <= 2.56D) {
+            this.chargeResolved = true;
+            if (target.hurt(this.damageSources().mobAttack(this), 6.0F)) {
+                SpdCorrosion.addAbyssalPressure(target, 2, 20 * 12, this);
+                target.knockback(2.0F, this.getX() - target.getX(), this.getZ() - target.getZ());
+            }
+            this.chargeRetreatTicks = CHARGE_RETREAT_TICKS;
+        }
+    }
+
+    private void stopCharge() {
+        this.chargeRetreatTicks = 0;
+        this.chargeResolved = false;
+        this.entityData.set(CHARGING, false);
+    }
+
+    public boolean isShellGuarding() {
+        return this.entityData.get(SHELL_GUARD);
+    }
+
+    public boolean isCharging() {
+        return this.entityData.get(CHARGING);
+    }
+
+    public int getAttackAnimationTicks() {
+        return this.attackAnimationTicks;
     }
 
     @Override
@@ -109,6 +302,33 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
         return this.cache;
     }
 
+    @Override
+    protected boolean isImmobile() {
+        return this.isShellGuarding() || super.isImmobile();
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("SporeFogTicks", this.fogTicks);
+        tag.putInt("SporeFogCooldown", this.fogCooldown);
+        tag.putInt("ShellGuardTicks", this.shellTicks);
+        tag.putInt("ShellGuardCooldown", this.shellCooldown);
+        tag.putInt("ChargeCooldown", this.chargeCooldown);
+        tag.putBoolean("ShellGuard", this.isShellGuarding());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.fogTicks = tag.getInt("SporeFogTicks");
+        this.fogCooldown = tag.getInt("SporeFogCooldown");
+        this.shellTicks = tag.getInt("ShellGuardTicks");
+        this.shellCooldown = tag.getInt("ShellGuardCooldown");
+        this.chargeCooldown = tag.getInt("ChargeCooldown");
+        this.entityData.set(SHELL_GUARD, tag.getBoolean("ShellGuard") && this.shellTicks > 0);
+    }
+
     private static final class AdaptiveMeleeAttackGoal extends MeleeAttackGoal {
         private final AbyssalTurtleEntity turtle;
 
@@ -120,6 +340,16 @@ public class AbyssalTurtleEntity extends Turtle implements GeoEntity {
         @Override
         protected int getAttackInterval() {
             return AbyssalTurtleMechanics.attackInterval(this.turtle.isInWater());
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.turtle.isShellGuarding() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.turtle.isShellGuarding() && super.canContinueToUse();
         }
     }
 }
