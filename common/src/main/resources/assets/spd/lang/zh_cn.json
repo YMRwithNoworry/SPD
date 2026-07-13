@@ -85,5 +85,9 @@
   "message.spd.molten_chrome_nozzle.inactive": "熔铬注嘴尚未接入完整炼炉",
   "message.spd.molten_chrome_nozzle.missing_block_entity": "熔铬注嘴方块实体异常，无法打开界面",
   "message.spd.molten_chrome_nozzle.open_failed": "熔铬注嘴界面打开失败，请检查 LDLib2 是否正常加载",
-  "block.spd.abyssal_blazing_rune_stele": "渊炽铭符碑"
+  "block.spd.abyssal_blazing_rune_stele": "渊炽铭符碑",
+  "commands.spd.big_eyes.status.on": "SPD 大眼模型模式当前已开启。",
+  "commands.spd.big_eyes.status.off": "SPD 大眼模型模式当前已关闭。",
+  "commands.spd.big_eyes.set.on": "SPD 大眼模型模式已开启。",
+  "commands.spd.big_eyes.set.off": "SPD 大眼模型模式已关闭。"
 }

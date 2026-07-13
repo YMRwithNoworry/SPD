@@ -18,6 +18,8 @@ import alku.spd.world.AbyssalTurtleInfectionEvents;
 import alku.spd.world.MoldCurseEvents;
 import alku.spd.world.SpdDifficultyScaling;
 import alku.spd.world.SpdDifficultyEvents;
+import alku.spd.world.SpdBigEyesEvents;
+import alku.spd.world.SpdBigEyesNetworking;
 import alku.spd.world.SpdWeatherEvents;
 import alku.spd.world.SpdWeatherNetworking;
 
@@ -35,9 +37,11 @@ public final class Spd {
         SpdCreativeTabs.register();
         AbyssalHeartForgeNetworking.register();
         MoltenChromeNozzleNetworking.register();
+        SpdBigEyesNetworking.register();
         SpdWeatherNetworking.register();
         SpdDifficultyEvents.register();
         SpdDifficultyScaling.register();
+        SpdBigEyesEvents.register();
         SpdWeatherEvents.register();
         MoldCurseEvents.register();
         AbyssalFoxInfectionEvents.register();
