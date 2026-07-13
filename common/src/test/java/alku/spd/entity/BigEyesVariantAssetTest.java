@@ -42,6 +42,13 @@ final class BigEyesVariantAssetTest {
             "aae97a48742e4eaded5b8c728ee7d71834fd8f7bf4c6ccf8bb0e6769ad060bba",
             "5db1b76a7075b3e9e6ef93b61e7ce90acc942059eb9eb4608287504773d77d81",
             128, 128);
+    private static final Variant MOLD_ZOMBIE = new Variant(
+            "/assets/spd/geo/mold_zombie.geo.json",
+            "/assets/spd/geo/mold_zombie_big_eyes.geo.json",
+            "/assets/spd/textures/entity/mold_zombie_big_eyes.png",
+            "69845e4e6127c0b28de6b839167d17b818a5478da422a2c8c2af69fa779e5f65",
+            "0ba00f403b86ddc51740d14daf4d8d21bb2c2c3e343885f37971e9d4d61641c3",
+            128, 128);
 
     @Test
     void packagesSuppliedWolfVariant() throws Exception {
@@ -56,6 +63,11 @@ final class BigEyesVariantAssetTest {
     @Test
     void packagesSuppliedTurtleVariant() throws Exception {
         assertVariant(TURTLE);
+    }
+
+    @Test
+    void packagesSuppliedMoldZombieVariant() throws Exception {
+        assertVariant(MOLD_ZOMBIE);
     }
 
     private void assertVariant(Variant variant) throws Exception {
