@@ -26,13 +26,22 @@ final class BigEyesVariantAssetTest {
             "/assets/spd/geo/abyssal_wolf_big_eyes.geo.json",
             "/assets/spd/textures/entity/abyssal_wolf_big_eyes.png",
             "c828c195c66bfb1f5245ee24febb0d9edf3d654b3e03dcb768ce703604252025",
-            "05136fc31e114279288004692025701065410eb3685de03f0746bc540a57dae9");
+            "05136fc31e114279288004692025701065410eb3685de03f0746bc540a57dae9",
+            64, 64);
     private static final Variant FOX = new Variant(
             "/assets/spd/geo/abyssal_fox.geo.json",
             "/assets/spd/geo/abyssal_fox_big_eyes.geo.json",
             "/assets/spd/textures/entity/abyssal_fox_big_eyes.png",
             "d453542b5be0904b4b7612340fea658c57938656968524783df60774b9cb3c7f",
-            "7a12274ff5c94001f7bd80f1b33190d8c78790fb7e7052deaa86838b678b41af");
+            "7a12274ff5c94001f7bd80f1b33190d8c78790fb7e7052deaa86838b678b41af",
+            64, 64);
+    private static final Variant TURTLE = new Variant(
+            "/assets/spd/geo/abyssal_turtle.geo.json",
+            "/assets/spd/geo/abyssal_turtle_big_eyes.geo.json",
+            "/assets/spd/textures/entity/abyssal_turtle_big_eyes.png",
+            "aae97a48742e4eaded5b8c728ee7d71834fd8f7bf4c6ccf8bb0e6769ad060bba",
+            "5db1b76a7075b3e9e6ef93b61e7ce90acc942059eb9eb4608287504773d77d81",
+            128, 128);
 
     @Test
     void packagesSuppliedWolfVariant() throws Exception {
@@ -42,6 +51,11 @@ final class BigEyesVariantAssetTest {
     @Test
     void packagesSuppliedFoxVariant() throws Exception {
         assertVariant(FOX);
+    }
+
+    @Test
+    void packagesSuppliedTurtleVariant() throws Exception {
+        assertVariant(TURTLE);
     }
 
     private void assertVariant(Variant variant) throws Exception {
@@ -59,8 +73,8 @@ final class BigEyesVariantAssetTest {
         assertEquals(variant.textureSha256(), sha256(textureBytes));
         BufferedImage texture = ImageIO.read(new ByteArrayInputStream(textureBytes));
         assertNotNull(texture, variant.texture());
-        assertEquals(64, texture.getWidth());
-        assertEquals(64, texture.getHeight());
+        assertEquals(variant.textureWidth(), texture.getWidth());
+        assertEquals(variant.textureHeight(), texture.getHeight());
     }
 
     private static Set<String> modelBones(JsonObject model) {
@@ -92,6 +106,7 @@ final class BigEyesVariantAssetTest {
     }
 
     private record Variant(String normalModel, String variantModel, String texture,
-                           String modelSha256, String textureSha256) {
+                           String modelSha256, String textureSha256,
+                           int textureWidth, int textureHeight) {
     }
 }
