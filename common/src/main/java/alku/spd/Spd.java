@@ -8,8 +8,6 @@ import alku.spd.registry.SpdEntities;
 import alku.spd.registry.SpdItems;
 import alku.spd.registry.SpdRecipeSerializers;
 import alku.spd.registry.SpdSounds;
-import alku.spd.network.AbyssalHeartForgeNetworking;
-import alku.spd.network.MoltenChromeNozzleNetworking;
 import alku.spd.world.EpxEvents;
 import alku.spd.world.AbyssalFoxInfectionEvents;
 import alku.spd.world.AbyssalPressureEvents;
@@ -19,9 +17,7 @@ import alku.spd.world.MoldCurseEvents;
 import alku.spd.world.SpdDifficultyScaling;
 import alku.spd.world.SpdDifficultyEvents;
 import alku.spd.world.SpdBigEyesEvents;
-import alku.spd.world.SpdBigEyesNetworking;
 import alku.spd.world.SpdWeatherEvents;
-import alku.spd.world.SpdWeatherNetworking;
 
 public final class Spd {
     public static final String MOD_ID = "spd";
@@ -35,10 +31,6 @@ public final class Spd {
         SpdItems.register();
         SpdRecipeSerializers.register();
         SpdCreativeTabs.register();
-        AbyssalHeartForgeNetworking.register();
-        MoltenChromeNozzleNetworking.register();
-        SpdBigEyesNetworking.register();
-        SpdWeatherNetworking.register();
         SpdDifficultyEvents.register();
         SpdDifficultyScaling.register();
         SpdBigEyesEvents.register();

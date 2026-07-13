@@ -15,8 +15,12 @@ import alku.spd.client.renderer.EpxRenderer;
 import alku.spd.client.renderer.FalseMotherRenderer;
 import alku.spd.client.renderer.MascotRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
+import alku.spd.network.AbyssalHeartForgeNetworking;
+import alku.spd.network.MoltenChromeNozzleNetworking;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdEntities;
+import alku.spd.world.SpdBigEyesNetworking;
+import alku.spd.world.SpdWeatherNetworking;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -26,6 +30,10 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 public final class SpdFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        AbyssalHeartForgeNetworking.register();
+        MoltenChromeNozzleNetworking.register();
+        SpdBigEyesNetworking.register();
+        SpdWeatherNetworking.register();
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxRenderer::new);
         EntityRendererRegistry.register(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfRenderer::new);

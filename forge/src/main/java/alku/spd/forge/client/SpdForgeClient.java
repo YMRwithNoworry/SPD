@@ -16,8 +16,12 @@ import alku.spd.client.renderer.EpxRenderer;
 import alku.spd.client.renderer.FalseMotherRenderer;
 import alku.spd.client.renderer.MascotRenderer;
 import alku.spd.client.renderer.MoldZombieRenderer;
+import alku.spd.network.AbyssalHeartForgeNetworking;
+import alku.spd.network.MoltenChromeNozzleNetworking;
 import alku.spd.registry.SpdBlockEntities;
 import alku.spd.registry.SpdEntities;
+import alku.spd.world.SpdBigEyesNetworking;
+import alku.spd.world.SpdWeatherNetworking;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,6 +38,10 @@ public final class SpdForgeClient {
 
     @SubscribeEvent
     public static void setupClient(FMLClientSetupEvent event) {
+        AbyssalHeartForgeNetworking.register();
+        MoltenChromeNozzleNetworking.register();
+        SpdBigEyesNetworking.register();
+        SpdWeatherNetworking.register();
         SpdClientCommands.register();
         AbyssalGloomClient.register();
         TitleMusicClient.register();
