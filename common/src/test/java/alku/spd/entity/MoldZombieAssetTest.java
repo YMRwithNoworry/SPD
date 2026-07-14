@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 final class MoldZombieAssetTest {
     private static final String MODEL_PATH = "/assets/spd/geo/mold_zombie.geo.json";
     private static final String ANIMATION_PATH = "/assets/spd/animations/mold_zombie.animation.json";
-    private static final String MODEL_SHA256 = "0cf71839ad0d5dbe8d48f46562b682b248b09bf1a9bba212928839fa69ded3d0";
+    private static final String MODEL_SHA256 = "b3ba8963072371542cba77f057b0203adaee4cd2e9f22cb82caa0a5b58794533";
 
     @Test
     void modelMatchesTheSuppliedGeckoLibAsset() throws Exception {

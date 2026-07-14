@@ -321,10 +321,7 @@
 				{
 					"name": "bone4",
 					"parent": "HeadFungusWind",
-					"pivot": [0, 33, -3],
-					"cubes": [
-						{"origin": [-2, 35.09115, -7.04189], "size": [0, 7, 8], "pivot": [-1, 35, -2], "rotation": [22.26758, 2.15393, -12.31594], "uv": [20, 36]}
-					]
+					"pivot": [0, 33, -3]
 				},
 				{
 					"name": "bone5",
@@ -334,10 +331,7 @@
 				{
 					"name": "bone6",
 					"parent": "HeadFungusWind",
-					"pivot": [0, 33, -3],
-					"cubes": [
-						{"origin": [-11, 27.52463, -3.56652], "size": [7, 10, 0], "pivot": [-4, 32, -5], "rotation": [13.4502, 41.70738, 9.04107], "uv": [18, 51]}
-					]
+					"pivot": [0, 33, -3]
 				},
 				{
 					"name": "bone7",
@@ -511,23 +505,7 @@
 				{
 					"name": "bone15",
 					"parent": "RightArmFungusWind",
-					"pivot": [-7, 14, -2],
-					"cubes": [
-						{
-							"origin": [-14, 5.05671, -1.79895],
-							"size": [8, 14, 0],
-							"pivot": [-9, 13, -2],
-							"rotation": [-0.90153, 23.00396, -14.18829],
-							"uv": {
-								"north": {"uv": [56, 9], "uv_size": [8, 14]},
-								"east": {"uv": [0, 0], "uv_size": [0, 14]},
-								"south": {"uv": [52, 59], "uv_size": [8, 14]},
-								"west": {"uv": [0, 0], "uv_size": [0, 14]},
-								"up": {"uv": [0, 0], "uv_size": [8, 0]},
-								"down": {"uv": [0, 0], "uv_size": [8, 0]}
-							}
-						}
-					]
+					"pivot": [-7, 14, -2]
 				},
 				{
 					"name": "bone16",
@@ -675,23 +653,7 @@
 				{
 					"name": "bone17",
 					"parent": "LeftArmFungusWind",
-					"pivot": [10.43079, 11.76346, -0.92309],
-					"cubes": [
-						{
-							"origin": [1.2152, 5.53495, -0.56432],
-							"size": [8, 14, 0],
-							"pivot": [8, 13, 0],
-							"rotation": [159.45327, -32.7137, -158.03159],
-							"uv": {
-								"north": {"uv": [56, 9], "uv_size": [8, 14]},
-								"east": {"uv": [0, 0], "uv_size": [0, 14]},
-								"south": {"uv": [52, 59], "uv_size": [8, 14]},
-								"west": {"uv": [0, 0], "uv_size": [0, 14]},
-								"up": {"uv": [0, 0], "uv_size": [8, 0]},
-								"down": {"uv": [0, 0], "uv_size": [8, 0]}
-							}
-						}
-					]
+					"pivot": [10.43079, 11.76346, -0.92309]
 				},
 				{
 					"name": "RightLeg",
