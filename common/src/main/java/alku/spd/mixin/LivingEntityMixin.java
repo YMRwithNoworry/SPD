@@ -4,6 +4,7 @@ import alku.spd.Spd;
 import alku.spd.entity.SpdEntityTargeting;
 import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalWolfEntity;
+import alku.spd.entity.MoldZombieEntity;
 import alku.spd.item.BlazingVeinDaggerItem;
 import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.NamelessSwordItem;
@@ -152,6 +153,15 @@ public abstract class LivingEntityMixin implements EpxCarrier {
     private void spd$handleEpxDeath(DamageSource source, CallbackInfo ci) {
         LivingEntity living = (LivingEntity) (Object) this;
         EpxEvents.onLivingDeath(living, source);
+        if (!living.level().isClientSide()) {
+            Entity killer = source.getEntity();
+            if (!(killer instanceof MoldZombieEntity)) {
+                killer = source.getDirectEntity();
+            }
+            if (killer instanceof MoldZombieEntity moldZombie) {
+                moldZombie.onConfirmedKill(living);
+            }
+        }
         if (!living.level().isClientSide()
                 && Spd.MOD_ID.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())) {
             float roll = living.getRandom().nextFloat();

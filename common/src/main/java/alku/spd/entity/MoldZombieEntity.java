@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -40,6 +41,7 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> POUNCER_VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DROWNED_VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HUSK_VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.BOOLEAN);
     private static final int VARIANT_UNSET = -1;
     private static final int VARIANT_WALKING = 0;
     private static final int VARIANT_RUNNING = 1;
@@ -56,11 +58,17 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final RawAnimation DROWNED_SWIM = RawAnimation.begin().thenLoop("paobu");
     private static final RawAnimation DROWNED_CHASE = RawAnimation.begin().thenLoop("追逐");
     private static final RawAnimation DROWNED_ATTACK = RawAnimation.begin().thenLoop("gongji");
+    private static final RawAnimation HUSK_IDLE = RawAnimation.begin().thenLoop("daizhe");
+    private static final RawAnimation HUSK_WALK = RawAnimation.begin().thenLoop("paobu");
+    private static final RawAnimation HUSK_CHASE = RawAnimation.begin().thenLoop("追逐");
+    private static final RawAnimation HUSK_ATTACK = RawAnimation.begin().thenLoop("gongji");
+    private static final RawAnimation HUSK_DEATH = RawAnimation.begin().thenPlayAndHold("siwang");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int appliedVariant = Integer.MIN_VALUE;
     private int pounceCooldown;
     private int submergedTicks;
+    private int noKillTicks;
 
     public MoldZombieEntity(EntityType<? extends Zombie> entityType, Level level) {
         super(entityType, level);
@@ -85,6 +93,7 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         this.entityData.define(VARIANT, VARIANT_UNSET);
         this.entityData.define(POUNCER_VARIANT, false);
         this.entityData.define(DROWNED_VARIANT, false);
+        this.entityData.define(HUSK_VARIANT, false);
     }
 
     @Override
@@ -111,6 +120,12 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
                     this.transformIntoDrowned();
                 }
             }
+            if (!this.isHuskVariant()) {
+                this.noKillTicks = MoldHuskMechanics.advanceNoKillTicks(this.noKillTicks);
+                if (MoldHuskMechanics.shouldTransform(this.noKillTicks)) {
+                    this.transformIntoHusk();
+                }
+            }
         }
     }
 
@@ -133,9 +148,16 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     @Override
     public boolean doHurtTarget(net.minecraft.world.entity.Entity target) {
         boolean hurt = super.doHurtTarget(target);
-        if (hurt && this.isDrownedVariant() && target instanceof Player player) {
-            player.addEffect(new MobEffectInstance(alku.spd.registry.SpdEffects.GRUDGE_BOUND.get(),
-                    MoldDrownedMechanics.GRUDGE_BOUND_TICKS, 0), this);
+        if (hurt && target instanceof Player player) {
+            if (this.isDrownedVariant()) {
+                player.addEffect(new MobEffectInstance(alku.spd.registry.SpdEffects.GRUDGE_BOUND.get(),
+                        MoldDrownedMechanics.GRUDGE_BOUND_TICKS, 0), this);
+            } else if (this.isHuskVariant()) {
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+                        MoldHuskMechanics.SLOWNESS_TICKS, 1), this);
+                player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
+                        MoldHuskMechanics.BLINDNESS_TICKS, 0), this);
+            }
         }
         return hurt;
     }
@@ -167,11 +189,34 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         return this.entityData.get(DROWNED_VARIANT);
     }
 
+    public boolean isHuskVariant() {
+        return this.entityData.get(HUSK_VARIANT);
+    }
+
+    public void onConfirmedKill(LivingEntity killedEntity) {
+        if (!this.level().isClientSide() && !this.isHuskVariant()) {
+            this.noKillTicks = MoldHuskMechanics.resetNoKillTicks();
+        }
+    }
+
     private void transformIntoDrowned() {
+        if (this.isHuskVariant()) {
+            return;
+        }
         this.entityData.set(DROWNED_VARIANT, true);
         this.entityData.set(POUNCER_VARIANT, false);
         this.submergedTicks = 0;
         this.enableDrownedMovement();
+        this.refreshDimensions();
+    }
+
+    private void transformIntoHusk() {
+        this.entityData.set(HUSK_VARIANT, true);
+        this.entityData.set(DROWNED_VARIANT, false);
+        this.entityData.set(POUNCER_VARIANT, false);
+        this.submergedTicks = 0;
+        this.noKillTicks = 0;
+        this.enableHuskMovement();
         this.refreshDimensions();
     }
 
@@ -180,6 +225,12 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
             this.navigation = new AmphibiousPathNavigation(this, this.level());
         }
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+    }
+
+    private void enableHuskMovement() {
+        if (this.navigation instanceof AmphibiousPathNavigation) {
+            this.navigation = new GroundPathNavigation(this, this.level());
+        }
     }
 
     private void applyVariantAttributes() {
@@ -226,6 +277,8 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         tag.putBoolean("MoldZombiePouncerVariant", this.isPouncerVariant());
         tag.putBoolean("MoldZombieDrownedVariant", this.isDrownedVariant());
         tag.putInt("MoldZombieSubmergedTicks", this.submergedTicks);
+        tag.putBoolean("MoldZombieHuskVariant", this.isHuskVariant());
+        tag.putInt("MoldZombieNoKillTicks", this.noKillTicks);
     }
 
     @Override
@@ -242,7 +295,11 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         }
         this.entityData.set(DROWNED_VARIANT, tag.getBoolean("MoldZombieDrownedVariant"));
         this.submergedTicks = Math.max(0, tag.getInt("MoldZombieSubmergedTicks"));
-        if (this.isDrownedVariant()) {
+        this.entityData.set(HUSK_VARIANT, tag.getBoolean("MoldZombieHuskVariant"));
+        this.noKillTicks = Math.max(0, tag.getInt("MoldZombieNoKillTicks"));
+        if (this.isHuskVariant()) {
+            this.enableHuskMovement();
+        } else if (this.isDrownedVariant()) {
             this.enableDrownedMovement();
         }
     }
@@ -250,6 +307,27 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 4, state -> {
+            if (this.isHuskVariant()) {
+                if (this.isDeadOrDying()) {
+                    state.setAndContinue(HUSK_DEATH);
+                    return PlayState.CONTINUE;
+                }
+                if (this.swinging) {
+                    state.setAndContinue(HUSK_ATTACK);
+                    return PlayState.CONTINUE;
+                }
+                Vec3 huskMovement = this.getDeltaMovement();
+                boolean huskMoving = state.isMoving()
+                        || huskMovement.x * huskMovement.x + huskMovement.z * huskMovement.z > 1.0E-5D;
+                if (this.isRunningVariant() && huskMoving) {
+                    state.setAndContinue(HUSK_CHASE);
+                } else if (huskMoving) {
+                    state.setAndContinue(HUSK_WALK);
+                } else {
+                    state.setAndContinue(HUSK_IDLE);
+                }
+                return PlayState.CONTINUE;
+            }
             if (this.isDrownedVariant()) {
                 if (this.swinging) {
                     state.setAndContinue(DROWNED_ATTACK);

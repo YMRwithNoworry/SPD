@@ -10,15 +10,21 @@ public class MoldZombieModel extends GeoModel<MoldZombieEntity> {
     private static final ResourceLocation MODEL = new ResourceLocation(Spd.MOD_ID, "geo/mold_zombie.geo.json");
     private static final ResourceLocation BIG_EYES_MODEL = new ResourceLocation(Spd.MOD_ID, "geo/mold_zombie_big_eyes.geo.json");
     private static final ResourceLocation DROWNED_MODEL = new ResourceLocation(Spd.MOD_ID, "geo/mold_drowned.geo.json");
+    private static final ResourceLocation HUSK_MODEL = new ResourceLocation(Spd.MOD_ID, "geo/mold_husk.geo.json");
     private static final ResourceLocation TEXTURE = new ResourceLocation(Spd.MOD_ID, "textures/entity/mold_zombie.png");
     private static final ResourceLocation POUNCER_TEXTURE = new ResourceLocation(Spd.MOD_ID, "textures/entity/mold_zombie_pouncer.png");
     private static final ResourceLocation BIG_EYES_TEXTURE = new ResourceLocation(Spd.MOD_ID, "textures/entity/mold_zombie_big_eyes.png");
     private static final ResourceLocation DROWNED_TEXTURE = new ResourceLocation(Spd.MOD_ID, "textures/entity/mold_drowned.png");
+    private static final ResourceLocation HUSK_TEXTURE = new ResourceLocation(Spd.MOD_ID, "textures/entity/mold_husk.png");
     private static final ResourceLocation ANIMATION = new ResourceLocation(Spd.MOD_ID, "animations/mold_zombie.animation.json");
     private static final ResourceLocation DROWNED_ANIMATION = new ResourceLocation(Spd.MOD_ID, "animations/mold_drowned.animation.json");
+    private static final ResourceLocation HUSK_ANIMATION = new ResourceLocation(Spd.MOD_ID, "animations/mold_husk.animation.json");
 
     @Override
     public ResourceLocation getModelResource(MoldZombieEntity animatable) {
+        if (animatable.isHuskVariant()) {
+            return HUSK_MODEL;
+        }
         if (animatable.isDrownedVariant()) {
             return DROWNED_MODEL;
         }
@@ -27,6 +33,9 @@ public class MoldZombieModel extends GeoModel<MoldZombieEntity> {
 
     @Override
     public ResourceLocation getTextureResource(MoldZombieEntity animatable) {
+        if (animatable.isHuskVariant()) {
+            return HUSK_TEXTURE;
+        }
         if (animatable.isDrownedVariant()) {
             return DROWNED_TEXTURE;
         }
@@ -38,6 +47,9 @@ public class MoldZombieModel extends GeoModel<MoldZombieEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(MoldZombieEntity animatable) {
+        if (animatable.isHuskVariant()) {
+            return HUSK_ANIMATION;
+        }
         return animatable.isDrownedVariant() ? DROWNED_ANIMATION : ANIMATION;
     }
 }
