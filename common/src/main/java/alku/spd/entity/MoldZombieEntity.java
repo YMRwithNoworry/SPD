@@ -18,8 +18,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +39,7 @@ import java.util.EnumSet;
 public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> POUNCER_VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DROWNED_VARIANT = SynchedEntityData.defineId(MoldZombieEntity.class, EntityDataSerializers.BOOLEAN);
     private static final int VARIANT_UNSET = -1;
     private static final int VARIANT_WALKING = 0;
     private static final int VARIANT_RUNNING = 1;
@@ -49,10 +52,15 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("animation.mold_zombie.chase");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.mold_zombie.attack");
     private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("animation.mold_zombie.death");
+    private static final RawAnimation DROWNED_IDLE = RawAnimation.begin().thenLoop("daizhe");
+    private static final RawAnimation DROWNED_SWIM = RawAnimation.begin().thenLoop("paobu");
+    private static final RawAnimation DROWNED_CHASE = RawAnimation.begin().thenLoop("追逐");
+    private static final RawAnimation DROWNED_ATTACK = RawAnimation.begin().thenLoop("gongji");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int appliedVariant = Integer.MIN_VALUE;
     private int pounceCooldown;
+    private int submergedTicks;
 
     public MoldZombieEntity(EntityType<? extends Zombie> entityType, Level level) {
         super(entityType, level);
@@ -76,6 +84,7 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         super.defineSynchedData();
         this.entityData.define(VARIANT, VARIANT_UNSET);
         this.entityData.define(POUNCER_VARIANT, false);
+        this.entityData.define(DROWNED_VARIANT, false);
     }
 
     @Override
@@ -96,7 +105,39 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
             if (this.pounceCooldown > 0) {
                 this.pounceCooldown--;
             }
+            if (!this.isDrownedVariant()) {
+                this.submergedTicks = MoldDrownedMechanics.updateSubmergedTicks(this.submergedTicks, this.isUnderWater());
+                if (MoldDrownedMechanics.shouldTransform(this.submergedTicks)) {
+                    this.transformIntoDrowned();
+                }
+            }
         }
+    }
+
+    @Override
+    public void travel(Vec3 travelVector) {
+        if (this.isDrownedVariant() && this.isInWater() && this.isEffectiveAi()) {
+            this.moveRelative((float) (0.02D * MoldDrownedMechanics.WATER_SPEED_MULTIPLIER), travelVector);
+            this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.8D));
+            return;
+        }
+        super.travel(travelVector);
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return this.isDrownedVariant() || super.canBreatheUnderwater();
+    }
+
+    @Override
+    public boolean doHurtTarget(net.minecraft.world.entity.Entity target) {
+        boolean hurt = super.doHurtTarget(target);
+        if (hurt && this.isDrownedVariant() && target instanceof Player player) {
+            player.addEffect(new MobEffectInstance(alku.spd.registry.SpdEffects.GRUDGE_BOUND.get(),
+                    MoldDrownedMechanics.GRUDGE_BOUND_TICKS, 0), this);
+        }
+        return hurt;
     }
 
     @Override
@@ -120,6 +161,25 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
 
     public boolean isPouncerVariant() {
         return this.entityData.get(POUNCER_VARIANT);
+    }
+
+    public boolean isDrownedVariant() {
+        return this.entityData.get(DROWNED_VARIANT);
+    }
+
+    private void transformIntoDrowned() {
+        this.entityData.set(DROWNED_VARIANT, true);
+        this.entityData.set(POUNCER_VARIANT, false);
+        this.submergedTicks = 0;
+        this.enableDrownedMovement();
+        this.refreshDimensions();
+    }
+
+    private void enableDrownedMovement() {
+        if (!(this.navigation instanceof AmphibiousPathNavigation)) {
+            this.navigation = new AmphibiousPathNavigation(this, this.level());
+        }
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     private void applyVariantAttributes() {
@@ -164,6 +224,8 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         super.addAdditionalSaveData(tag);
         tag.putInt("MoldZombieVariant", this.entityData.get(VARIANT));
         tag.putBoolean("MoldZombiePouncerVariant", this.isPouncerVariant());
+        tag.putBoolean("MoldZombieDrownedVariant", this.isDrownedVariant());
+        tag.putInt("MoldZombieSubmergedTicks", this.submergedTicks);
     }
 
     @Override
@@ -178,11 +240,32 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
         if (tag.contains("MoldZombiePouncerVariant")) {
             this.entityData.set(POUNCER_VARIANT, tag.getBoolean("MoldZombiePouncerVariant"));
         }
+        this.entityData.set(DROWNED_VARIANT, tag.getBoolean("MoldZombieDrownedVariant"));
+        this.submergedTicks = Math.max(0, tag.getInt("MoldZombieSubmergedTicks"));
+        if (this.isDrownedVariant()) {
+            this.enableDrownedMovement();
+        }
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 4, state -> {
+            if (this.isDrownedVariant()) {
+                if (this.swinging) {
+                    state.setAndContinue(DROWNED_ATTACK);
+                    return PlayState.CONTINUE;
+                }
+                Vec3 drownedMovement = this.getDeltaMovement();
+                boolean drownedMoving = state.isMoving() || drownedMovement.lengthSqr() > 1.0E-5D;
+                if (this.getTarget() != null && drownedMoving) {
+                    state.setAndContinue(DROWNED_CHASE);
+                } else if (drownedMoving) {
+                    state.setAndContinue(DROWNED_SWIM);
+                } else {
+                    state.setAndContinue(DROWNED_IDLE);
+                }
+                return PlayState.CONTINUE;
+            }
             if (this.isDeadOrDying()) {
                 state.setAndContinue(DEATH);
                 return PlayState.CONTINUE;

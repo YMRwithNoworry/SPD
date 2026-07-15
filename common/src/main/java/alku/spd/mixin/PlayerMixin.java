@@ -1,6 +1,7 @@
 package alku.spd.mixin;
 
 import alku.spd.effect.SubjugationHooks;
+import alku.spd.entity.MoldDrownedMechanics;
 import alku.spd.item.BlazingVeinDaggerItem;
 import alku.spd.registry.SpdEffects;
 import alku.spd.world.SpdCorrosion;
@@ -45,6 +46,13 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         if (!player.level().isClientSide()) {
             BlazingVeinDaggerItem.syncHeldState(player);
+        }
+        if (player.hasEffect(SpdEffects.GRUDGE_BOUND.get()) && player.isInWater()) {
+            player.setSwimming(false);
+            player.setDeltaMovement(
+                    player.getDeltaMovement().x,
+                    MoldDrownedMechanics.sinkVelocity(player.getDeltaMovement().y),
+                    player.getDeltaMovement().z);
         }
     }
 }
