@@ -7,6 +7,7 @@ import alku.spd.item.BlazingVeinGreatswordItem;
 import alku.spd.item.BlazingVeinDaggerItem;
 import alku.spd.item.GuideBookItem;
 import alku.spd.item.NamelessSwordItem;
+import alku.spd.item.RumorItem;
 import dev.architectury.core.item.ArchitecturySpawnEggItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -141,6 +142,9 @@ public final class SpdItems {
 
     public static final RegistrySupplier<Item> CULTURE_MEDIUM = ITEMS.register("culture_medium", () ->
             new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> RUMOR = ITEMS.register("rumor", () ->
+            new RumorItem(new Item.Properties()));
 
     public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
             new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
