@@ -31,6 +31,9 @@ public final class SpdBlocks {
                     .lightLevel(state -> 5)
                     .requiresCorrectToolForDrops()));
 
+    public static final RegistrySupplier<Block> PULSE_CORE = BLOCKS.register("pulse_core", () ->
+            new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
     public static final RegistrySupplier<Block> BLOOD_ASH_ORE = BLOCKS.register("blood_ash_ore", () ->
             new Block(BlockBehaviour.Properties.copy(Blocks.COAL_ORE)
                     .requiresCorrectToolForDrops()));

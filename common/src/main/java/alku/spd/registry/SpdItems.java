@@ -65,6 +65,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> BLAZING_VEIN_STONE = ITEMS.register("blazing_vein_stone", () ->
             new BlockItem(SpdBlocks.BLAZING_VEIN_STONE.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> PULSE_CORE = ITEMS.register("pulse_core", () ->
+            new BlockItem(SpdBlocks.PULSE_CORE.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> BLAZING_RAW_ORE = ITEMS.register("blazing_raw_ore", () ->
             new Item(new Item.Properties()));
 

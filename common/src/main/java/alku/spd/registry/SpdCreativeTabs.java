@@ -16,6 +16,7 @@ public final class SpdCreativeTabs {
             .displayItems((parameters, output) -> {
                 output.accept(SpdItems.SACRED_STIGMA.get());
                 output.accept(SpdItems.BLAZING_VEIN_STONE.get());
+                output.accept(SpdItems.PULSE_CORE.get());
                 output.accept(SpdItems.BLAZING_RAW_ORE.get());
                 output.accept(SpdItems.BLAZING_SHARD.get());
                 output.accept(SpdItems.BLAZING_CARBON_STEEL_INGOT.get());
