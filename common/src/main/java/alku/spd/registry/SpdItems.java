@@ -146,6 +146,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> RUMOR = ITEMS.register("rumor", () ->
             new RumorItem(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> PULSING_HATRED = ITEMS.register("pulsing_hatred", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> NAMELESS_SWORD = ITEMS.register("nameless_sword", () ->
             new NamelessSwordItem(Tiers.NETHERITE, new Item.Properties()
                     .durability(2600)
