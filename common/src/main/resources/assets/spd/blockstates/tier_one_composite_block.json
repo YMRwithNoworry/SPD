@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "spd:block/tier_one_composite_block"
+    }
+  }
+}
