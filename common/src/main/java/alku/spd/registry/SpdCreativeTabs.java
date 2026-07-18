@@ -42,6 +42,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.CULTURE_MEDIUM.get());
                 output.accept(SpdItems.RUMOR.get());
                 output.accept(SpdItems.PULSING_HATRED.get());
+                output.accept(SpdItems.CONTRADICTION_DYE.get());
                 output.accept(SpdItems.NAMELESS_SWORD.get());
                 output.accept(SpdItems.ABYSSAL_BLOOD_SAND.get());
                 output.accept(SpdItems.ABYSSAL_TURTLE_EGG.get());
