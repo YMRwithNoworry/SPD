@@ -40,6 +40,10 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.FUNGAL_RESIDUE.get());
                 output.accept(SpdItems.CHROME_DUST.get());
                 output.accept(SpdItems.CORRUPTED_SAND_SCALE_HIDE.get());
+                output.accept(SpdItems.DARK_CHROME_DRAGON_SCALE.get());
+                output.accept(SpdItems.GRUDGE_CORE_CRYSTAL.get());
+                output.accept(SpdItems.CHROME_DRAGON_FANG.get());
+                output.accept(SpdItems.GRIEF_ERODED_DRAGON_WING_MEMBRANE.get());
                 output.accept(SpdItems.ABYSSAL_HEART_SPORE.get());
                 output.accept(SpdItems.ETCHED_TURTLE_SCUTE.get());
                 output.accept(SpdItems.LIQUID_GOLD.get());

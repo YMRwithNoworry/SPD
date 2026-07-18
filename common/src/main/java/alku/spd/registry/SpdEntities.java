@@ -10,6 +10,7 @@ import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.EpxCloudEntity;
 import alku.spd.entity.EpxEntity;
 import alku.spd.entity.FalseMotherEntity;
+import alku.spd.entity.GriefErodedChromeDragonEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.entity.NamelessSlashEntity;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -32,6 +33,13 @@ public final class SpdEntities {
                     .sized(2.2F, 2.8F)
                     .clientTrackingRange(10)
                     .build("false_mother"));
+
+    public static final RegistrySupplier<EntityType<GriefErodedChromeDragonEntity>> GRIEF_ERODED_CHROME_DRAGON = ENTITIES.register("grief_eroded_chrome_dragon", () ->
+            EntityType.Builder.of(GriefErodedChromeDragonEntity::new, MobCategory.MONSTER)
+                    .sized(4.0F, 4.5F)
+                    .clientTrackingRange(16)
+                    .updateInterval(2)
+                    .build("grief_eroded_chrome_dragon"));
 
     public static final RegistrySupplier<EntityType<AbyssalErodedSilverfishEntity>> ABYSSAL_ERODED_SILVERFISH = ENTITIES.register("abyssal_eroded_silverfish", () ->
             EntityType.Builder.of(AbyssalErodedSilverfishEntity::new, MobCategory.MONSTER)

@@ -143,6 +143,18 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> CORRUPTED_SAND_SCALE_HIDE = ITEMS.register("corrupted_sand_scale_hide", () ->
             new Item(new Item.Properties()));
 
+    public static final RegistrySupplier<Item> DARK_CHROME_DRAGON_SCALE = ITEMS.register("dark_chrome_dragon_scale", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> GRUDGE_CORE_CRYSTAL = ITEMS.register("grudge_core_crystal", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> CHROME_DRAGON_FANG = ITEMS.register("chrome_dragon_fang", () ->
+            new Item(new Item.Properties()));
+
+    public static final RegistrySupplier<Item> GRIEF_ERODED_DRAGON_WING_MEMBRANE = ITEMS.register("grief_eroded_dragon_wing_membrane", () ->
+            new Item(new Item.Properties()));
+
     public static final RegistrySupplier<Item> ABYSSAL_HEART_SPORE = ITEMS.register("abyssal_heart_spore", () ->
             new Item(new Item.Properties()));
 

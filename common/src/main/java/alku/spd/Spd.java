@@ -13,6 +13,7 @@ import alku.spd.world.AbyssalFoxInfectionEvents;
 import alku.spd.world.AbyssalPressureEvents;
 import alku.spd.world.AbyssalWolfInfectionEvents;
 import alku.spd.world.AbyssalTurtleInfectionEvents;
+import alku.spd.world.ChromeDragonContamination;
 import alku.spd.world.MoldCurseEvents;
 import alku.spd.world.SpdDifficultyScaling;
 import alku.spd.world.SpdDifficultyEvents;
@@ -40,6 +41,7 @@ public final class Spd {
         AbyssalPressureEvents.register();
         AbyssalWolfInfectionEvents.register();
         AbyssalTurtleInfectionEvents.register();
+        ChromeDragonContamination.register();
         EpxEvents.register();
     }
 }

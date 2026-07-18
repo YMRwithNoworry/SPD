@@ -6,6 +6,7 @@ import alku.spd.entity.AbyssalFoxEntity;
 import alku.spd.entity.AbyssalTurtleEntity;
 import alku.spd.entity.AbyssalWolfEntity;
 import alku.spd.entity.FalseMotherEntity;
+import alku.spd.entity.GriefErodedChromeDragonEntity;
 import alku.spd.entity.MoldZombieEntity;
 import alku.spd.item.BlazingVeinPiercingSpearItem;
 import alku.spd.registry.SpdEntities;
@@ -59,12 +60,18 @@ public final class SpdForge {
                     SpawnPlacements.Type.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     AbyssalTurtleEntity::checkSpawnRules);
+            SpawnPlacements.register(
+                    SpdEntities.GRIEF_ERODED_CHROME_DRAGON.get(),
+                    SpawnPlacements.Type.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    GriefErodedChromeDragonEntity::checkSpawnRules);
         });
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(SpdEntities.ABYSSAL_ERODED_SILVERFISH.get(), AbyssalErodedSilverfishEntity.createAttributes().build());
         event.put(SpdEntities.FALSE_MOTHER.get(), FalseMotherEntity.createAttributes().build());
+        event.put(SpdEntities.GRIEF_ERODED_CHROME_DRAGON.get(), GriefErodedChromeDragonEntity.createAttributes().build());
         event.put(SpdEntities.MOLD_ZOMBIE.get(), MoldZombieEntity.createAttributes().build());
         event.put(SpdEntities.ABYSSAL_FOX.get(), AbyssalFoxEntity.createAttributes().build());
         event.put(SpdEntities.ABYSSAL_WOLF.get(), AbyssalWolfEntity.createAttributes().build());
