@@ -18,6 +18,8 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.BLAZING_VEIN_STONE.get());
                 output.accept(SpdItems.PULSE_CORE.get());
                 output.accept(SpdItems.TIER_ONE_COMPOSITE_BLOCK.get());
+                output.accept(SpdItems.TIER_TWO_COMPOSITE_BLOCK.get());
+                output.accept(SpdItems.TIER_THREE_COMPOSITE_BLOCK.get());
                 output.accept(SpdItems.BLAZING_RAW_ORE.get());
                 output.accept(SpdItems.BLAZING_SHARD.get());
                 output.accept(SpdItems.BLAZING_CARBON_STEEL_INGOT.get());

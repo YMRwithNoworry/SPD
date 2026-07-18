@@ -72,6 +72,12 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> TIER_ONE_COMPOSITE_BLOCK = ITEMS.register("tier_one_composite_block", () ->
             new BlockItem(SpdBlocks.TIER_ONE_COMPOSITE_BLOCK.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> TIER_TWO_COMPOSITE_BLOCK = ITEMS.register("tier_two_composite_block", () ->
+            new BlockItem(SpdBlocks.TIER_TWO_COMPOSITE_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> TIER_THREE_COMPOSITE_BLOCK = ITEMS.register("tier_three_composite_block", () ->
+            new BlockItem(SpdBlocks.TIER_THREE_COMPOSITE_BLOCK.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> BLAZING_RAW_ORE = ITEMS.register("blazing_raw_ore", () ->
             new Item(new Item.Properties()));
 
