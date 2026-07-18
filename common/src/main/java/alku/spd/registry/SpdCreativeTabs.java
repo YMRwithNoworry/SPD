@@ -17,6 +17,7 @@ public final class SpdCreativeTabs {
                 output.accept(SpdItems.SACRED_STIGMA.get());
                 output.accept(SpdItems.BLAZING_VEIN_STONE.get());
                 output.accept(SpdItems.PULSE_CORE.get());
+                output.accept(SpdItems.GRIEF_ERODED_DIRT.get());
                 output.accept(SpdItems.TIER_ONE_COMPOSITE_BLOCK.get());
                 output.accept(SpdItems.TIER_TWO_COMPOSITE_BLOCK.get());
                 output.accept(SpdItems.TIER_THREE_COMPOSITE_BLOCK.get());

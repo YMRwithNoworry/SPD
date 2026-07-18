@@ -69,6 +69,9 @@ public final class SpdItems {
     public static final RegistrySupplier<Item> PULSE_CORE = ITEMS.register("pulse_core", () ->
             new BlockItem(SpdBlocks.PULSE_CORE.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Item> GRIEF_ERODED_DIRT = ITEMS.register("grief_eroded_dirt", () ->
+            new BlockItem(SpdBlocks.GRIEF_ERODED_DIRT.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Item> TIER_ONE_COMPOSITE_BLOCK = ITEMS.register("tier_one_composite_block", () ->
             new BlockItem(SpdBlocks.TIER_ONE_COMPOSITE_BLOCK.get(), new Item.Properties()));
 

@@ -31,7 +31,8 @@ public final class SpdTerraBlender {
 
         SurfaceRules.RuleSource surfaceRules = SurfaceRules.sequence(
                 bloodDesertSurfaceRule(),
-                abyssalCoastSurfaceRules());
+                abyssalCoastSurfaceRules(),
+                griefErodedDirtSurfaceRule());
         SurfaceRuleManager.addSurfaceRules(
                 SurfaceRuleManager.RuleCategory.OVERWORLD,
                 Spd.MOD_ID,
@@ -70,5 +71,20 @@ public final class SpdTerraBlender {
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, sacredStigma),
                                 SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, sacredStigma))));
+    }
+
+    private static SurfaceRules.RuleSource griefErodedDirtSurfaceRule() {
+        SurfaceRules.RuleSource griefErodedDirt =
+                SurfaceRules.state(SpdBlocks.GRIEF_ERODED_DIRT.get().defaultBlockState());
+        return SurfaceRules.ifTrue(
+                SurfaceRules.isBiome(
+                        SpdBiomes.ABYSSAL_BLOOD_DESERT,
+                        SpdBiomes.ABYSSAL_COAST,
+                        SpdBiomes.FUNGAL_SHALLOWS,
+                        SpdBiomes.CHROME_SEABED_CAVES),
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, griefErodedDirt),
+                        SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, griefErodedDirt),
+                        SurfaceRules.ifTrue(SurfaceRules.DEEP_UNDER_FLOOR, griefErodedDirt)));
     }
 }

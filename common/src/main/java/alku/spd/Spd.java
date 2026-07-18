@@ -18,6 +18,7 @@ import alku.spd.world.MoldCurseEvents;
 import alku.spd.world.SpdDifficultyScaling;
 import alku.spd.world.SpdDifficultyEvents;
 import alku.spd.world.SpdBigEyesEvents;
+import alku.spd.world.SpdGriefErodedDirtEvents;
 import alku.spd.world.SpdWeatherEvents;
 
 public final class Spd {
@@ -35,6 +36,7 @@ public final class Spd {
         SpdDifficultyEvents.register();
         SpdDifficultyScaling.register();
         SpdBigEyesEvents.register();
+        SpdGriefErodedDirtEvents.register();
         SpdWeatherEvents.register();
         MoldCurseEvents.register();
         AbyssalFoxInfectionEvents.register();

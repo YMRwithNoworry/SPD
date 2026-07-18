@@ -34,6 +34,9 @@ public final class SpdBlocks {
     public static final RegistrySupplier<Block> PULSE_CORE = BLOCKS.register("pulse_core", () ->
             new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
+    public static final RegistrySupplier<Block> GRIEF_ERODED_DIRT = BLOCKS.register("grief_eroded_dirt", () ->
+            new Block(BlockBehaviour.Properties.copy(Blocks.DIRT)));
+
     public static final RegistrySupplier<Block> TIER_ONE_COMPOSITE_BLOCK = BLOCKS.register("tier_one_composite_block", () ->
             new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
 
