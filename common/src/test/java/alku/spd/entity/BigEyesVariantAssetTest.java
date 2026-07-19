@@ -46,9 +46,9 @@ final class BigEyesVariantAssetTest {
             "/assets/spd/geo/mold_zombie.geo.json",
             "/assets/spd/geo/mold_zombie_big_eyes.geo.json",
             "/assets/spd/textures/entity/mold_zombie_big_eyes.png",
-            "69845e4e6127c0b28de6b839167d17b818a5478da422a2c8c2af69fa779e5f65",
-            "0ba00f403b86ddc51740d14daf4d8d21bb2c2c3e343885f37971e9d4d61641c3",
-            128, 128);
+            "804334a95922795cef3de2aa05b4746536c71e66b871e76deaaad0339441047b",
+            "48b8b0b99b3c985aeac9098ca8ab3e89aab895512d068a229a9579415582af42",
+            64, 64);
 
     @Test
     void packagesSuppliedWolfVariant() throws Exception {

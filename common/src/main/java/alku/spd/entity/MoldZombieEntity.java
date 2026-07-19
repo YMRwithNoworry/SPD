@@ -49,11 +49,11 @@ public class MoldZombieEntity extends Zombie implements GeoEntity {
     private static final double WALKING_SPEED = VANILLA_ZOMBIE_SPEED * 1.2D;
     private static final double RUNNING_SPEED = VANILLA_ZOMBIE_SPEED * 2.4D;
     private static final float POUNCER_CHANCE = 0.2F;
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.mold_zombie.idle");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.mold_zombie.walk");
-    private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("animation.mold_zombie.chase");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("animation.mold_zombie.attack");
-    private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("animation.mold_zombie.death");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("待机");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("走路");
+    private static final RawAnimation CHASE = RawAnimation.begin().thenLoop("奔跑");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("奔跑");
+    private static final RawAnimation DEATH = RawAnimation.begin().thenPlayAndHold("待机");
     private static final RawAnimation DROWNED_IDLE = RawAnimation.begin().thenLoop("daizhe");
     private static final RawAnimation DROWNED_SWIM = RawAnimation.begin().thenLoop("paobu");
     private static final RawAnimation DROWNED_CHASE = RawAnimation.begin().thenLoop("追逐");

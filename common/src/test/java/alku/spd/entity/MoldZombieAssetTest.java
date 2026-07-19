@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 final class MoldZombieAssetTest {
     private static final String MODEL_PATH = "/assets/spd/geo/mold_zombie.geo.json";
     private static final String ANIMATION_PATH = "/assets/spd/animations/mold_zombie.animation.json";
-    private static final String MODEL_SHA256 = "b3ba8963072371542cba77f057b0203adaee4cd2e9f22cb82caa0a5b58794533";
+    private static final String MODEL_SHA256 = "804334a95922795cef3de2aa05b4746536c71e66b871e76deaaad0339441047b";
 
     @Test
     void modelMatchesTheSuppliedGeckoLibAsset() throws Exception {
@@ -46,6 +46,7 @@ final class MoldZombieAssetTest {
         }
 
         JsonObject animations = animationFile.getAsJsonObject("animations");
+        assertEquals(Set.of("待机", "走路", "奔跑"), animations.keySet());
         for (String animationName : animations.keySet()) {
             JsonObject animation = animations.getAsJsonObject(animationName);
             if (!animation.has("bones")) {
